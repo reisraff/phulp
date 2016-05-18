@@ -10,7 +10,6 @@
         <phingCall target="phplint" />
         <phingCall target="phpunit" />
         <phingCall target="phpcs" />
-        <phingCall target="generatedoc" />
 
         <echo msg="Finished Build" />
     </target>
