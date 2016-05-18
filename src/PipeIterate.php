@@ -20,7 +20,7 @@ class PipeIterate implements PipeInterface
     /**
      * @inheritdoc
      */
-    public function do(Source $src)
+    public function execute(Source $src)
     {
         foreach ($src->getDistFiles() as $file) {
             $callback = $this->callback;

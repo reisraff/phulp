@@ -7,5 +7,5 @@ interface PipeInterface
     /**
      * @param Source $source
      */
-    public function do(Source $source);
+    public function execute(Source $source);
 }

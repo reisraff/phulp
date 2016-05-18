@@ -43,7 +43,7 @@ class Source
      */
     public function pipe(PipeInterface $pipe)
     {
-        $pipe->do($this);
+        $pipe->execute($this);
 
         return $this;
     }
