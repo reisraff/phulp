@@ -4,10 +4,52 @@ The task manager for php
 
 ### Documentation
 
-#### Install
+#### Usage
+
+Install:
 
 ```bash
 $ composer require reisraff/phulp:dev-master
+```
+
+Create your `PhulpFile.php`:
+
+```php
+<?php
+
+use Phulp\Phulp;
+
+class PhulpFile extends Phulp
+{
+    public function define()
+    {
+        Phulp::task('default', function () {
+            Phulp::src(['src/'], '/php$/', false)
+                // ->pipe(\Phulp\PipeInterface)
+                ->pipe(Phulp::iterate(function ($distFile) {
+                    echo $distFile->getName() . PHP_EOL;
+                }))
+                ->pipe(Phulp::dest('dist'));
+        });
+
+        Phulp::task('myTask', function () {
+            Phulp::src(['src/'], '/php$/', false)
+                // ->pipe(\Phulp\PipeInterface)
+                ->pipe(Phulp::iterate(function ($distFile) {
+                    echo $distFile->getName() . PHP_EOL;
+                }))
+                ->pipe(Phulp::dest('dist'));
+        });
+    }
+}
+
+```
+
+Run:
+
+```bash
+$ phulp # Will run the `default` task
+$ phulp myTask # Will run the `myTask` task
 ```
 
 ### Contributors Guide
