@@ -47,9 +47,11 @@ class PhulpFile extends Phulp
 
 Run:
 
+If you have not configured the bin-dir:
+
 ```bash
-$ phulp # Will run the `default` task
-$ phulp myTask # Will run the `myTask` task
+$ vendor/bin/phulp # Will run the `default` task
+$ vendor/bin/phulp myTask # Will run the `myTask` task
 ```
 
 ### Contributors Guide
