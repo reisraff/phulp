@@ -7,12 +7,18 @@ The task manager for php
 #### Install
 
 ```bash
+$ composer require reisraff/phulp:dev-master
+```
+
+### Contributors Guide
+
+#### Clone
+
+```bash
 $ git clone git@github.com:reisraff/phulp.git
 $ cd phulp
 $ composer install
 ```
-
-### Contributors Guide
 
 #### Tests
 
