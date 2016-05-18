@@ -70,38 +70,49 @@ abstract class Phulp implements PhulpInterface
     final public static function dest($path)
     {
         return self::iterate(function ($distFile) use ($path) {
-            if (!empty($distFile->getDir())) {
-                $dir = $path . DIRECTORY_SEPARATOR . $distFile->getDir();
+            $filename = $distFile->getDistpathname();
+            $relativepath = null;
+
+            if (strrpos($filename, DIRECTORY_SEPARATOR)) {
+                $filename = substr(
+                    $distFile->getDistpathname(),
+                    strrpos($distFile->getDistpathname(), DIRECTORY_SEPARATOR) + 1
+                );
+
+                $relativepath = substr(
+                    $distFile->getDistpathname(),
+                    0,
+                    strrpos($distFile->getDistpathname(), DIRECTORY_SEPARATOR)
+                );
+            }
+
+            if (!empty($relativepath)) {
+                $dir = $path . DIRECTORY_SEPARATOR . $relativepath;
                 if (!file_exists($dir)) {
                     mkdir($dir, 0777, true);
                 }
             }
 
             file_put_contents(
-                $path . DIRECTORY_SEPARATOR . $distFile->getName(),
+                $path . DIRECTORY_SEPARATOR . $distFile->getDistpathname(),
                 $distFile->getContent()
             );
         });
     }
 
     /**
+     * @todo improve it :'(
+     *
      * @return PipeInterface
      */
-    // final public static function clean()
-    // {
-    //     return self::iterate(function ($distFile) {
-    //         if (file_exists($distFile->getName())) {
-    //             echo realpath($distFile->getName());
-
-    //             if (is_dir($distFile->getName())) {
-    //                 rmdir($distFile->getName());
-    //             } else {
-    //                 unlink($distFile->getName());
-    //             }
-    //         }
-    //         echo $distFile->getName() . PHP_EOL;
-    //     });
-    // }
+    final public static function clean()
+    {
+        return self::iterate(function ($distFile) {
+            if (file_exists($distFile->getBasepath()) && is_dir($distFile->getBasepath())) {
+                exec('rm -rf ' . $distFile->getBasepath() . DIRECTORY_SEPARATOR . '*');
+            }
+        });
+    }
 
     /**
      * @param callable $callback

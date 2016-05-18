@@ -5,29 +5,53 @@ namespace Phulp;
 class DistFile
 {
     /**
-     * @var string $name
-     */
-    private $name;
-
-    /**
-     * @var string|null $dir
-     */
-    private $dir = null;
-
-    /**
      * @var mixed $content
      */
     private $content;
 
     /**
-     * @param string $name the relative name PS: Never.... absolute name
-     * @param mixed $content
+     * @var string $name
      */
-    public function __construct($name, $content)
-    {
-        $this->name = $name;
-        $this->setDir($name);
+    private $name;
+
+    /**
+     * @var string $fullpath
+     */
+    private $fullpath;
+
+    /**
+     * @var string $relativepath
+     */
+    private $relativepath;
+
+    /**
+     * @var string $basepath
+     */
+    private $basepath;
+
+    /**
+     * @var string $distpathname
+     */
+    private $distpathname;
+
+    /**
+     * @param mixed $content,
+     * @param string $name
+     * @param string $fullpath
+     * @param string $relativepath
+     */
+    public function __construct(
+        $content,
+        $name = null,
+        $fullpath = null,
+        $relativepath = null
+    ) {
         $this->content = $content;
+        $this->name = $name;
+        $this->fullpath = $fullpath;
+        $this->relativepath = $relativepath;
+        $this->basepath = rtrim(str_replace($this->relativepath, null, $this->fullpath), DIRECTORY_SEPARATOR);
+        $this->distpathname = rtrim($this->relativepath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $this->name;
     }
 
     /**
@@ -38,21 +62,6 @@ class DistFile
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Sets the value of name.
-     *
-     * @param string $name $name the name
-     *
-     * @return self
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        $this->setDir($name);
-
-        return $this;
     }
 
     /**
@@ -80,22 +89,56 @@ class DistFile
     }
 
     /**
-     * Gets the value of dir.
+     * Gets the value of fullpath.
      *
-     * @return string $dir
+     * @return string $fullpath
      */
-    public function getDir()
+    public function getFullpath()
     {
-        return $this->dir;
+        return $this->fullpath;
     }
 
     /**
-     * @param string $name
+     * Gets the value of relativepath.
+     *
+     * @return string $relativepath
      */
-    private function setDir($name)
+    public function getRelativepath()
     {
-        if (preg_match('/\//', $name)) {
-            $this->dir = substr($name, 0, strrpos($name, '/'));
-        }
+        return $this->relativepath;
+    }
+
+    /**
+     * Gets the value of distpathname.
+     *
+     * @return string $distpathname
+     */
+    public function getDistpathname()
+    {
+        return $this->distpathname;
+    }
+
+    /**
+     * Sets the value of distpathname.
+     *
+     * @param string $distpathname $distpathname the distpathname
+     *
+     * @return self
+     */
+    public function setDistpathname($distpathname)
+    {
+        $this->distpathname = $distpathname;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of basepath.
+     *
+     * @return string $basepath
+     */
+    public function getBasepath()
+    {
+        return $this->basepath;
     }
 }

@@ -12,6 +12,11 @@ class Source
     private $distFiles = [];
 
     /**
+     * @var \SplFileInfo[] $dirs;
+     */
+    private $dirs = [];
+
+    /**
      * @param array $dirs
      * @param string|null $pattern
      * @param boolean $recursive
@@ -19,7 +24,6 @@ class Source
     public function __construct(array $dirs, $pattern, $recursive)
     {
         $finder = new Finder;
-        $finder->files();
         if (!$recursive) {
             $finder->depth('== 0');
         }
@@ -29,10 +33,16 @@ class Source
         $finder->in($dirs);
 
         foreach ($finder as $file) {
-            $this->distFiles[] = new DistFile(
-                $file->getRelativePathname(), // See later PS: Maybe do in([]) separeted
-                file_get_contents($file->getRealPath())
-            );
+            if (!$file->isDir()) {
+                $this->distFiles[] = new DistFile(
+                    file_get_contents($file->getRealPath()),
+                    substr($file->getRealPath(), strrpos($file->getRealPath(), DIRECTORY_SEPARATOR) + 1),
+                    substr($file->getRealPath(), 0, strrpos($file->getRealPath(), DIRECTORY_SEPARATOR)),
+                    trim($file->getRelativePath(), DIRECTORY_SEPARATOR)
+                );
+            } else {
+                $this->dirs[] = $file;
+            }
         }
     }
 
@@ -74,5 +84,15 @@ class Source
     public function addDistFile(DistFile $distFile)
     {
         $this->distFiles[] = $distFile;
+    }
+
+    /**
+     * Gets the value of dirs.
+     *
+     * @return \SplFileInfo[] $dirs;
+     */
+    public function getDirs()
+    {
+        return $this->dirs;
     }
 }
