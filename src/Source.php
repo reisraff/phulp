@@ -13,12 +13,16 @@ class Source
 
     /**
      * @param array $dirs
-     * @param string $pattern
+     * @param string|null $pattern
+     * @param boolean $recursive
      */
-    public function __construct(array $dirs, $pattern = null)
+    public function __construct(array $dirs, $pattern, $recursive)
     {
         $finder = new Finder;
         $finder->files();
+        if (!$recursive) {
+            $finder->depth('== 0');
+        }
         if (!empty($pattern)) {
             $finder->name($pattern);
         }
