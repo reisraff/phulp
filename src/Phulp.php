@@ -15,10 +15,12 @@ abstract class Phulp implements PhulpInterface
     final public static function run($task = null)
     {
         try {
+            $start = microtime(true);
+            Output::out('Starting the script', 'blue');
             Phulp::start([(!empty($task) ? $task : 'default')]);
+            Output::out('Script has finished in ' . round(microtime(true) - $start, 4) . ' seconds', 'blue');
         } catch (\Exception $e) {
-            // @todo improve it
-            die($e->getMessage());
+            Output::out($e->getMessage(), 'red');
         }
     }
 
@@ -31,10 +33,16 @@ abstract class Phulp implements PhulpInterface
     {
         foreach ($tasks as $task) {
             if (isset(self::$tasks[$task])) {
+                Output::out('Executing "' . $task . '"', 'green');
+                $start = microtime(true);
                 self::$tasks[$task]();
+                Output::out(
+                    'Task "' . $task . '" has finished in ' . round(microtime(true) - $start, 4) . ' seconds',
+                    'green'
+                );
             } else {
                 // @todo improve it
-                throw new \Exception('The task "' . $task . '" does not exists.' . PHP_EOL);
+                throw new \Exception('The task "' . $task . '" does not exists.');
             }
         }
     }
