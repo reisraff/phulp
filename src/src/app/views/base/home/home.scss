@@ -1,0 +1,99 @@
+body {
+  font-size: 14px;
+  /*text-shadow: 0px 0px 70px rgba(0, 0, 0, 1);*/
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: bold;
+}
+
+p {
+  margin-bottom: 50px;
+}
+
+article {
+  font-size: 20px;
+}
+
+.bg-grey {
+  background: #F5F5F5;
+}
+
+.bg-dark-grey {
+  background: #9C9C9C;
+}
+
+.bg-black {
+  background: #222;
+}
+
+.item {
+  padding: 25px 0px;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.larger {
+  font-size: 28px;
+}
+
+.medium {
+  font-size: 20px;
+}
+
+.bg-white {
+  background: #FFF;
+}
+
+.bg-php-heavy-color {
+  background: #4F5B93;
+}
+
+.bg-php-light-color {
+  background-color: #8892BF;
+}
+
+.less {
+  padding: 10px 0;
+}
+
+.white a {
+  color: #FFF;
+}
+
+a.grey:link {
+  color: grey;
+}
+
+.footer {
+  min-height: 360px;
+}
+
+.svg:hover path {
+  fill: #ccc;
+}
+
+.super-title {
+  font-size: 72px;
+  text-transform: uppercase;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.presentation {
+  background-color: #8892BF;
+
+  color: #FFF;
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 1) !important;
+
+  padding-top: 180px;
+
+  height: 100%;
+  min-height: 590px;
+}
+
+.full-height {
+  height: 100%;
+  min-height: 590px;
+}

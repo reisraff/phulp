@@ -1,0 +1,33 @@
+<section class="bg-black row less">
+  <div class="container-fluid">
+    <div class="col-md-11">
+      <input type="text" class="form-control" ng-model="controller.query" ng-change="controller.search()" placeholder="Search">
+    </div>
+    <div class="col-md-1">
+      <h4 class="white uppercase">
+        <a href="javascript://" ui-sref="root.home">
+          HOME
+        </a>
+      </h4>
+    </div>
+  </div>
+</section>
+
+<div class="full-height bg-php-light-color">
+  <div class="container-fluid">
+    <section ng-repeat="plugin in controller.plugins" class="bg-white">
+      <div class="item container text-center">
+        <p>
+          <a href="{{ plugin.url }}" target="_blank"><b class="larger">{{ plugin.name }}</b></a>
+          <br />
+          <i class="medium">{{ plugin.description }}</i>
+        </p>
+      </div>
+    </section>
+    <section class="bg-white">
+      <div class="item container text-center" ng-show="controller.pluginsResolve.next">
+        <b class="larger"><a href="javascript://" class="grey" ng-click="controller.more()">MAIS</a></b>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="cd-secondary-nav" ng-show="menuScrollMenuFixed"></div>
+
+<nav id="menuScroll-element" class="navbar-inverse cd-secondary-nav">
+  <a href="javascript://" class="cd-secondary-nav-trigger" ng-click="controller.menu()">Menu<span></span></a>
+
+  <div class="container-fluid">
+    <ul class="nav navbar-nav navbar-right">
+      <li ng-repeat="item in items">
+        <a href="javascript://" class="cd-anchor" hash="{{item.hash}}" state="{{item.state}}" ng-click="controller.clicked(item.state, item.hash, item.url)">
+          <img ng-show="item.img" ng-src="{{item.img.src}}" class="{{item.img.classes}}" alt="{{item.img.alt}}">
+          <b ng-show="item.bold">{{ item.label }}</b>
+          <span ng-hide="item.bold">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
