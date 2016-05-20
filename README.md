@@ -12,13 +12,13 @@ The task manager for php
 
 #### Usage
 
-Install:
+##### Install:
 
 ```bash
 $ composer require reisraff/phulp:dev-master
 ```
 
-Create your `PhulpFile.php`:
+##### Create your `PhulpFile.php`:
 
 ```php
 <?php
@@ -30,34 +30,39 @@ class PhulpFile extends Phulp
     public function define()
     {
         Phulp::task('default', function () {
+            Phulp::start(['clean']);
+
             Phulp::src(['src/'], '/php$/', false)
                 // ->pipe(\Phulp\PipeInterface)
                 ->pipe(Phulp::iterate(function ($distFile) {
-                    echo $distFile->getName() . PHP_EOL;
+                    \Phulp\Output::out($distFile->getName(), 'blue');
                 }))
-                ->pipe(Phulp::dest('dist'));
+                ->pipe(Phulp::dest('dist/'));
         });
 
-        Phulp::task('myTask', function () {
-            Phulp::src(['src/'], '/php$/', false)
-                // ->pipe(\Phulp\PipeInterface)
-                ->pipe(Phulp::iterate(function ($distFile) {
-                    echo $distFile->getName() . PHP_EOL;
-                }))
-                ->pipe(Phulp::dest('dist'));
+        Phulp::task('clean', function () {
+            Phulp::src(['dist/'])
+                ->pipe(Phulp::clean());
+        });
+
+        Phulp::task('watch', function () {
+            Phulp::watch(
+                Phulp::src(['src/'], '/php$/', false),
+                ['default']
+            );
         });
     }
 }
 
 ```
 
-Run:
+##### Run:
 
-If you have not configured the bin-dir:
+_If you have not configured the bin-dir:_
 
 ```bash
 $ vendor/bin/phulp # Will run the `default` task
-$ vendor/bin/phulp myTask # Will run the `myTask` task
+$ vendor/bin/phulp watch # Will run the `watch` task
 ```
 
 ### Contributors Guide
@@ -72,7 +77,7 @@ $ composer install
 
 #### Tests
 
-First install the dependencies, and after you can run:
+_First install the dependencies, and after you can run:_
 
 ```bash
 $ bin/phing
@@ -81,3 +86,7 @@ $ bin/phing
 ### TODO
 
 The "Issues" page from this repository is being used for TO-DO management, just search for the "to-do" tag.
+
+## Credits
+
+[@reisraff](http://www.twitter.com/reisraff)
