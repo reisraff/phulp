@@ -4,6 +4,7 @@
     "keywords": ["phulp", "php"],
     "license": "MIT",
     "type": "library",
+    "homepage" : "https://reisraff.github.io/phulp/dist/#!/home",
     "authors": [
         {
             "name": "Rafael Reis",
