@@ -71,6 +71,15 @@ abstract class Phulp implements PhulpInterface
     }
 
     /**
+     * @param Source $src
+     * @param array $tasks
+     */
+    final public static function watch(Source $src, array $tasks)
+    {
+        new Watch($src, $tasks);
+    }
+
+    /**
      * @param string $path
      *
      * @return PipeInterface

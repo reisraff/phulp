@@ -25,6 +25,11 @@ class DistFile
     private $relativepath;
 
     /**
+     * @var int $lastChangeTime
+     */
+    private $lastChangeTime;
+
+    /**
      * @var string $basepath
      */
     private $basepath;
@@ -50,6 +55,13 @@ class DistFile
         $this->name = $name;
         $this->fullpath = $fullpath;
         $this->relativepath = $relativepath;
+        if (!empty($this->name) && !empty($this->fullpath)) {
+            $this->lastChangeTime = filemtime(
+                rtrim($this->fullpath, DIRECTORY_SEPARATOR)
+                . DIRECTORY_SEPARATOR
+                . $this->name
+            );
+        }
         $this->basepath = rtrim(str_replace($this->relativepath, null, $this->fullpath), DIRECTORY_SEPARATOR);
         $this->distpathname = rtrim($this->relativepath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $this->name;
     }
@@ -140,5 +152,29 @@ class DistFile
     public function getBasepath()
     {
         return $this->basepath;
+    }
+
+    /**
+     * Gets the value of lastChangeTime.
+     *
+     * @return string $lastChangeTime
+     */
+    public function getLastChangeTime()
+    {
+        return $this->lastChangeTime;
+    }
+
+    /**
+     * Sets the value of lastChangeTime.
+     *
+     * @param string $lastChangeTime $lastChangeTime the last change time
+     *
+     * @return self
+     */
+    public function setLastChangeTime($lastChangeTime)
+    {
+        $this->lastChangeTime = $lastChangeTime;
+
+        return $this;
     }
 }
