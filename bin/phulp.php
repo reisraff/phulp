@@ -12,7 +12,7 @@ ini_set('register_argc_argv', true);
 
 $task = isset($argv[1]) ? $argv[1] : 'default';
 
-$phulpFile = realpath('./PhulpFile.php');
+$phulpFile = './PhulpFile.php';
 
 if (file_exists($phulpFile)) {
     require $phulpFile;
