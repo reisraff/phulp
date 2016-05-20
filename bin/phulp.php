@@ -24,12 +24,11 @@ if (file_exists($phulpFile)) {
             $phulp->define();
             $phulp->run($task);
         } else {
-            die('PhulpFile Object MUST extends the \\Phulp\\Phulp.' . PHP_EOL);
+            Phulp\Output::out('PhulpFile Object MUST extends the \\Phulp\\Phulp.', 'red');
         }
     } else {
-        die('the file PhulpFile.php exists but the class name is not PhulpFile.' . PHP_EOL);
+        Phulp\Output::out('the file PhulpFile.php exists but the class name is not PhulpFile.', 'red');
     }
 } else {
-    // @todo improve it
-    die('The PhulpFile.php was not created.' . PHP_EOL);
+    Phulp\Output::out('The PhulpFile.php was not created.', 'red');
 }
