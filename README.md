@@ -1,4 +1,4 @@
-# phulp [_BETA_]
+# Phulp
 
 [![Latest Stable Version](https://poser.pugx.org/reisraff/phulp/v/stable)](https://packagist.org/packages/reisraff/phulp)
 [![Total Downloads](https://poser.pugx.org/reisraff/phulp/downloads)](https://packagist.org/packages/reisraff/phulp)
@@ -8,6 +8,14 @@
 
 The task manager for php
 
+### Why
+
+Sometimes I need a tool like Gulp for my PHP projects, but I don't want to install `npm` only to install Gulp. I thought "I need something like Gulp, but in PHP". After a little research I found Phing, but it's not focused in minification and management for CSS/JS and related frontend stuff.
+
+Well, I decided to write Phulp, the PHP port of Gulp! And a little curiosity: it's faster than Gulp.
+
+**PS: I made benchs using PHP 7**
+
 ### Documentation
 
 #### Usage
@@ -15,7 +23,7 @@ The task manager for php
 ##### Install:
 
 ```bash
-$ composer require reisraff/phulp:dev-master
+$ composer require reisraff/phulp:0.0.1
 ```
 
 ##### Create your `PhulpFile.php`:
@@ -64,6 +72,10 @@ _If you have not configured the bin-dir:_
 $ vendor/bin/phulp # Will run the `default` task
 $ vendor/bin/phulp watch # Will run the `watch` task
 ```
+
+##### The full documentation:
+
+[Docs](https://github.com/reisraff/phulp/blob/master/DOCUMENTATION.md)
 
 ### Contributors Guide
 
