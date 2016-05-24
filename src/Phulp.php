@@ -118,15 +118,23 @@ abstract class Phulp implements PhulpInterface
     }
 
     /**
-     * @todo improve it :'(
-     *
      * @return PipeInterface
      */
     final public static function clean()
     {
         return self::iterate(function ($distFile) {
-            if (file_exists($distFile->getBasepath()) && is_dir($distFile->getBasepath())) {
-                exec('rm -rf ' . $distFile->getBasepath() . DIRECTORY_SEPARATOR . '*');
+            $file = rtrim($distFile->getFullpath(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $distFile->getName();
+
+            if (file_exists($file)) {
+                @unlink($file);
+
+                $currentDir = substr($file, 0, strrpos($file, DIRECTORY_SEPARATOR));
+
+                while ($distFile->getBasepath() != $currentDir) {
+                    @rmdir($currentDir);
+
+                    $currentDir = substr($currentDir, 0, strrpos($currentDir, DIRECTORY_SEPARATOR));
+                }
             }
         });
     }
