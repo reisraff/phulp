@@ -2,45 +2,39 @@
 
 ## Create your PhulpFile.php
 
-You must implements the \Phulp\Phulp and your class must be named as PhulpFile.
+You must create a file called PhulpFile.php on your project root.
 
 ```php
 <?php
 ​
 use Phulp\Phulp;
 ​
-class PhulpFile extends Phulp
-{
-    public function define()
-    {
-        // Define the default task
-        Phulp::task('default', function () {
-            Phulp::start(['clean']);
+// Define the default task
+Phulp::task('default', function () {
+    Phulp::start(['clean']);
 ​
-            // Define the source folder
-            Phulp::src(['src/'], '/php$/', false)
-                ->pipe(Phulp::iterate(function ($distFile) {
-                    \Phulp\Output::out($distFile->getName(), 'blue');
-                }))
-                ->pipe(Phulp::dest('dist/'));
-        });
+    // Define the source folder
+    Phulp::src(['src/'], '/php$/', false)
+        ->pipe(Phulp::iterate(function ($distFile) {
+            \Phulp\Output::out($distFile->getName(), 'blue');
+        }))
+        ->pipe(Phulp::dest('dist/'));
+});
 ​
-        // Define the clean task
-        Phulp::task('clean', function () {
-            Phulp::src(['dist/'])
-                ->pipe(Phulp::clean());
-        });
+// Define the clean task
+Phulp::task('clean', function () {
+    Phulp::src(['dist/'])
+        ->pipe(Phulp::clean());
+});
 ​
-        // Define the watch task
-        Phulp::task('watch', function () {
-            // Phulp will watch 'src' folder
-            Phulp::watch(
-                Phulp::src(['src/'], '/php$/', false),
-                ['default']
-            );
-        });
-    }
-}
+// Define the watch task
+Phulp::task('watch', function () {
+    // Phulp will watch 'src' folder
+    Phulp::watch(
+        Phulp::src(['src/'], '/php$/', false),
+        ['default']
+    );
+});
 
 ```
 

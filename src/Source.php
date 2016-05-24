@@ -33,16 +33,17 @@ class Source
         $finder->in($dirs);
 
         foreach ($finder as $file) {
-            if (!$file->isDir()) {
-                $this->distFiles[] = new DistFile(
-                    file_get_contents($file->getRealPath()),
-                    substr($file->getRealPath(), strrpos($file->getRealPath(), DIRECTORY_SEPARATOR) + 1),
-                    substr($file->getRealPath(), 0, strrpos($file->getRealPath(), DIRECTORY_SEPARATOR)),
-                    trim($file->getRelativePath(), DIRECTORY_SEPARATOR)
-                );
-            } else {
+            if ($file->isDir()) {
                 $this->dirs[] = $file;
+                continue;
             }
+
+            $this->distFiles[] = new DistFile(
+                file_get_contents($file->getRealPath()),
+                substr($file->getRealPath(), strrpos($file->getRealPath(), DIRECTORY_SEPARATOR) + 1),
+                substr($file->getRealPath(), 0, strrpos($file->getRealPath(), DIRECTORY_SEPARATOR)),
+                trim($file->getRelativePath(), DIRECTORY_SEPARATOR)
+            );
         }
     }
 

@@ -33,34 +33,28 @@ $ composer require reisraff/phulp:0.0.2
 
 use Phulp\Phulp;
 
-class PhulpFile extends Phulp
-{
-    public function define()
-    {
-        Phulp::task('default', function () {
-            Phulp::start(['clean']);
+Phulp::task('default', function () {
+    Phulp::start(['clean']);
 
-            Phulp::src(['src/'], '/php$/', false)
-                // ->pipe(\Phulp\PipeInterface)
-                ->pipe(Phulp::iterate(function ($distFile) {
-                    \Phulp\Output::out($distFile->getName(), 'blue');
-                }))
-                ->pipe(Phulp::dest('dist/'));
-        });
+    Phulp::src(['src/'], '/php$/', false)
+        // ->pipe(\Phulp\PipeInterface)
+        ->pipe(Phulp::iterate(function ($distFile) {
+            \Phulp\Output::out($distFile->getName(), 'blue');
+        }))
+        ->pipe(Phulp::dest('dist/'));
+});
 
-        Phulp::task('clean', function () {
-            Phulp::src(['dist/'])
-                ->pipe(Phulp::clean());
-        });
+Phulp::task('clean', function () {
+    Phulp::src(['dist/'])
+        ->pipe(Phulp::clean());
+});
 
-        Phulp::task('watch', function () {
-            Phulp::watch(
-                Phulp::src(['src/'], '/php$/', false),
-                ['default']
-            );
-        });
-    }
-}
+Phulp::task('watch', function () {
+    Phulp::watch(
+        Phulp::src(['src/'], '/php$/', false),
+        ['default']
+    );
+});
 
 ```
 

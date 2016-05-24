@@ -2,7 +2,7 @@
 
 namespace Phulp;
 
-abstract class Phulp implements PhulpInterface
+class Phulp
 {
     /**
      * @var array
@@ -32,18 +32,18 @@ abstract class Phulp implements PhulpInterface
     final public static function start(array $tasks)
     {
         foreach ($tasks as $task) {
-            if (isset(self::$tasks[$task])) {
-                Output::out('Executing "' . $task . '"', 'green');
-                $start = microtime(true);
-                self::$tasks[$task]();
-                Output::out(
-                    'Task "' . $task . '" has finished in ' . round(microtime(true) - $start, 4) . ' seconds',
-                    'green'
-                );
-            } else {
+            if (!isset(self::$tasks[$task])) {
                 // @todo improve it
                 throw new \Exception('The task "' . $task . '" does not exists.');
             }
+
+            Output::out('Executing "' . $task . '"', 'green');
+            $start = microtime(true);
+            self::$tasks[$task]();
+            Output::out(
+                'Task "' . $task . '" has finished in ' . round(microtime(true) - $start, 4) . ' seconds',
+                'green'
+            );
         }
     }
 
@@ -103,11 +103,9 @@ abstract class Phulp implements PhulpInterface
                 );
             }
 
-            if (!empty($relativepath)) {
-                $dir = $path . DIRECTORY_SEPARATOR . $relativepath;
-                if (!file_exists($dir)) {
-                    mkdir($dir, 0777, true);
-                }
+            $dir = $path . DIRECTORY_SEPARATOR . $relativepath;
+            if (!empty($relativepath) && !file_exists($dir)) {
+                mkdir($dir, 0777, true);
             }
 
             file_put_contents(
