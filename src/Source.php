@@ -3,52 +3,56 @@
 namespace Phulp;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class Source
 {
     /**
-     * @var DistFile[] $distFiles;
+     * @var DistFile[] $distFiles
      */
     private $distFiles = [];
 
     /**
-     * @var \SplFileInfo[] $dirs;
+     * @var SplFileInfo[] $dirs
      */
     private $dirs = [];
 
     /**
      * @param array $dirs
-     * @param string|null $pattern
+     * @param string $pattern
      * @param boolean $recursive
      */
-    public function __construct(array $dirs, $pattern, $recursive)
+    public function __construct(array $dirs, $pattern = '', $recursive = false)
     {
         $finder = new Finder;
         if (!$recursive) {
             $finder->depth('== 0');
         }
-        if (!empty($pattern)) {
+        if ($pattern) {
             $finder->name($pattern);
         }
         $finder->in($dirs);
 
+        /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             if ($file->isDir()) {
                 $this->dirs[] = $file;
                 continue;
             }
 
+            $realPath = $file->getRealPath();
+            $dsPos = strrpos($realPath, DIRECTORY_SEPARATOR);
             $this->distFiles[] = new DistFile(
-                file_get_contents($file->getRealPath()),
-                substr($file->getRealPath(), strrpos($file->getRealPath(), DIRECTORY_SEPARATOR) + 1),
-                substr($file->getRealPath(), 0, strrpos($file->getRealPath(), DIRECTORY_SEPARATOR)),
+                file_get_contents($realPath),
+                substr($realPath, $dsPos + 1),
+                substr($realPath, 0, $dsPos),
                 trim($file->getRelativePath(), DIRECTORY_SEPARATOR)
             );
         }
     }
 
     /**
-     * @param PipeInterface
+     * @param PipeInterface $pipe
      *
      * @return self
      */
@@ -62,7 +66,7 @@ class Source
     /**
      * Gets the value of distFiles.
      *
-     * @return DistFile[] $distFiles;
+     * @return DistFile[] $distFiles
      */
     public function getDistFiles()
     {
@@ -74,9 +78,7 @@ class Source
      */
     public function removeDistFile($key)
     {
-        if (isset($this->distFiles[$key])) {
-            unset($this->distFiles[$key]);
-        }
+        unset($this->distFiles[$key]);
     }
 
     /**
