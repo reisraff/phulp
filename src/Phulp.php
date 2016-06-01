@@ -92,29 +92,16 @@ class Phulp
         return $this->iterate(function ($distFile) use ($path) {
             /** @var DistFile $distFile */
             $filename = $distFile->getDistpathname();
-            $relativepath = null;
-
-            if (strrpos($filename, DIRECTORY_SEPARATOR)) {
-                // TODO: Either remove this (as it is not used), or use it. :)
-                $filename = substr(
-                    $distFile->getDistpathname(),
-                    strrpos($distFile->getDistpathname(), DIRECTORY_SEPARATOR) + 1
-                );
-
-                $relativepath = substr(
-                    $distFile->getDistpathname(),
-                    0,
-                    strrpos($distFile->getDistpathname(), DIRECTORY_SEPARATOR)
-                );
-            }
-
-            $dir = $path . DIRECTORY_SEPARATOR . $relativepath;
-            if (!empty($relativepath) && !file_exists($dir)) {
-                mkdir($dir, 0777, true);
+            $dsPos = strrpos($filename, DIRECTORY_SEPARATOR);
+            if ($dsPos) {
+                $dir = $path . DIRECTORY_SEPARATOR . substr($filename, 0, $dsPos);
+                if (!file_exists($dir)) {
+                    mkdir($dir, 0777, true);
+                }
             }
 
             file_put_contents(
-                $path . DIRECTORY_SEPARATOR . $distFile->getDistpathname(),
+                $path . DIRECTORY_SEPARATOR . $filename,
                 $distFile->getContent()
             );
         });
