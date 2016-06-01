@@ -6,9 +6,9 @@ class Watch
 {
     /**
      * @param Source $src
-     * @param array $tasks
+     * @param callable $callback
      */
-    public function __construct(Source $src, array $tasks)
+    public function __construct(Source $src, callable $callback)
     {
         while (true) {
             foreach ($src->getDistFiles() as $distFile) {
@@ -30,7 +30,7 @@ class Watch
                             'yellow'
                         );
                         $distFile->setLastChangeTime($timeChange);
-                        Phulp::start($tasks);
+                        $callback();
                     }
                 }
             }
