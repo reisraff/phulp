@@ -10,14 +10,13 @@ foreach (['../../../autoload.php', '../../autoload.php', '../vendor/autoload.php
 
 ini_set('register_argc_argv', true);
 
-$task = isset($argv[1]) ? $argv[1] : 'default';
-
 $phulpFile = './PhulpFile.php';
 if ( ! file_exists($phulpFile)) {
     Phulp\Output::out('The PhulpFile.php was not created.', 'red');
     return false;
 }
-require $phulpFile;
 
 $phulp = new Phulp\Phulp();
-$phulp->run($task);
+require $phulpFile;
+$phulp->run(isset($argv[1]) ? $argv[1] : 'default');
+unset($phulp);
