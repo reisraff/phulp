@@ -82,8 +82,8 @@ Find files for manage them, and you can pipe them also.
 
 /**
  * 1st param required: array of directories
- * 2nd param not-required default '': pattern
- * 3th param not-required default false: boolean for recursion
+ * 2nd param not-required default null: pattern
+ * 3th param not-required default true: boolean for recursion
  */
 $phulp->src(['src/'], '/pattern/', false);
 ```
