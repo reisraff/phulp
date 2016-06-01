@@ -92,7 +92,7 @@ class Source
     /**
      * Gets the value of dirs.
      *
-     * @return \SplFileInfo[] $dirs;
+     * @return SplFileInfo[] $dirs
      */
     public function getDirs()
     {
