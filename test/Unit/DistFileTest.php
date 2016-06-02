@@ -135,12 +135,10 @@ class DistFileTest extends TestCase
                 'relativepath' => '/somewhere/else',
             ],
             'matchingRelativePath' => [
-                'expected' => '/directory',
+                'expected' => '/path/to',
                 'fullpath' => '/path/to/directory' . DIRECTORY_SEPARATOR,
-                'relativepath' => '/path/to',
+                'relativepath' => '/directory',
             ],
-
-            // TODO: Should this fail (i.e., change the implementation), or not (i.e., adapt the test)...?!
             'incorrectlyMatchingRelativePath' => [
                 'expected' => '/path/to/directory',
                 'fullpath' => '/path/to/directory' . DIRECTORY_SEPARATOR,
