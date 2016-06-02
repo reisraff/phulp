@@ -39,8 +39,8 @@ class Phulp
 
             Output::out('Executing "' . $task . '"', 'green');
             $start = microtime(true);
-            $callback = self::$tasks[$task];
-            $callback();
+            $callback = $this->tasks[$task];
+            $callback($this);
             Output::out(
                 'Task "' . $task . '" has finished in ' . round(microtime(true) - $start, 4) . ' seconds',
                 'green'

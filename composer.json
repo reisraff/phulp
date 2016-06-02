@@ -1,35 +1,52 @@
 {
-    "name": "reisraff/phulp",
-    "description": "The task manager for php",
-    "keywords": ["phulp", "php"],
-    "license": "MIT",
-    "type": "library",
-    "homepage" : "https://reisraff.github.io/phulp/dist/#!/home",
-    "authors": [
-        {
-            "name": "Rafael Reis",
-            "email": "reisraff@gmail.com"
-        }
-    ],
-    "autoload" : {
-        "psr-4" : {
-            "Phulp\\" : "src",
-            "Test\\" : "test"
-        }
+  "name": "reisraff/phulp",
+  "description": "The task manager for PHP",
+  "type": "library",
+  "keywords": [
+    "phulp",
+    "php"
+  ],
+  "license": "MIT",
+  "homepage": "https://reisraff.github.io/phulp/dist/#!/home",
+  "authors": [
+    {
+      "name": "Rafael Reis",
+      "email": "reisraff@gmail.com"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/reisraff/phulp/issues",
+    "wiki": "https://github.com/reisraff/phulp/wiki",
+    "source": "https://github.com/reisraff/phulp"
+  },
+  "require": {
+    "php": ">=5.6",
+    "symfony/finder": "^3.0"
+  },
+  "require-dev": {
+    "brain/monkey": "~1.0",
+    "mockery/mockery": "0.9.*",
+    "phing/phing": "2.*",
+    "phpunit/phpunit": "5.3.*",
+    "squizlabs/php_codesniffer": "2.0.*@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Phulp\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Phulp\\Test\\": "test"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "5.6"
     },
-    "require": {
-        "php": ">=5.6",
-        "symfony/finder": "^3.0"
-    },
-    "require-dev" : {
-        "phing/phing": "2.*",
-        "phpunit/phpunit": "4.5.*",
-        "squizlabs/php_codesniffer": "2.0.*@dev"
-    },
-    "config" : {
-        "bin-dir" : "bin/"
-    },
-    "bin": [
-        "bin/phulp"
-    ]
+    "bin-dir": "bin"
+  },
+  "bin": [
+    "bin/phulp"
+  ]
 }

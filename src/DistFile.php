@@ -47,23 +47,19 @@ class DistFile
      */
     public function __construct(
         $content,
-        $name = null,
-        $fullpath = null,
-        $relativepath = null
+        $name = '',
+        $fullpath = '',
+        $relativepath = ''
     ) {
         $this->content = $content;
         $this->name = $name;
-        $this->fullpath = $fullpath;
-        $this->relativepath = $relativepath;
-        if (!empty($this->name) && !empty($this->fullpath)) {
-            $this->lastChangeTime = filemtime(
-                rtrim($this->fullpath, DIRECTORY_SEPARATOR)
-                . DIRECTORY_SEPARATOR
-                . $this->name
-            );
+        $this->fullpath = rtrim($fullpath, DIRECTORY_SEPARATOR);
+        $this->relativepath = rtrim($relativepath, DIRECTORY_SEPARATOR);
+        if ($this->name && $this->fullpath) {
+            $this->lastChangeTime = filemtime($this->fullpath . DIRECTORY_SEPARATOR . $this->name);
         }
-        $this->basepath = rtrim(str_replace($this->relativepath, null, $this->fullpath), DIRECTORY_SEPARATOR);
-        $this->distpathname = rtrim($this->relativepath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $this->name;
+        $this->basepath = preg_replace("~{$this->relativepath}$~", '', $this->fullpath);
+        $this->distpathname = $this->relativepath . DIRECTORY_SEPARATOR . $this->name;
     }
 
     /**
