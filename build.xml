@@ -22,6 +22,9 @@
             <fileset dir="${source}">
                 <include name="**/*.php"/>
             </fileset>
+            <fileset dir="${test}">
+                <include name="**/*.php"/>
+            </fileset>
         </phplint>
     </target>
 
