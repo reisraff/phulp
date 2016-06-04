@@ -2,40 +2,37 @@
 
 ## Create your PhulpFile.php
 
-You must create a file called PhulpFile.php on your project root.
+You have to create a file called `PhulpFile.php` in your project root.
 
 ```php
 <?php
 ​
-use Phulp\Phulp;
-​
 // Define the default task
-Phulp::task('default', function () {
-    Phulp::start(['clean']);
+$phulp->task('default', function ($phulp) {
+    $phulp->start(['clean']);
 ​
     // Define the source folder
-    Phulp::src(['src/'], '/php$/', false)
-        ->pipe(Phulp::iterate(function ($distFile) {
+    $phulp->src(['src/'], '/php$/', false)
+        ->pipe($phulp->iterate(function ($distFile) {
             \Phulp\Output::out($distFile->getName(), 'blue');
         }))
-        ->pipe(Phulp::dest('dist/'));
+        ->pipe($phulp->dest('dist/'));
 });
 ​
 // Define the clean task
-Phulp::task('clean', function () {
-    Phulp::src(['dist/'])
-        ->pipe(Phulp::clean());
+$phulp->task('clean', function ($phulp) {
+    $phulp->src(['dist/'])
+        ->pipe($phulp->clean());
 });
 ​
 // Define the watch task
-Phulp::task('watch', function () {
+$phulp->task('watch', function ($phulp) {
     // Phulp will watch 'src' folder
-    Phulp::watch(
-        Phulp::src(['src/'], '/php$/', false),
+    $phulp->watch(
+        $phulp->src(['src/'], '/php$/', false),
         ['default']
     );
 });
-
 ```
 
 ## Run Phulp:
@@ -53,32 +50,30 @@ $ vendor/bin/phulp watch # Will run the `watch` task
 
 ## Methods
 
-### Phulp::task()
+### $phulp->task()
 
 Instantiate yours tasks.
 
 ```php
 <?php
 
-Phulp::task('name', function () {
+$phulp->task('name', function ($phulp) {
     // here your code
 });
-
 ```
 
-### Phulp::clean()
+### $phulp->clean()
 
-Return for you an instance of \Phulp\PipeIterate that will iterate all src files and delete your parent directory.
+Return for you an instance of `\Phulp\PipeIterate` that will iterate all src files and delete your parent directory.
 
 ```php
 <?php
 
-Phulp::src(['dist/'])
-    ->pipe(Phulp::clean());
-
+$phulp->src(['dist/'])
+    ->pipe($phulp->clean());
 ```
 
-### Phulp::src()
+### $phulp->src()
 
 Find files for manage them, and you can pipe them also.
 
@@ -87,11 +82,10 @@ Find files for manage them, and you can pipe them also.
 
 /**
  * 1st param required: array of directories
- * 2nd param not-required defualt null: pattern
+ * 2nd param not-required default null: pattern
  * 3th param not-required default true: boolean for recursion
  */
-Phulp::src(['src/'], '/pattern/', false);
-
+$phulp->src(['src/'], '/pattern/', false);
 ```
 
 Piping:
@@ -99,60 +93,53 @@ Piping:
 ```php
 <?php
 
-Phulp::src(['src/'], '/pattern/', false)
+$phulp->src(['src/'], '/pattern/', false)
     // ->pipe(\Phulp\PipeInterface)
-
 ```
 
-### Phulp::iterate()
+### $phulp->iterate()
 
 Provide iteration with src files using clousure:
 
 ```php
 <?php
 
-Phulp::src(['src/'], '/pattern/', false)
-    ->pipe(Phulp::iterate(function ($distFile) {
-        /**
-         * @var \Phulp\DistFile $distFile
-         */
+$phulp->src(['src/'], '/pattern/', false)
+    ->pipe($phulp->iterate(function ($distFile) {
+        /** @var \Phulp\DistFile $distFile */
     }));
-
 ```
 
-### Phulp::dest()
+### $phulp->dest()
 
 Used to pipe src files and the src files will be placed for the directory passed as parameter in dest():
 
 ```php
 <?php
 
-Phulp::src(['src/'], '/pattern/', false)
-    ->pipe(Phulp::dest('dist/'))
-
+$phulp->src(['src/'], '/pattern/', false)
+    ->pipe($phulp->dest('dist/'))
 ```
 
-### Phulp::watch()
+### $phulp->watch()
 
 Watch files and do something when a file changes.
 
 ```php
 <?php
 
-Phulp::watch(
-    Phulp::src(['src/'], '/php$/', false),
+$phulp->watch(
+    $phulp->src(['src/'], '/php$/', false),
     ['default'] // The "default" task will be emited when the src was changed
 );
-
 ```
 
-### Phulp::start()
+### $phulp->start()
 
 Starts synchronously the tasks passed by parameter:
 
 ```php
 <?php
 
-Phulp::start(['default', 'watch']);
-
+$phulp->start(['default', 'watch']);
 ```

@@ -7,17 +7,17 @@ class Phulp
     /**
      * @var array
      */
-    private static $tasks = [];
+    private $tasks = [];
 
     /**
      * @param string $task
      */
-    final public static function run($task = null)
+    public function run($task = null)
     {
         try {
             $start = microtime(true);
             Output::out('Starting the script', 'blue');
-            Phulp::start([(!empty($task) ? $task : 'default')]);
+            $this->start([(!empty($task) ? $task : 'default')]);
             Output::out('Script has finished in ' . round(microtime(true) - $start, 4) . ' seconds', 'blue');
         } catch (\Exception $e) {
             Output::out($e->getMessage(), 'red');
@@ -29,20 +29,18 @@ class Phulp
      *
      * @throws \Exception
      */
-    final public static function start(array $tasks)
+    public function start(array $tasks)
     {
         foreach ($tasks as $task) {
-            if (!isset(self::$tasks[$task])) {
+            if (!isset($this->tasks[$task])) {
                 // @todo improve it
                 throw new \Exception('The task "' . $task . '" does not exists.');
             }
 
             Output::out('Executing "' . $task . '"', 'green');
             $start = microtime(true);
-            
-            $callback = self::$tasks[$task];
-            $callback();
-
+            $callback = $this->tasks[$task];
+            $callback($this);
             Output::out(
                 'Task "' . $task . '" has finished in ' . round(microtime(true) - $start, 4) . ' seconds',
                 'green'
@@ -56,9 +54,9 @@ class Phulp
      * @param string $name
      * @param callable $callback
      */
-    final public static function task($name, callable $callback)
+    public function task($name, callable $callback)
     {
-        self::$tasks[$name] = $callback;
+        $this->tasks[$name] = $callback;
     }
 
     /**
@@ -68,7 +66,7 @@ class Phulp
      *
      * @return Source
      */
-    final public static function src(array $dirs, $pattern = null, $recursive = true)
+    public function src(array $dirs, $pattern = null, $recursive = true)
     {
         return new Source($dirs, $pattern, $recursive);
     }
@@ -77,9 +75,12 @@ class Phulp
      * @param Source $src
      * @param array $tasks
      */
-    final public static function watch(Source $src, array $tasks)
+    public function watch(Source $src, array $tasks)
     {
-        new Watch($src, $tasks);
+        $phulp = $this;
+        new Watch($src, function () use ($phulp, $tasks) {
+            $phulp->start($tasks);
+        });
     }
 
     /**
@@ -87,32 +88,21 @@ class Phulp
      *
      * @return PipeInterface
      */
-    final public static function dest($path)
+    public function dest($path)
     {
-        return self::iterate(function ($distFile) use ($path) {
+        return $this->iterate(function ($distFile) use ($path) {
+            /** @var DistFile $distFile */
             $filename = $distFile->getDistpathname();
-            $relativepath = null;
-
-            if (strrpos($filename, DIRECTORY_SEPARATOR)) {
-                $filename = substr(
-                    $distFile->getDistpathname(),
-                    strrpos($distFile->getDistpathname(), DIRECTORY_SEPARATOR) + 1
-                );
-
-                $relativepath = substr(
-                    $distFile->getDistpathname(),
-                    0,
-                    strrpos($distFile->getDistpathname(), DIRECTORY_SEPARATOR)
-                );
-            }
-
-            $dir = $path . DIRECTORY_SEPARATOR . $relativepath;
-            if (!empty($relativepath) && !file_exists($dir)) {
-                mkdir($dir, 0777, true);
+            $dsPos = strrpos($filename, DIRECTORY_SEPARATOR);
+            if ($dsPos) {
+                $dir = $path . DIRECTORY_SEPARATOR . substr($filename, 0, $dsPos);
+                if (!file_exists($dir)) {
+                    mkdir($dir, 0777, true);
+                }
             }
 
             file_put_contents(
-                $path . DIRECTORY_SEPARATOR . $distFile->getDistpathname(),
+                $path . DIRECTORY_SEPARATOR . $filename,
                 $distFile->getContent()
             );
         });
@@ -121,9 +111,10 @@ class Phulp
     /**
      * @return PipeInterface
      */
-    final public static function clean()
+    public function clean()
     {
-        return self::iterate(function ($distFile) {
+        return $this->iterate(function ($distFile) {
+            /** @var DistFile $distFile */
             $file = rtrim($distFile->getFullpath(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $distFile->getName();
 
             if (file_exists($file)) {
@@ -131,7 +122,7 @@ class Phulp
 
                 $currentDir = substr($file, 0, strrpos($file, DIRECTORY_SEPARATOR));
 
-                while ($distFile->getBasepath() != $currentDir) {
+                while ($distFile->getBasepath() !== $currentDir) {
                     @rmdir($currentDir);
 
                     $currentDir = substr($currentDir, 0, strrpos($currentDir, DIRECTORY_SEPARATOR));
@@ -142,8 +133,10 @@ class Phulp
 
     /**
      * @param callable $callback
+     *
+     * @return PipeInterface
      */
-    final public static function iterate(callable $callback)
+    public function iterate(callable $callback)
     {
         return new PipeIterate($callback);
     }

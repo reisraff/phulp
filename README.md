@@ -31,31 +31,32 @@ $ composer require reisraff/phulp:~0.0.4
 ```php
 <?php
 
-use Phulp\Phulp;
-
-Phulp::task('default', function () {
-    Phulp::start(['clean']);
-
-    Phulp::src(['src/'], '/php$/', false)
-        // ->pipe(\Phulp\PipeInterface)
-        ->pipe(Phulp::iterate(function ($distFile) {
+// Define the default task
+$phulp->task('default', function ($phulp) {
+    $phulp->start(['clean']);
+​
+    // Define the source folder
+    $phulp->src(['src/'], '/php$/', false)
+        ->pipe($phulp->iterate(function ($distFile) {
             \Phulp\Output::out($distFile->getName(), 'blue');
         }))
-        ->pipe(Phulp::dest('dist/'));
+        ->pipe($phulp->dest('dist/'));
 });
-
-Phulp::task('clean', function () {
-    Phulp::src(['dist/'])
-        ->pipe(Phulp::clean());
+​
+// Define the clean task
+$phulp->task('clean', function ($phulp) {
+    $phulp->src(['dist/'])
+        ->pipe($phulp->clean());
 });
-
-Phulp::task('watch', function () {
-    Phulp::watch(
-        Phulp::src(['src/'], '/php$/', false),
+​
+// Define the watch task
+$phulp->task('watch', function ($phulp) {
+    // Phulp will watch 'src' folder
+    $phulp->watch(
+        $phulp->src(['src/'], '/php$/', false),
         ['default']
     );
 });
-
 ```
 
 ##### Run:
