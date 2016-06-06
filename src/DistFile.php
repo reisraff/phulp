@@ -58,7 +58,7 @@ class DistFile
         if ($this->name && $this->fullpath) {
             $this->lastChangeTime = filemtime($this->fullpath . DIRECTORY_SEPARATOR . $this->name);
         }
-        $this->basepath = preg_replace("~{$this->relativepath}$~", '', $this->fullpath);
+        $this->basepath = rtrim(preg_replace("~{$this->relativepath}$~", '', $this->fullpath), DIRECTORY_SEPARATOR);
         $this->distpathname = $this->relativepath . DIRECTORY_SEPARATOR . $this->name;
     }
 
