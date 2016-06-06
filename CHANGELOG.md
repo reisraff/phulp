@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.0.1
+
+- Bugfix: removing trailing dash from DistFile::basepath
+
 ## 1.0.0
 
 - Simplify PipeIterate::execute()
