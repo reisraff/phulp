@@ -91,14 +91,18 @@ class Phulp
     public function dest($path)
     {
         return $this->iterate(function ($distFile) use ($path) {
+            $dir = $path;
+
             /** @var DistFile $distFile */
             $filename = $distFile->getDistpathname();
             $dsPos = strrpos($filename, DIRECTORY_SEPARATOR);
+
             if ($dsPos) {
-                $dir = $path . DIRECTORY_SEPARATOR . substr($filename, 0, $dsPos);
-                if (!file_exists($dir)) {
-                    mkdir($dir, 0777, true);
-                }
+                $dir .= DIRECTORY_SEPARATOR . substr($filename, 0, $dsPos);
+            }
+
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
             }
 
             file_put_contents(
