@@ -10,6 +10,16 @@ foreach (['../../../autoload.php', '../../autoload.php', '../vendor/autoload.php
 
 ini_set('register_argc_argv', true);
 
+if (count($argv > 1)) {
+    foreach ($argv as $key => $value) {
+        if ($value == '-q' || $value == '--quiet') {
+            Phulp\Output::$quiet = true;
+            unset($argv[$key]);
+            $argv = array_values($argv);
+        }
+    }
+}
+
 $phulpFile = './PhulpFile.php';
 if ( ! file_exists($phulpFile)) {
     Phulp\Output::out('The PhulpFile.php was not created.', 'red');

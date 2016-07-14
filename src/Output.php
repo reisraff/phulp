@@ -19,6 +19,12 @@ class Output
     protected static $err = STDERR;
 
     /**
+     *
+     * @var boolean $quiet
+     */
+    public static $quiet = false;
+
+    /**
      * @var array $color associative array of colors
      */
     private static $colors = [
@@ -42,10 +48,12 @@ class Output
      */
     public static function out($string, $color = 'white')
     {
-        fwrite(
-            static::$out,
-            self::colorize($string . PHP_EOL, $color)
-        );
+        if (! self::$quiet) {
+            fwrite(
+                static::$out,
+                self::colorize($string . PHP_EOL, $color)
+            );
+        }
     }
 
     /**
@@ -57,10 +65,12 @@ class Output
      */
     public static function err($string)
     {
-        fwrite(
-            static::$err,
-            self::colorize($string . PHP_EOL, 'red')
-        );
+        if (! self::$quiet) {
+            fwrite(
+                static::$err,
+                self::colorize($string . PHP_EOL, 'red')
+            );
+        }
     }
 
     /**
