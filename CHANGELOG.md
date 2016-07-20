@@ -1,5 +1,10 @@
 # Phulp Change Log
 
+## 1.2.0
+
+- For all errors use Output::err, and when an error exit(1) (#25) by @reisraff
+- Disabling output (#23) by @alexmsilva
+
 ## 1.1.2
 
 - BUGFIX: we must ensure that the dest directory exists (#24) by @reisraff
