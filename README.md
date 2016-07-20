@@ -23,7 +23,7 @@ Well, I decided to write Phulp, the PHP port of Gulp! And a little curiosity: it
 ##### Install:
 
 ```bash
-$ composer require reisraff/phulp:~1.0.0
+$ composer require reisraff/phulp:~1.1
 ```
 
 ##### Create your `PhulpFile.php`:
