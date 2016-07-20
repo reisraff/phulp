@@ -12,6 +12,8 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
         Monkey::setUp();
+
+        \Phulp\Output::$quiet = true;
     }
 
     protected function tearDown()

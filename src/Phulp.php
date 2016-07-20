@@ -20,7 +20,8 @@ class Phulp
             $this->start([(!empty($task) ? $task : 'default')]);
             Output::out('Script has finished in ' . round(microtime(true) - $start, 4) . ' seconds', 'blue');
         } catch (\Exception $e) {
-            Output::out($e->getMessage(), 'red');
+            Output::err($e->getMessage(), 'red');
+            exit(1);
         }
     }
 
@@ -33,7 +34,6 @@ class Phulp
     {
         foreach ($tasks as $task) {
             if (!isset($this->tasks[$task])) {
-                // @todo improve it
                 throw new \Exception('The task "' . $task . '" does not exists.');
             }
 

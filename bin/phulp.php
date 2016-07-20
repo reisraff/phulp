@@ -22,8 +22,8 @@ if (count($argv > 1)) {
 
 $phulpFile = './PhulpFile.php';
 if ( ! file_exists($phulpFile)) {
-    Phulp\Output::out('The PhulpFile.php was not created.', 'red');
-    return false;
+    Phulp\Output::err('The PhulpFile.php was not created.');
+    exit(1);
 }
 
 $phulp = new Phulp\Phulp();
