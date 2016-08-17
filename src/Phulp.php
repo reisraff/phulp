@@ -15,12 +15,12 @@ class Phulp
     public function run($task = null)
     {
         try {
-            $start = microtime(true);
-            Output::out('Starting the script', 'blue');
             $this->start([(!empty($task) ? $task : 'default')]);
-            Output::out('Script has finished in ' . round(microtime(true) - $start, 4) . ' seconds', 'blue');
         } catch (\Exception $e) {
-            Output::err($e->getMessage(), 'red');
+            Output::err(
+                '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
+                . ' ' . Output::colorize($e->getMessage(), 'light_red')
+            );
             exit(1);
         }
     }
@@ -37,13 +37,19 @@ class Phulp
                 throw new \Exception('The task "' . $task . '" does not exists.');
             }
 
-            Output::out('Executing "' . $task . '"', 'green');
+            Output::out(
+                '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
+                . ' Starting task "' . Output::colorize($task, 'light_cyan') . '"'
+            );
+
             $start = microtime(true);
             $callback = $this->tasks[$task];
             $callback($this);
+
             Output::out(
-                'Task "' . $task . '" has finished in ' . round(microtime(true) - $start, 4) . ' seconds',
-                'green'
+                '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
+                . ' Task "' . Output::colorize($task, 'light_cyan') . '" has finished in '
+                . Output::colorize(round(microtime(true) - $start, 4) . ' seconds', 'magenta')
             );
         }
     }

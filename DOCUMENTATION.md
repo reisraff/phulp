@@ -14,7 +14,7 @@ $phulp->task('default', function ($phulp) {
     // Define the source folder
     $phulp->src(['src/'], '/php$/', false)
         ->pipe($phulp->iterate(function ($distFile) {
-            \Phulp\Output::out($distFile->getName(), 'blue');
+            \Phulp\Output::out(\Phulp\Output::colorize($distFile->getName(), 'blue'));
         }))
         ->pipe($phulp->dest('dist/'));
 });

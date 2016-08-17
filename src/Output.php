@@ -28,6 +28,7 @@ class Output
      * @var array $color associative array of colors
      */
     private static $colors = [
+        'default_foreground' => 39,
         'black' => 30,
         'red' => 31,
         'green' => 32,
@@ -35,7 +36,15 @@ class Output
         'blue' => 34,
         'magenta' => 35,
         'cyan' => 36,
-        'white' => 37
+        'light_gray' => 37,
+        'dark_gray' => 90,
+        'light_red' => 91,
+        'light_green' => 92,
+        'light_yellow' => 93,
+        'light_blue' => 94,
+        'light_magenta' => 95,
+        'light_cyan' => 96,
+        'white' => 97,
     ];
 
     /**
@@ -46,12 +55,12 @@ class Output
      *
      * @return void
      */
-    public static function out($string, $color = 'white')
+    public static function out($string)
     {
         if (! self::$quiet) {
             fwrite(
                 static::$out,
-                self::colorize($string . PHP_EOL, $color)
+                $string . PHP_EOL
             );
         }
     }
@@ -68,7 +77,7 @@ class Output
         if (! self::$quiet) {
             fwrite(
                 static::$err,
-                self::colorize($string . PHP_EOL, 'red')
+                $string . PHP_EOL
             );
         }
     }
@@ -81,11 +90,12 @@ class Output
      *
      * @return string
      */
-    private static function colorize($string, $color)
+    public static function colorize($string, $color)
     {
         if (isset(self::$colors[$color])) {
             return "\033[" . self::$colors[$color] . 'm' . $string . "\033[0m";
         }
+
         return $string;
     }
 }

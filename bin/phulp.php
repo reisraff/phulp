@@ -22,9 +22,17 @@ if (count($argv > 1)) {
 
 $phulpFile = './PhulpFile.php';
 if ( ! file_exists($phulpFile)) {
-    Phulp\Output::err('The PhulpFile.php was not created.');
+    Phulp\Output::out(
+        '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
+        .  Phulp\Output::colorize(' The PhulpFile.php was not created.', 'red')
+    );
     exit(1);
 }
+
+Phulp\Output::out(
+    '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
+    . ' Using file ' . Phulp\Output::colorize(realpath($phulpFile), 'light_magenta')
+);
 
 $phulp = new Phulp\Phulp();
 require $phulpFile;

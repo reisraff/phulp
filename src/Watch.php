@@ -22,12 +22,15 @@ class Watch
 
                     if ($distFile->getLastChangeTime() < $timeChange) {
                         Output::out(
-                            'The file "'
-                            . rtrim($distFile->getRelativePath(), DIRECTORY_SEPARATOR)
-                            . DIRECTORY_SEPARATOR
-                            . $distFile->getName()
-                            . '" was changed',
-                            'yellow'
+                            '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
+                            . ' The file "'
+                            . Output::colorize(
+                                rtrim($distFile->getRelativePath(), DIRECTORY_SEPARATOR)
+                                . DIRECTORY_SEPARATOR
+                                . $distFile->getName(),
+                                'light_magenta'
+                            )
+                            . '" was changed'
                         );
                         $distFile->setLastChangeTime($timeChange);
                         $callback();
