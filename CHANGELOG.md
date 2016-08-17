@@ -1,5 +1,10 @@
 # Phulp Change Log
 
+## 1.3.0
+
+- Improvement in the Output by (9325a3d) @reisraff
+- Code maintainability (#27) (#28) (#29) by @raphaelstolt
+
 ## 1.2.0
 
 - For all errors use Output::err, and when an error exit(1) (#25) by @reisraff
