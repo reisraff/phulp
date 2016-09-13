@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.*.*
+
+- Adding a Phulpfile naming convention (#30) by @raphaelstolt
+
 ## 1.3.0
 
 - Improvement in the Output by (9325a3d) @reisraff

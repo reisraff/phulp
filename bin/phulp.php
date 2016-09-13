@@ -20,11 +20,17 @@ if (count($argv > 1)) {
     }
 }
 
-$phulpFile = './PhulpFile.php';
-if ( ! file_exists($phulpFile)) {
+$hasPhulpFile = false;
+$phulpFile = './Phulpfile';
+foreach (glob('{[P,p]hulp[Ff]ile*}', GLOB_BRACE) as $filename) {
+    $phulpFile = $filename;
+    $hasPhulpFile = true;
+}
+
+if ($hasPhulpFile === false) {
     Phulp\Output::out(
         '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
-        .  Phulp\Output::colorize(' The PhulpFile.php was not created.', 'red')
+        .  Phulp\Output::colorize(' The ' . basename($phulpFile) . ' does not exist.', 'red')
     );
     exit(1);
 }
