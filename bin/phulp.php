@@ -34,16 +34,22 @@ if (count($phulpFiles) > 1) {
 $phulpFile = array_pop($phulpFiles);
 
 if (!isset($phulpFile)) {
-    Phulp\Output::out(
-        '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
-        .  Phulp\Output::colorize(' The ' . basename($phulpFile) . ' does not exist.', 'red')
+    Phulp\Output::err(
+        '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
+        .  Phulp\Output::colorize(' There\'s no Phulpfile present. ', 'red')
     );
+
+    Phulp\Output::out(
+        '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
+        .  ' Please check the documentation for proper Phulpfile naming. '
+    );
+
     exit(1);
 }
 
 Phulp\Output::out(
     '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
-    . ' Using file ' . Phulp\Output::colorize(realpath($phulpFile), 'light_magenta')
+    . ' Using Phulpfile ' . Phulp\Output::colorize(realpath($phulpFile) . ' ', 'light_magenta')
 );
 
 $phulp = new Phulp\Phulp();
