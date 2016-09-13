@@ -22,7 +22,7 @@ if (count($argv > 1)) {
 
 $hasPhulpFile = false;
 $phulpFile = './Phulpfile';
-foreach (glob('{[P,p]hulp[Ff]ile*}', GLOB_BRACE) as $filename) {
+foreach (glob('[P,p]hulp[Ff]il{e,e.php}', GLOB_BRACE) as $filename) {
     $phulpFile = $filename;
     $hasPhulpFile = true;
 }
