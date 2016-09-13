@@ -1,8 +1,9 @@
 # Documentation
 
-## Create your PhulpFile.php
+## Create your Phulpfile
 
-You have to create a file called `PhulpFile.php` in your project root.
+You have to create a file called `Phulpfile` in your project root. Alternative names for your `Phulpfile` are
+the ones matching the following pattern `[P,p]hulp[Ff]il{e,e.php}` nevertheless the default name __should__ be preferred.
 
 ```php
 <?php
