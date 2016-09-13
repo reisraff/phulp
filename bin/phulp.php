@@ -20,14 +20,20 @@ if (count($argv > 1)) {
     }
 }
 
-$hasPhulpFile = false;
-$phulpFile = './Phulpfile';
-foreach (glob('[P,p]hulp[Ff]il{e,e.php}', GLOB_BRACE) as $filename) {
-    $phulpFile = $filename;
-    $hasPhulpFile = true;
+$phulpFiles = glob('[P,p]hulp[Ff]il{e,e.php}', GLOB_BRACE);
+
+if (count($phulpFiles) > 1) {
+    Phulp\Output::err(
+        '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
+        .  Phulp\Output::colorize(' There are more than one Phulpfile present. ', 'red')
+    );
+
+    exit(1);
 }
 
-if ($hasPhulpFile === false) {
+$phulpFile = array_pop($phulpFiles);
+
+if (!isset($phulpFile)) {
     Phulp\Output::out(
         '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
         .  Phulp\Output::colorize(' The ' . basename($phulpFile) . ' does not exist.', 'red')
