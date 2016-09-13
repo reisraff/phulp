@@ -25,7 +25,7 @@ $phulpFiles = glob('[P,p]hulp[Ff]il{e,e.php}', GLOB_BRACE);
 if (count($phulpFiles) > 1) {
     Phulp\Output::err(
         '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
-        .  Phulp\Output::colorize(' There are more than one Phulpfile present. ', 'red')
+        .  Phulp\Output::colorize('There are more than one Phulpfile present. ', 'red')
     );
 
     exit(1);
@@ -36,20 +36,20 @@ $phulpFile = array_pop($phulpFiles);
 if (!isset($phulpFile)) {
     Phulp\Output::err(
         '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
-        .  Phulp\Output::colorize(' There\'s no Phulpfile present. ', 'red')
+        .  Phulp\Output::colorize('There\'s no Phulpfile present. ', 'red')
     );
 
     Phulp\Output::out(
         '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
-        .  ' Please check the documentation for proper Phulpfile naming. '
+        .  'Please check the documentation for proper Phulpfile naming. '
     );
 
     exit(1);
 }
 
 Phulp\Output::out(
-    '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
-    . ' Using Phulpfile ' . Phulp\Output::colorize(realpath($phulpFile) . ' ', 'light_magenta')
+    '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
+    . 'Using Phulpfile ' . Phulp\Output::colorize(realpath($phulpFile) . ' ', 'light_magenta')
 );
 
 $phulp = new Phulp\Phulp();
