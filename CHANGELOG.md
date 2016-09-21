@@ -1,8 +1,9 @@
 # Phulp Change Log
 
-## 1.*.*
+## 1.4.0
 
 - Adding a Phulpfile naming convention (#30) by @raphaelstolt
+- Upgrading and fixing export-ignore pattern (#31) by @raphaelstolt
 
 ## 1.3.0
 
