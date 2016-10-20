@@ -21,7 +21,8 @@
   },
   "require": {
     "php": ">=5.6",
-    "symfony/finder": "^3.0"
+    "symfony/finder": "^3.0",
+    "react/event-loop": "~0.4"
   },
   "require-dev": {
     "brain/monkey": "~1.0",

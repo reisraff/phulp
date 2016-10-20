@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.5.0
+
+- Adding react by @reisraff
+
 ## 1.4.0
 
 - Adding a Phulpfile naming convention (#30) by @raphaelstolt

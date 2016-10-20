@@ -55,7 +55,9 @@ $phulp->task('watch', function ($phulp) {
     // Phulp will watch 'src' folder
     $phulp->watch(
         $phulp->src(['src/'], '/php$/', false),
-        ['default']
+        function ($phulp) {
+            $phulp->start(['default']);
+        }
     );
 });
 ```

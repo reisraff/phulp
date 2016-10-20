@@ -6,15 +6,16 @@ class Watch
 {
     /**
      * @param Source $src
-     * @param callable $callback
+     * @param mixed $tasks
+     * @param Phulp $phulp
      */
-    public function __construct(Source $src, callable $callback)
+    public function __construct(Source $src, $tasks, Phulp $phulp)
     {
-        while (true) {
+        $phulp->getLoop()->addPeriodicTimer(0.002, function () use ($src, $tasks, $phulp) {
             foreach ($src->getDistFiles() as $distFile) {
                 if (!empty($distFile->getFullpath()) && file_exists($distFile->getFullpath())) {
                     clearstatcache();
-                    $timeChange = filemtime(
+                    $timeChange = @filemtime(
                         rtrim($distFile->getFullpath(), DIRECTORY_SEPARATOR)
                         . DIRECTORY_SEPARATOR
                         . $distFile->getName()
@@ -33,11 +34,15 @@ class Watch
                             . '" was changed'
                         );
                         $distFile->setLastChangeTime($timeChange);
-                        $callback();
+
+                        if (is_array($tasks)) {
+                            $phulp->start($tasks);
+                        } elseif (is_callable($tasks)) {
+                            $tasks($phulp);
+                        }
                     }
                 }
             }
-            usleep(1);
-        }
+        });
     }
 }

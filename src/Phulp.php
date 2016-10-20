@@ -2,6 +2,9 @@
 
 namespace Phulp;
 
+use React\EventLoop\LoopInterface;
+use React\EventLoop\Factory;
+
 class Phulp
 {
     /**
@@ -10,12 +13,18 @@ class Phulp
     private $tasks = [];
 
     /**
+     * @var LoopInterface
+     */
+    private $loop = null;
+
+    /**
      * @param string $task
      */
     public function run($task = null)
     {
         try {
             $this->start([(!empty($task) ? $task : 'default')]);
+            $this->getLoop()->run();
         } catch (\Exception $e) {
             Output::err(
                 '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
@@ -79,14 +88,32 @@ class Phulp
 
     /**
      * @param Source $src
-     * @param array $tasks
+     * @param mixed $tasks
      */
-    public function watch(Source $src, array $tasks)
+    public function watch(Source $src, $tasks)
     {
-        $phulp = $this;
-        new Watch($src, function () use ($phulp, $tasks) {
-            $phulp->start($tasks);
-        });
+        if (! is_array($tasks) && ! is_callable($tasks)) {
+            throw new \Exception('Invalid Argument for Phulp::watch');
+        }
+
+        if (is_array($tasks)) {
+            Output::out(
+                '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
+                . Output::colorize(
+                    'the API of Phulp::watch you are using will be deprecated',
+                    'yellow'
+                )
+            );
+            Output::out(
+                '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
+                .  Output::colorize(
+                    'Please check the documentation. ',
+                    'yellow'
+                )
+            );
+        }
+
+        new Watch($src, $tasks, $this);
     }
 
     /**
@@ -149,5 +176,31 @@ class Phulp
     public function iterate(callable $callback)
     {
         return new PipeIterate($callback);
+    }
+
+    /**
+     * Gets the value of loop.
+     *
+     * @return LoopInterface
+     */
+    public function getLoop()
+    {
+        $this->loop = $this->loop ?: Factory::create();
+
+        return $this->loop;
+    }
+
+    /**
+     * Sets the value of loop.
+     *
+     * @param LoopInterface $loop the loop
+     *
+     * @return self
+     */
+    public function setLoop(LoopInterface $loop)
+    {
+        if (! $this->loop) {
+            $this->loop = $loop;
+        }
     }
 }
