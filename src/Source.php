@@ -8,12 +8,12 @@ use Symfony\Component\Finder\SplFileInfo;
 class Source
 {
     /**
-     * @var DistFile[] $distFiles
+     * @var Collection::DistFile $distFiles
      */
-    private $distFiles = [];
+    private $distFiles;
 
     /**
-     * @var SplFileInfo[] $dirs
+     * @var Collection::SplFileInfo $dirs
      */
     private $dirs = [];
 
@@ -33,21 +33,24 @@ class Source
         }
         $finder->in($dirs);
 
+        $this->distFiles = new Collection([], DistFile::class);
+        $this->dirs = new Collection([], SplFileInfo::class);
+
         /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             if ($file->isDir()) {
-                $this->dirs[] = $file;
+                $this->dirs->add($file);
                 continue;
             }
 
             $realPath = $file->getRealPath();
             $dsPos = strrpos($realPath, DIRECTORY_SEPARATOR);
-            $this->distFiles[] = new DistFile(
+            $this->distFiles->add(new DistFile(
                 file_get_contents($realPath),
                 substr($realPath, $dsPos + 1),
                 substr($realPath, 0, $dsPos),
                 trim($file->getRelativePath(), DIRECTORY_SEPARATOR)
-            );
+            ));
         }
     }
 
@@ -78,7 +81,7 @@ class Source
      */
     public function removeDistFile($key)
     {
-        unset($this->distFiles[$key]);
+        $this->distFiles->remove($key);
     }
 
     /**
@@ -86,7 +89,7 @@ class Source
      */
     public function addDistFile(DistFile $distFile)
     {
-        $this->distFiles[] = $distFile;
+        $this->distFiles->add($distFile);
     }
 
     /**
