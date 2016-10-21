@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.6.0
+
+- Letting $dirs, and $distFiles be Collection by @reisraff
+
 ## 1.5.0
 
 - Adding react by @reisraff
