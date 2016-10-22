@@ -54,5 +54,14 @@ Phulp\Output::out(
 
 $phulp = new Phulp\Phulp();
 require $phulpFile;
-$phulp->run(isset($argv[1]) ? $argv[1] : 'default');
-unset($phulp);
+
+try {
+    $phulp->run(isset($argv[1]) ? $argv[1] : 'default');
+    unset($phulp);
+} catch (\Exception $e) {
+    Phulp\Output::err(
+        '[' . Phulp\Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
+        . ' ' . Phulp\Output::colorize($e->getMessage(), 'light_red')
+    );
+    exit(1);
+}

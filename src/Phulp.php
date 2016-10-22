@@ -22,16 +22,8 @@ class Phulp
      */
     public function run($task = null)
     {
-        try {
-            $this->start([(!empty($task) ? $task : 'default')]);
-            $this->getLoop()->run();
-        } catch (\Exception $e) {
-            Output::err(
-                '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
-                . ' ' . Output::colorize($e->getMessage(), 'light_red')
-            );
-            exit(1);
-        }
+        $this->start([(!empty($task) ? $task : 'default')]);
+        $this->getLoop()->run();
     }
 
     /**
