@@ -8,38 +8,40 @@ use Symfony\Component\Finder\SplFileInfo;
 class Source
 {
     /**
-     * @var Collection::DistFile $distFiles
+     * @var Collection|DistFile[] $distFiles
      */
     private $distFiles;
-
-    /**
-     * @var Collection::SplFileInfo $dirs
-     */
-    private $dirs = [];
 
     /**
      * @param array $dirs
      * @param string $pattern
      * @param boolean $recursive
+     *
+     * @throws \UnexpectedValueException
      */
     public function __construct(array $dirs, $pattern = '', $recursive = false)
     {
+        if (! count($dirs)) {
+            throw new \UnexpectedValueException('There is no item in the array');
+        }
+
         $finder = new Finder;
+
         if (!$recursive) {
             $finder->depth('== 0');
         }
+
         if ($pattern) {
             $finder->name($pattern);
         }
+
         $finder->in($dirs);
 
         $this->distFiles = new Collection([], DistFile::class);
-        $this->dirs = new Collection([], SplFileInfo::class);
 
         /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             if ($file->isDir()) {
-                $this->dirs->add($file);
                 continue;
             }
 
@@ -69,7 +71,23 @@ class Source
     /**
      * Gets the value of distFiles.
      *
-     * @return DistFile[] $distFiles
+     * @param Collection|DistFile[] $distFiles
+     *
+     * @throws \UnexpectedValueException
+     */
+    public function setDistFiles(Collection $distFiles)
+    {
+        if ($distFiles->getType() !== DistFile::class) {
+            throw new \UnexpectedValueException('The Collection is not of DistFile type');
+        }
+
+        $this->distFiles = $distFiles;
+    }
+
+    /**
+     * Gets the value of distFiles.
+     *
+     * @return Collection|DistFile[] $distFiles
      */
     public function getDistFiles()
     {
@@ -90,15 +108,5 @@ class Source
     public function addDistFile(DistFile $distFile)
     {
         $this->distFiles->add($distFile);
-    }
-
-    /**
-     * Gets the value of dirs.
-     *
-     * @return SplFileInfo[] $dirs
-     */
-    public function getDirs()
-    {
-        return $this->dirs;
     }
 }

@@ -70,7 +70,7 @@ class Collection extends ArrayCollection
      */
     protected function getItemType($item)
     {
-        return is_object($item) ? get_class($item) : gettype($type);
+        return is_object($item) ? get_class($item) : gettype($item);
     }
 
     /**
@@ -103,7 +103,7 @@ class Collection extends ArrayCollection
             );
         }
 
-        $this->elements[$key] = $value;
+        parent::set($key, $value);
     }
 
     /**
@@ -126,7 +126,7 @@ class Collection extends ArrayCollection
             );
         }
 
-        $this->elements[] = $value;
+        parent::add($value);
 
         return true;
     }

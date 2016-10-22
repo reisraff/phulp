@@ -22,7 +22,7 @@ class PipeIterate implements PipeInterface
      */
     public function execute(Source $src)
     {
-        $distFiles = $src->getDistFiles();
+        $distFiles = $src->getDistFiles()->toArray();
         array_walk($distFiles, $this->callback);
     }
 }

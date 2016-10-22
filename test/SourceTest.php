@@ -1,22 +1,31 @@
 <?php
 
-namespace Phulp\Test\Unit;
+namespace Phulp\Test;
 
-use Phulp\Source as Testee;
-use Phulp\DistFile;
 use Phulp\Collection;
+use Phulp\DistFile;
 use Phulp\PipeIterate;
-use Phulp\Test\TestCase;
+use Phulp\Source;
 use Symfony\Component\Finder\SplFileInfo;
 
 class DistSource extends TestCase
 {
     /**
+     * @covers Phulp\Source::__construct
+     *
+     * @expectedException \UnexpectedValueException
+     */
+    public function testContructor()
+    {
+        new Source([]);
+    }
+
+    /**
      * @covers Phulp\Source::pipe
      */
     public function testPipe()
     {
-        $src = new Testee([__DIR__]);
+        $src = new Source([__DIR__]);
 
         $test = 0;
 
@@ -39,20 +48,9 @@ class DistSource extends TestCase
      */
     public function testGetDistFiles()
     {
-        $src = new Testee([__DIR__]);
+        $src = new Source([__DIR__]);
 
         $this->assertInstanceOf(Collection::class, $src->getDistFiles());
         $this->assertEquals(DistFile::class, $src->getDistFiles()->getType());
-    }
-
-    /**
-     * @covers Phulp\Source::getDirs
-     */
-    public function testGetDirs()
-    {
-        $src = new Testee([__DIR__]);
-
-        $this->assertInstanceOf(Collection::class, $src->getDirs());
-        $this->assertEquals(SplFileInfo::class, $src->getDirs()->getType());
     }
 }

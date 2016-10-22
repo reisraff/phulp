@@ -37,13 +37,13 @@ class Phulp
     /**
      * @param array $tasks
      *
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     public function start(array $tasks)
     {
         foreach ($tasks as $task) {
             if (!isset($this->tasks[$task])) {
-                throw new \Exception('The task "' . $task . '" does not exists.');
+                throw new \RuntimeException('The task "' . $task . '" does not exists.');
             }
 
             Output::out(
@@ -89,11 +89,15 @@ class Phulp
     /**
      * @param Source $src
      * @param mixed $tasks
+     *
+     * @return Watch
+     *
+     * @throws \InvalidArgumentException
      */
     public function watch(Source $src, $tasks)
     {
         if (! is_array($tasks) && ! is_callable($tasks)) {
-            throw new \Exception('Invalid Argument for Phulp::watch');
+            throw new \InvalidArgumentException('Invalid Argument for Phulp::watch');
         }
 
         if (is_array($tasks)) {
@@ -113,7 +117,7 @@ class Phulp
             );
         }
 
-        new Watch($src, $tasks, $this);
+        return new Watch($src, $tasks, $this);
     }
 
     /**
@@ -185,17 +189,13 @@ class Phulp
      */
     public function getLoop()
     {
-        $this->loop = $this->loop ?: Factory::create();
-
-        return $this->loop;
+        return $this->loop ?: Factory::create();
     }
 
     /**
      * Sets the value of loop.
      *
      * @param LoopInterface $loop the loop
-     *
-     * @return self
      */
     public function setLoop(LoopInterface $loop)
     {

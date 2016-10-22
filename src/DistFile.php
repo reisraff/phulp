@@ -52,7 +52,7 @@ class DistFile
         $relativepath = ''
     ) {
         $this->content = $content;
-        $this->name = $name;
+        $this->name = trim($name, DIRECTORY_SEPARATOR);
         $this->fullpath = rtrim($fullpath, DIRECTORY_SEPARATOR);
         $this->relativepath = rtrim($relativepath, DIRECTORY_SEPARATOR);
         if ($this->name && $this->fullpath) {
@@ -86,14 +86,10 @@ class DistFile
      * Sets the value of content.
      *
      * @param mixed $content $content the content
-     *
-     * @return self
      */
     public function setContent($content)
     {
         $this->content = $content;
-
-        return $this;
     }
 
     /**
@@ -130,14 +126,10 @@ class DistFile
      * Sets the value of distpathname.
      *
      * @param string $distpathname $distpathname the distpathname
-     *
-     * @return self
      */
     public function setDistpathname($distpathname)
     {
         $this->distpathname = $distpathname;
-
-        return $this;
     }
 
     /**
@@ -164,13 +156,9 @@ class DistFile
      * Sets the value of lastChangeTime.
      *
      * @param string $lastChangeTime $lastChangeTime the last change time
-     *
-     * @return self
      */
     public function setLastChangeTime($lastChangeTime)
     {
         $this->lastChangeTime = $lastChangeTime;
-
-        return $this;
     }
 }

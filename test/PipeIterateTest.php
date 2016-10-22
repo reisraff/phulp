@@ -1,12 +1,10 @@
 <?php
 
-namespace Phulp\Test\Unit;
+namespace Phulp\Test;
 
-use Brain\Monkey;
-use Mockery;
-use Phulp\PipeIterate as Testee;
+use Phulp\Collection;
+use Phulp\PipeIterate;
 use Phulp\Source;
-use Phulp\Test\TestCase;
 
 class PipeIterateTest extends TestCase
 {
@@ -18,17 +16,26 @@ class PipeIterateTest extends TestCase
      */
     public function testExecute(array $distFiles)
     {
-        Monkey\Functions::expect($callback = 'callback')
-            ->times(count($distFiles));
+        $i = 0;
 
-        $testee = new Testee($callback);
+        $callback = function () use (& $i) {
+            $i++;
+        };
+
+        $pipeIterate = new PipeIterate($callback);
+
+        $collection = $this->createMock(Collection::class);
+        $collection->method('toArray')
+            ->willReturn($distFiles);
 
         /** @var Source $src */
-        $src = Mockery::mock(Source::class)
-            ->shouldReceive('getDistFiles')
-            ->andReturn($distFiles)
-            ->getMock();
-        $testee->execute($src);
+        $src = $this->createMock(Source::class);
+        $src->method('getDistFiles')
+            ->willReturn($collection);
+
+        $pipeIterate->execute($src);
+
+        $this->assertEquals(count($distFiles), $i);
     }
 
     /**

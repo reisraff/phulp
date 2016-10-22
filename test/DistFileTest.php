@@ -1,9 +1,8 @@
 <?php
 
-namespace Phulp\Test\Unit;
+namespace Phulp\Test;
 
-use Phulp\DistFile as Testee;
-use Phulp\Test\TestCase;
+use Phulp\DistFile;
 
 class DistFileTest extends TestCase
 {
@@ -12,9 +11,16 @@ class DistFileTest extends TestCase
      */
     public function testGetName()
     {
-        $testee = new Testee(null, $name = 'name');
+        $name = 'name';
+        $distFile = new DistFile(null, $name);
 
-        $this->assertSame($name, $testee->getName());
+        $this->assertEquals($name, $distFile->getName());
+
+        $name2 = '/name';
+        $distFile2 = new DistFile(null, $name2);
+
+        $name2 = trim($name2, '/');
+        $this->assertEquals($name2, $distFile2->getName());
     }
 
     /**
@@ -22,9 +28,9 @@ class DistFileTest extends TestCase
      */
     public function testGetContent()
     {
-        $testee = new Testee($content = 'content');
+        $distFile = new DistFile($content = 'content');
 
-        $this->assertSame($content, $testee->getContent());
+        $this->assertEquals($content, $distFile->getContent());
     }
 
     /**
@@ -32,10 +38,10 @@ class DistFileTest extends TestCase
      */
     public function testSetContent()
     {
-        $testee = new Testee(null);
+        $distFile = new DistFile(null);
+        $distFile->setContent($expected = 'foo');
 
-        // Just test the "fluent" part of the setter. The "setting" part is covered in the according integration test.
-        $this->assertSame($testee, $testee->setContent(null));
+        $this->assertEquals($expected, $distFile->getContent());
     }
 
     /**
@@ -43,9 +49,9 @@ class DistFileTest extends TestCase
      */
     public function testGetFullpath()
     {
-        $testee = new Testee(null, null, $fullpath = 'fullpath');
+        $distFile = new DistFile(null, null, $fullpath = 'fullpath');
 
-        $this->assertSame($fullpath, $testee->getFullpath());
+        $this->assertEquals($fullpath, $distFile->getFullpath());
     }
 
     /**
@@ -53,9 +59,9 @@ class DistFileTest extends TestCase
      */
     public function testGetRelativepath()
     {
-        $testee = new Testee(null, null, null, $relativepath = 'relativepath');
+        $distFile = new DistFile(null, null, null, $relativepath = 'relativepath');
 
-        $this->assertSame($relativepath, $testee->getRelativepath());
+        $this->assertEquals($relativepath, $distFile->getRelativepath());
     }
 
     /**
@@ -68,9 +74,9 @@ class DistFileTest extends TestCase
      */
     public function testGetDistpathname($expected, $name, $relativepath)
     {
-        $testee = new Testee(null, $name, null, $relativepath);
+        $distFile = new DistFile(null, $name, null, $relativepath);
 
-        $this->assertSame($expected, $testee->getDistpathname());
+        $this->assertEquals($expected, $distFile->getDistpathname());
     }
 
     /**
@@ -97,10 +103,10 @@ class DistFileTest extends TestCase
      */
     public function testSetDistpathname()
     {
-        $testee = new Testee(null);
+        $distFile = new DistFile(null);
+        $distFile->setDistpathname($expected = 'foo');
 
-        // Just test the "fluent" part of the setter. The "setting" part is covered in the according integration test.
-        $this->assertSame($testee, $testee->setDistpathname(null));
+        $this->assertEquals($expected, $distFile->getDistpathname());
     }
 
     /**
@@ -113,9 +119,9 @@ class DistFileTest extends TestCase
      */
     public function testGetBasepath($expected, $fullpath, $relativepath)
     {
-        $testee = new Testee(null, null, $fullpath, $relativepath);
+        $distFile = new DistFile(null, null, $fullpath, $relativepath);
 
-        $this->assertSame($expected, $testee->getBasepath());
+        $this->assertEquals($expected, $distFile->getBasepath());
     }
 
     /**
@@ -157,11 +163,11 @@ class DistFileTest extends TestCase
      */
     public function testGetLastChangeTime($expected, $name, $fullpath)
     {
-        $testee = new Testee(null, $name, $fullpath);
+        $distFile = new DistFile(null, $name, $fullpath);
 
         // For whatever reason, the following is not working (off by 1 millisecond).
-        //$this->assertSame($expected, $testee->getLastChangeTime());
-        $this->assertTrue($expected <= $testee->getLastChangeTime());
+        //$this->assertEquals($expected, $distFile->getLastChangeTime());
+        $this->assertTrue($expected <= $distFile->getLastChangeTime());
     }
 
     /**
@@ -193,9 +199,9 @@ class DistFileTest extends TestCase
      */
     public function testSetLastChangeTime()
     {
-        $testee = new Testee(null);
+        $distFile = new DistFile(null);
+        $distFile->setLastChangeTime($expected = 'foo');
 
-        // Just test the "fluent" part of the setter. The "setting" part is covered in the according integration test.
-        $this->assertSame($testee, $testee->setLastChangeTime(null));
+        $this->assertEquals($expected, $distFile->getLastChangeTime());
     }
 }
