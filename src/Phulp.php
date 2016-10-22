@@ -189,7 +189,9 @@ class Phulp
      */
     public function getLoop()
     {
-        return $this->loop ?: Factory::create();
+        $this->loop = $this->loop ?: Factory::create();
+
+        return $this->loop;
     }
 
     /**
