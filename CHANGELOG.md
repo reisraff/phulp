@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.7.0
+
+- Lot of refactor by @reisraff
+
 ## 1.6.0
 
 - Letting $dirs, and $distFiles be Collection by @reisraff
