@@ -3,3 +3,5 @@ vendor
 !/bin/.gitkeep
 !/bin/phulp.php
 !/bin/phulp
+.tmp
+src/bower_components/
