@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.8.1
+
+- Readding the binary (13f471f)
+
 ## 1.8.0
 
 - Removing deprecated stuff (1a292ab733e679448764ac77fa5a0e987fe13a78)
