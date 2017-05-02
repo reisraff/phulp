@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/reisraff/phulp/blob/master/phulp.png" alt="phulp" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/reisraff/phulp/master/phulp.png" alt="phulp" /></p>
 
 <p align="center">The task manager for php</p>
 
