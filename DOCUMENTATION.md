@@ -43,6 +43,7 @@ $phulp->task('watch', function ($phulp) {
 _If you have not configured the bin-dir:_
 
 ```bash
+$ vendor/bin/phulp --help
 $ vendor/bin/phulp # Will run the `default` task
 $ vendor/bin/phulp watch # Will run the `watch` task
 ```

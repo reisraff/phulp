@@ -1,4 +1,7 @@
-# Phulp
+<p align="center"><img src="https://raw.githubusercontent.com/reisraff/phulp/blob/master/phulp.png" alt="phulp" /></p>
+
+<p align="center">The task manager for php</p>
+
 
 [![Latest Stable Version](https://poser.pugx.org/reisraff/phulp/v/stable)](https://packagist.org/packages/reisraff/phulp)
 [![Total Downloads](https://poser.pugx.org/reisraff/phulp/downloads)](https://packagist.org/packages/reisraff/phulp)
@@ -6,8 +9,6 @@
 [![License](https://poser.pugx.org/reisraff/phulp/license)](https://packagist.org/packages/reisraff/phulp)
 [![Build Status](https://travis-ci.org/reisraff/phulp.svg?branch=master)](https://travis-ci.org/reisraff/phulp)
 [![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/phulp)
-
-The task manager for php
 
 ### Why
 
@@ -67,6 +68,7 @@ $phulp->task('watch', function ($phulp) {
 _If you have not configured the bin-dir:_
 
 ```bash
+$ vendor/bin/phulp --help
 $ vendor/bin/phulp # Will run the `default` task
 $ vendor/bin/phulp watch # Will run the `watch` task
 ```
