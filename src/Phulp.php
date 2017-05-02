@@ -80,36 +80,13 @@ class Phulp
 
     /**
      * @param Source $src
-     * @param mixed $tasks
+     * @param callable $callback
      *
      * @return Watch
-     *
-     * @throws \InvalidArgumentException
      */
-    public function watch(Source $src, $tasks)
+    public function watch(Source $src, callable $callback)
     {
-        if (! is_array($tasks) && ! is_callable($tasks)) {
-            throw new \InvalidArgumentException('Invalid Argument for Phulp::watch');
-        }
-
-        if (is_array($tasks)) {
-            Output::out(
-                '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
-                . Output::colorize(
-                    'the API of Phulp::watch you are using will be deprecated',
-                    'yellow'
-                )
-            );
-            Output::out(
-                '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . '] '
-                .  Output::colorize(
-                    'Please check the documentation. ',
-                    'yellow'
-                )
-            );
-        }
-
-        return new Watch($src, $tasks, $this);
+        return new Watch($src, $callback, $this);
     }
 
     /**

@@ -6,12 +6,12 @@ class Watch
 {
     /**
      * @param Source $src
-     * @param mixed $tasks
+     * @param callable $tasks
      * @param Phulp $phulp
      */
-    public function __construct(Source $src, $tasks, Phulp $phulp)
+    public function __construct(Source $src, callable $callback, Phulp $phulp)
     {
-        $phulp->getLoop()->addPeriodicTimer(0.002, function () use ($src, $tasks, $phulp) {
+        $phulp->getLoop()->addPeriodicTimer(0.002, function () use ($src, $callback, $phulp) {
             foreach ($src->getDistFiles() as $distFile) {
                 if (!empty($distFile->getFullpath()) && file_exists($distFile->getFullpath())) {
                     clearstatcache();
@@ -35,11 +35,7 @@ class Watch
                         );
                         $distFile->setLastChangeTime($timeChange);
 
-                        if (is_array($tasks)) {
-                            $phulp->start($tasks);
-                        } elseif (is_callable($tasks)) {
-                            $tasks($phulp);
-                        }
+                        $callback($phulp);
                     }
                 }
             }

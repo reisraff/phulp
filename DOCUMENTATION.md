@@ -50,7 +50,7 @@ $ vendor/bin/phulp watch # Will run the `watch` task
 
 ## Find for what plugin you really need:
 
-[Phulp - Plugin Page](https://reisraff.github.io/phulp/dist/#!/plugins)
+[Phulp - Plugin Page](https://reisraff.github.io/phulp/#!/plugins)
 
 ## Methods
 
@@ -129,8 +129,6 @@ $phulp->src(['src/'], '/pattern/', false)
 
 Watch files and do something when a file changes.
 
-*The use of the API where the second parameter as an array will be deprecated in the next versions*
-
 ```php
 <?php
 
@@ -139,13 +137,6 @@ $phulp->watch(
     function ($phulp) {
         // here your code
     }
-);
-
-// OR
-
-$phulp->watch(
-    $phulp->src(['src/'], '/php$/', false),
-    ['default'] // The "default" task will be emited when the src was changed
 );
 
 ```
