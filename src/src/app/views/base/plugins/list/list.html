@@ -17,11 +17,11 @@
   <div class="container-fluid">
     <section ng-repeat="plugin in controller.plugins" class="bg-white">
       <div class="item container text-center">
-        <p>
           <a href="{{ plugin.url }}" target="_blank"><b class="larger">{{ plugin.name }}</b></a>
           <br />
           <i class="medium">{{ plugin.description }}</i>
-        </p>
+          <br />
+          <strong>Stars</strong>: {{ plugin.favers }} | <strong>Downloads</strong>: {{ plugin.downloads }} | <a href="{{ plugin.repository }}">View on Github</a>
       </div>
     </section>
     <section class="bg-white">
