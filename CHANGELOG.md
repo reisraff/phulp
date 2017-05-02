@@ -1,5 +1,15 @@
 # Phulp Change Log
 
+## 1.8.0
+
+- Removing deprecated stuff (1a292ab733e679448764ac77fa5a0e987fe13a78)
+- Adding help message (f2f6c27b6dbee681b9dee12e005a5a32a1102ccf)
+
+## 1.7.1
+
+- Removing exit from src/ (403727bfbb76ec82fe5bae33937498bcffe0509d)
+- bugfix: invalid object reference (85ea7c91a509001b0c9bdd882d8bb6a2ee720dc8)
+
 ## 1.7.0
 
 - Lot of refactor by @reisraff
