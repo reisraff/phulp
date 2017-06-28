@@ -2,13 +2,11 @@
 
 <p align="center">The task manager for php</p>
 
-
 [![Latest Stable Version](https://poser.pugx.org/reisraff/phulp/v/stable)](https://packagist.org/packages/reisraff/phulp)
 [![Total Downloads](https://poser.pugx.org/reisraff/phulp/downloads)](https://packagist.org/packages/reisraff/phulp)
 [![Latest Unstable Version](https://poser.pugx.org/reisraff/phulp/v/unstable)](https://packagist.org/packages/reisraff/phulp)
 [![License](https://poser.pugx.org/reisraff/phulp/license)](https://packagist.org/packages/reisraff/phulp)
 [![Build Status](https://travis-ci.org/reisraff/phulp.svg?branch=master)](https://travis-ci.org/reisraff/phulp)
-[![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/phulp)
 
 ### Why
 
@@ -36,7 +34,7 @@ $ composer require --dev reisraff/phulp
 // Define the default task
 $phulp->task('default', function ($phulp) {
     $phulp->start(['clean']);
-​
+
     // Define the source folder
     $phulp->src(['src/'], '/php$/', false)
         ->pipe($phulp->iterate(function ($distFile) {
@@ -44,13 +42,13 @@ $phulp->task('default', function ($phulp) {
         }))
         ->pipe($phulp->dest('dist/'));
 });
-​
+
 // Define the clean task
 $phulp->task('clean', function ($phulp) {
     $phulp->src(['dist/'])
         ->pipe($phulp->clean());
 });
-​
+
 // Define the watch task
 $phulp->task('watch', function ($phulp) {
     // Phulp will watch 'src' folder
@@ -97,7 +95,7 @@ $ bin/phing
 
 ### TODO
 
-The "Issues" page from this repository is being used for TO-DO management, just search for the "to-do" tag.
+The "Issues" page from this repository is being used for TO-DO management.
 
 ## Credits
 
