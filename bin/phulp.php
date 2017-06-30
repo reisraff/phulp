@@ -1,6 +1,6 @@
 <?php
 
-$version = '1.8.1';
+$version = '1.9.0';
 
 foreach (['../../../autoload.php', '../../autoload.php', '../vendor/autoload.php', 'vendor/autoload.php'] as $autoload) {
     $autoload = __DIR__.'/'.$autoload;
