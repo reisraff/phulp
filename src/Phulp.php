@@ -2,6 +2,7 @@
 
 namespace Phulp;
 
+use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Factory;
 
@@ -173,5 +174,88 @@ class Phulp
         if (! $this->loop) {
             $this->loop = $loop;
         }
+    }
+
+    /**
+     * Execute an external command
+     *
+     * @param array $command example ['command' => 'echo 1', 'env' => ['FOO' => 'BAR'], 'cwd' => '/tmp']
+     * @param bool $async default false
+     * @param callable $callback called when the async commans is terminated $callback($exitCode, $output)
+     *
+     * @return bool|array false when command fails, true when async is thrown, array ['exit_code' => 0, 'output' => '1'] when sync command ends
+     */
+    public function exec(array $command, $async = false, callable $callback = null)
+    {
+        $defaults = [
+            'env' => null,
+            'cwd' => __DIR__ . '/../bin/',
+        ];
+
+        $command = array_merge($defaults, $command);
+
+        if ($async) {
+            $process = new Process($command['command'], $command['cwd'], $command['env']);
+            $process->start($this->getLoop());
+
+            $output = null;
+
+            $process->stdout->on('data', function ($data) use (&$output) {
+                $output .= $data . PHP_EOL;
+                Output::out($data);
+            });
+
+            $process->stdout->on('error', function ($data) use (&$output) {
+                $output .= $data . PHP_EOL;
+                Output::out($data);
+            });
+
+            $process->on('exit', function($exitCode, $termSignal) use ($callback, &$output) {
+                if ($callback) {
+                    $callback($exitCode, $output);
+                }
+            });
+
+            return true;
+        }
+
+        $descriptorspec = [
+           0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
+           1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
+           2 => ['pipe', 'w'], // stderr is a pipe that the child will write to
+        ];
+
+        $process = proc_open(
+            $command['command'],
+            $descriptorspec,
+            $pipes,
+            $command['cwd'],
+            $command['env']
+        );
+
+        $output = null;
+
+        if (is_resource($process)) {
+            fclose($pipes[0]);
+
+            while ($outLine = fgets($pipes[1])) {
+                $output .= $outLine . PHP_EOL;
+                Output::out($outLine);
+            }
+            fclose($pipes[1]);
+
+            while ($errLine = fgets($pipes[2])) {
+                $output .= $errLine . PHP_EOL;
+                Output::out($errLine);
+            }
+            fclose($pipes[2]);
+
+            return [
+                'exit_code' => proc_close($process),
+                'output' => trim($output),
+            ];
+        }
+
+        return false;
     }
 }

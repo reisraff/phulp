@@ -33,6 +33,33 @@ $ composer require --dev reisraff/phulp
 
 // Define the default task
 $phulp->task('default', function ($phulp) {
+    $return = $phulp->exec(
+        [
+            'command' => 'echo $MSG',
+            'env' => [
+                'MSG' => 'Sync-command'
+            ],
+            'cwd' => '/tmp'
+        ]
+    );
+
+    // $return['exit_code']
+    // $return['output']
+
+    $phulp->exec(
+        [
+            'command' => 'echo $MSG',
+            'env' => [
+                'MSG' => 'Assync-command'
+            ],
+            'cwd' => '/tmp'
+        ],
+        true, // defines async
+        function ($exitCode, $output) {
+            // do something
+        }
+    );
+
     $phulp->start(['clean']);
 
     // Define the source folder

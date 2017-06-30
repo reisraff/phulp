@@ -10,8 +10,35 @@ the ones matching the following pattern `[P,p]hulp[Ff]il{e,e.php}` nevertheless 
 ​
 // Define the default task
 $phulp->task('default', function ($phulp) {
+    $return = $phulp->exec(
+        [
+            'command' => 'echo $MSG',
+            'env' => [
+                'MSG' => 'Sync-command'
+            ],
+            'cwd' => '/tmp'
+        ]
+    );
+
+    // $return['exit_code']
+    // $return['output']
+
+    $phulp->exec(
+        [
+            'command' => 'echo $MSG',
+            'env' => [
+                'MSG' => 'Assync-command'
+            ],
+            'cwd' => '/tmp'
+        ],
+        true, // defines async
+        function ($exitCode, $output) {
+            // do something
+        }
+    );
+
     $phulp->start(['clean']);
-​
+
     // Define the source folder
     $phulp->src(['src/'], '/php$/', false)
         ->pipe($phulp->iterate(function ($distFile) {
@@ -19,13 +46,13 @@ $phulp->task('default', function ($phulp) {
         }))
         ->pipe($phulp->dest('dist/'));
 });
-​
+
 // Define the clean task
 $phulp->task('clean', function ($phulp) {
     $phulp->src(['dist/'])
         ->pipe($phulp->clean());
 });
-​
+
 // Define the watch task
 $phulp->task('watch', function ($phulp) {
     // Phulp will watch 'src' folder
@@ -149,4 +176,50 @@ Starts synchronously the tasks passed by parameter:
 <?php
 
 $phulp->start(['default', 'watch']);
+```
+
+### $phulp->exec()
+
+Execute an external command:
+
+```php
+<?php
+
+/**
+ * 1st param required: array
+ * 2nd param not-required default false: boolean for async
+ * 3th param not-required default null: Callback that is called when async command ends
+ */
+
+$return = $phulp->exec(
+    [
+        // the command required
+        'command' => 'echo $MSG',
+
+        // the env vars not-required
+        'env' => [
+            'MSG' => 'Sync-command'
+        ],
+
+        // the cwd not-required
+        'cwd' => '/tmp'
+    ]
+);
+
+// $return['exit_code']
+// $return['output']
+
+$phulp->exec(
+    [
+        'command' => 'echo $MSG',
+        'env' => [
+            'MSG' => 'Assync-command'
+        ],
+        'cwd' => '/tmp'
+    ],
+    true,
+    function ($exitCode, $output) {
+        // do something
+    }
+);
 ```
