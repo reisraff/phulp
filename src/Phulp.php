@@ -183,7 +183,8 @@ class Phulp
      * @param bool $async default false
      * @param callable $callback called when the async commans is terminated $callback($exitCode, $output)
      *
-     * @return bool|array false when command fails, true when async is thrown, array ['exit_code' => 0, 'output' => '1'] when sync command ends
+     * @return bool|array false when command fails, true when async is thrown,
+     * array ['exit_code' => 0, 'output' => '1'] when sync command ends
      */
     public function exec(array $command, $async = false, callable $callback = null)
     {
