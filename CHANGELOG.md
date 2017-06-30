@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.9.1
+
+- Fixing some stuff (a4e049e83a2d529c2d029060102ca96713aa7711)
+
 ## 1.9.0
 
 - Adding in the core the method exec that executes sync and async commands (e6305e657355398e1b37ca78b62d9577e301f814)
