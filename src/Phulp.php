@@ -185,9 +185,15 @@ class Phulp
      *
      * @return bool|array false when command fails, true when async is thrown,
      * array ['exit_code' => 0, 'output' => '1'] when sync command ends
+     *
+     * @throws \RuntimeException
      */
     public function exec(array $command, $async = false, callable $callback = null)
     {
+        if (! array_key_exists('command', $command)) {
+            throw new \RuntimeException('command[command] is required');
+        }
+
         $defaults = [
             'env' => null,
             'cwd' => __DIR__ . '/../bin/',
@@ -202,11 +208,13 @@ class Phulp
             $output = null;
 
             $process->stdout->on('data', function ($data) use (&$output) {
+                $data = rtrim($data, PHP_EOL);
                 $output .= $data . PHP_EOL;
                 Output::out($data);
             });
 
             $process->stdout->on('error', function ($data) use (&$output) {
+                $data = rtrim($data, PHP_EOL);
                 $output .= $data . PHP_EOL;
                 Output::out($data);
             });
@@ -239,15 +247,17 @@ class Phulp
         if (is_resource($process)) {
             fclose($pipes[0]);
 
-            while ($outLine = fgets($pipes[1])) {
-                $output .= $outLine . PHP_EOL;
-                Output::out($outLine);
+            while ($data = fgets($pipes[1])) {
+                $data = rtrim($data, PHP_EOL);
+                $output .= $data . PHP_EOL;
+                Output::out($data);
             }
             fclose($pipes[1]);
 
-            while ($errLine = fgets($pipes[2])) {
-                $output .= $errLine . PHP_EOL;
-                Output::out($errLine);
+            while ($data = fgets($pipes[2])) {
+                $data = rtrim($data, PHP_EOL);
+                $output .= $data . PHP_EOL;
+                Output::out($data);
             }
             fclose($pipes[2]);
 
