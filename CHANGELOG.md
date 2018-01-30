@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.9.2
+
+- Fixing bin file, and readme (fe71ab384bc7b6dee1f7cb2655768f761f62a935)
+
 ## 1.9.1
 
 - Fixing some stuff (a4e049e83a2d529c2d029060102ca96713aa7711)
