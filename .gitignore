@@ -5,3 +5,4 @@ vendor
 !/bin/phulp
 .tmp
 src/bower_components/
+example/dist

@@ -6,7 +6,7 @@
 [![Total Downloads](https://poser.pugx.org/reisraff/phulp/downloads)](https://packagist.org/packages/reisraff/phulp)
 [![Latest Unstable Version](https://poser.pugx.org/reisraff/phulp/v/unstable)](https://packagist.org/packages/reisraff/phulp)
 [![License](https://poser.pugx.org/reisraff/phulp/license)](https://packagist.org/packages/reisraff/phulp)
-[![Build Status](https://travis-ci.org/reisraff/phulp.svg?branch=master)](https://travis-ci.org/reisraff/phulp)
+[![Build Status](https://api.travis-ci.org/reisraff/phulp.svg?branch=master)](https://travis-ci.org/reisraff/phulp)
 
 ### Why
 
@@ -33,6 +33,36 @@ $ composer require --dev reisraff/phulp
 
 // Define the default task
 $phulp->task('default', function ($phulp) {
+    $phulp->start(['clean', 'iterate_src_folder', 'sync_command', 'assync_command']);
+});
+
+// Define the clean task
+$phulp->task('clean', function ($phulp) {
+    if (! file_exists('dist')) {
+        mkdir('dist');
+    }
+    $phulp->src(['dist/'])
+        ->pipe($phulp->clean());
+});
+
+// Define the iterate_src_folder task
+$phulp->task('iterate_src_folder', function ($phulp) {
+    // Define the source folder
+    $phulp->src(['src/'], '/php$/', false)
+        ->pipe($phulp->iterate(function ($distFile) {
+            \Phulp\Output::out(
+                \Phulp\Output::colorize('File Changed ->', 'green')
+                . ' ' . \Phulp\Output::colorize(
+                    $distFile->getFullPath() . DIRECTORY_SEPARATOR . $distFile->getName(),
+                    'blue'
+                )
+            );
+        }))
+        ->pipe($phulp->dest('dist/'));
+});
+
+// Define the sync_command task
+$phulp->task('sync_command', function ($phulp) {
     $return = $phulp->exec(
         [
             'command' => 'echo $MSG',
@@ -45,7 +75,10 @@ $phulp->task('default', function ($phulp) {
 
     // $return['exit_code']
     // $return['output']
+});
 
+// Define the assync_command task
+$phulp->task('assync_command', function ($phulp) {
     $phulp->exec(
         [
             'command' => 'echo $MSG',
@@ -59,21 +92,6 @@ $phulp->task('default', function ($phulp) {
             // do something
         }
     );
-
-    $phulp->start(['clean']);
-
-    // Define the source folder
-    $phulp->src(['src/'], '/php$/', false)
-        ->pipe($phulp->iterate(function ($distFile) {
-            \Phulp\Output::out(\Phulp\Output::colorize($distFile->getName(), 'blue'));
-        }))
-        ->pipe($phulp->dest('dist/'));
-});
-
-// Define the clean task
-$phulp->task('clean', function ($phulp) {
-    $phulp->src(['dist/'])
-        ->pipe($phulp->clean());
 });
 
 // Define the watch task
@@ -101,6 +119,19 @@ $ vendor/bin/phulp watch # Will run the `watch` task
 ##### The full documentation:
 
 [Docs](https://github.com/reisraff/phulp/blob/master/DOCUMENTATION.md)
+
+##### Example:
+
+[https://github.com/reisraff/phulp/blob/master/example/phulpfile.php](https://github.com/reisraff/phulp/blob/master/example/phulpfile.php)
+
+Run the example file:
+
+```bash
+$ composer install
+$ cd example
+$ ../bin/phulp
+$ ../bin/phulp watch
+```
 
 ### Contributors Guide
 
