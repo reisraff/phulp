@@ -35,7 +35,8 @@ class Watch
                         );
                         $distFile->setLastChangeTime($timeChange);
 
-                        $callback($phulp);
+                        $callback($phulp, $distFile);
+                        break;
                     }
                 }
             }

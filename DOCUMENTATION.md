@@ -28,7 +28,7 @@ $phulp->task('iterate_src_folder', function ($phulp) {
     $phulp->src(['src/'], '/php$/', false)
         ->pipe($phulp->iterate(function ($distFile) {
             \Phulp\Output::out(
-                \Phulp\Output::colorize('File Changed ->', 'green')
+                \Phulp\Output::colorize('Iterated ->', 'green')
                 . ' ' . \Phulp\Output::colorize(
                     $distFile->getFullPath() . DIRECTORY_SEPARATOR . $distFile->getName(),
                     'blue'
@@ -76,7 +76,14 @@ $phulp->task('watch', function ($phulp) {
     // Phulp will watch 'src' folder
     $phulp->watch(
         $phulp->src(['src/'], '/php$/', false),
-        function ($phulp) {
+        function ($phulp, $distFile) {
+            \Phulp\Output::out(
+                \Phulp\Output::colorize('File Changed ->', 'green')
+                . ' ' . \Phulp\Output::colorize(
+                    $distFile->getFullPath() . DIRECTORY_SEPARATOR . $distFile->getName(),
+                    'blue'
+                )
+            );
             $phulp->start(['default']);
         }
     );
@@ -107,6 +114,7 @@ Instantiate yours tasks.
 <?php
 
 $phulp->task('name', function ($phulp) {
+    /** @var \Phulp\Phulp $phulp */
     // here your code
 });
 ```
@@ -179,7 +187,9 @@ Watch files and do something when a file changes.
 
 $phulp->watch(
     $phulp->src(['src/'], '/php$/', false),
-    function ($phulp) {
+    function ($phulp, $distFile) {
+        /** @var \Phulp\Phulp $phulp */
+        /** @var \Phulp\DistFile $distFile */
         // here your code
     }
 );
