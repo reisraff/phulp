@@ -1,6 +1,6 @@
 <?php
 
-$version = '1.9.1';
+$version = '1.10.0';
 
 $files = ['../../../autoload.php', '../../autoload.php', '../vendor/autoload.php', 'vendor/autoload.php'];
 foreach ($files as $autoload) {

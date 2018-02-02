@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.10.0
+
+- Improving watch (f6d4dfa8561b28ff0e2bf01ad3ed2f6b82f06528)
+
 ## 1.9.2
 
 - Fixing bin file, and readme (fe71ab384bc7b6dee1f7cb2655768f761f62a935)
