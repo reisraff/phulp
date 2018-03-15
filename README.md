@@ -24,7 +24,9 @@ Like Gulp we also have plugins, and you also can create your own.
 
 Available plugins you can find in the plugin section over the [Phulp Page](https://reisraff.github.io/phulp).
 
-To make your plugin available in the Phulp plugin page, just tag your project in the composer.json with the tag "phulpplugin", and don't forget to let a cool composer.json description.
+To make your plugin available in the Phulp plugin page, add the keyword "phulpplugin" in your composer.json file of your project, and don't forget to let a cool composer.json description.
+
+And tag your github project with the tags ["phulpplugin"](https://github.com/topics/phulpplugin), and ["phulp"](https://github.com/topics/phulp), to be searchable on github.
 
 #### Usage
 
