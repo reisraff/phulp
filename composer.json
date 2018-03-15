@@ -4,7 +4,14 @@
   "type": "library",
   "keywords": [
     "phulp",
-    "php"
+    "php",
+    "gulp",
+    "task",
+    "task-manager",
+    "task-runner",
+    "builder",
+    "assets-management",
+    "watcher"
   ],
   "license": "MIT",
   "homepage": "https://reisraff.github.io/phulp/#!/home",
