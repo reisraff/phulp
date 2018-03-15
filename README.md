@@ -34,7 +34,7 @@ To make your plugin available in the Phulp plugin page, just tag your project in
 $ composer require --dev reisraff/phulp
 ```
 
-##### Create your `Phulpfile` ***(the configuration file, that describes all your tasks)***:
+##### Create your `Phulpfile` (the configuration file, that describes all your tasks):
 
 ```php
 <?php
