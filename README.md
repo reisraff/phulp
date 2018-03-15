@@ -18,6 +18,14 @@ Well, I decided to write Phulp, the PHP port of Gulp! And a little curiosity: it
 
 ### Documentation
 
+#### Plugins
+
+Like Gulp we also have plugins, and you also can create your own.
+
+Available plugins you can find in the plugin section over the [Phulp Page](https://reisraff.github.io/phulp).
+
+To make your plugin available in the Phulp plugin page, just tag your project in the composer.json with the tag "phulpplugin", and don't forget to let a cool composer.json description.
+
 #### Usage
 
 ##### Install:
@@ -26,10 +34,12 @@ Well, I decided to write Phulp, the PHP port of Gulp! And a little curiosity: it
 $ composer require --dev reisraff/phulp
 ```
 
-##### Create your `Phulpfile`:
+##### Create your `Phulpfile` ***(the configuration file, that describes all your tasks)***:
 
 ```php
 <?php
+
+// filepath: /path/for/your/phulpfile.php
 
 // Define the default task
 $phulp->task('default', function ($phulp) {
@@ -114,6 +124,8 @@ $phulp->task('watch', function ($phulp) {
 ```
 
 ##### Run:
+
+Run the phulp over the `Phulpfile` directory
 
 _If you have not configured the bin-dir:_
 
