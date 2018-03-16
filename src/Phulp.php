@@ -196,7 +196,7 @@ class Phulp
 
         $defaults = [
             'env' => null,
-            'cwd' => __DIR__ . '/../bin/',
+            'cwd' => getcwd(),
         ];
 
         $command = array_merge($defaults, $command);
