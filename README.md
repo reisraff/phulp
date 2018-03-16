@@ -45,7 +45,7 @@ $ composer require --dev reisraff/phulp
 
 // Define the default task
 $phulp->task('default', function ($phulp) {
-    $phulp->start(['clean', 'iterate_src_folder', 'sync_command', 'assync_command']);
+    $phulp->start(['clean', 'iterate_src_folder', 'sync_command', 'async_command']);
 });
 
 // Define the clean task
@@ -89,13 +89,13 @@ $phulp->task('sync_command', function ($phulp) {
     // $return['output']
 });
 
-// Define the assync_command task
-$phulp->task('assync_command', function ($phulp) {
+// Define the async_command task
+$phulp->task('async_command', function ($phulp) {
     $phulp->exec(
         [
             'command' => 'echo $MSG',
             'env' => [
-                'MSG' => 'Assync-command'
+                'MSG' => 'Async-command'
             ],
             'cwd' => '/tmp'
         ],
