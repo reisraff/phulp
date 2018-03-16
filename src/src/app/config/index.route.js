@@ -4,10 +4,9 @@
   /** @ngInject */
   angular.module('app').config(
     function routerConfig($stateProvider, $urlRouterProvider) {
-
       /** @ngInject */
-      var ReadmeResolve = function ($http) {
-        return $http.get('https://raw.githubusercontent.com/reisraff/phulp/master/README.md').then(function (response) {
+      var PhulpStats = function ($http) {
+        return $http.get('https://packagist.org/packages/reisraff/phulp.json').then(function (response) {
           return response.data;
         });
       };
@@ -37,7 +36,8 @@
                 controller: 'HomeController',
                 controllerAs: 'controller',
                 resolve: {
-                  'ReadmeResolve': ReadmeResolve
+                  PhulpStats: PhulpStats,
+                  PluginsResolve: PluginsResolve
                 }
               }
             }

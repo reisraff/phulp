@@ -2,7 +2,6 @@
 
 use Phulp\ScssCompiler\ScssCompiler;
 use Phulp\Inject\Inject;
-use Phulp\Filter\Filter;
 use Phulp\Dest\Dest;
 
 class InjectBowerVendor implements \Phulp\PipeInterface
@@ -92,22 +91,23 @@ class InjectBowerVendor implements \Phulp\PipeInterface
             }
         }
 
-        $bowerDistFiles = new \Phulp\Collection($jsStack, \Phulp\DistFile::class);
+        $jsDistFiles = new \Phulp\Collection($jsStack, \Phulp\DistFile::class);
+        $cssDistFiles = new \Phulp\Collection($cssStack, \Phulp\DistFile::class);
 
-        $srcBower = new \Phulp\Source([$this->options['bowerPath']]);
-        $srcBower->pipe(new Filter(function () {
-            return true;
-        }));
-        $srcBower->setDistFiles($bowerDistFiles);
-        $srcBower->pipe(new AngularFileSort);
+        $srcBower = new \Phulp\Source([$this->options['bowerPath']], '/^$/');
+        $srcBower->setDistFiles($jsDistFiles);
+        $srcBower->pipe(new Phulp\AngularFileSort\AngularFileSort);
 
-        foreach ($cssStack as $cssDistFile) {
-            $srcBower->addDistFile($cssDistFile);
+        $cssSource = new \Phulp\Source([$this->options['bowerPath']], '/^$/');
+        $cssSource->setDistFiles($cssDistFiles);
+        $cssSource->pipe(new ScssCompiler(['import_paths' => $cssPaths]));
+
+        foreach ($cssSource->getDistFiles() as $distFile) {
+            $srcBower->addDistFile($distFile);
         }
 
-        $srcBower->pipe(new ScssCompiler(['import_paths' => $cssPaths]))
-            ->pipe(new Dest($this->options['distVendorPath']));
+        $srcBower->pipe(new Dest($this->options['distVendorPath']));
 
-        (new Inject($bowerDistFiles, $this->options['injectOptions']))->execute($src);
+        (new Inject($jsDistFiles, $this->options['injectOptions']))->execute($src);
     }
 }

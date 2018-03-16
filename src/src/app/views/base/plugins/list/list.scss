@@ -1,0 +1,16 @@
+.search {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.search-input {
+  border: none;
+  border-radius: 2px !important;
+  height: 50px;
+}
+
+@media only screen and (max-width: 897px) {
+  .logo-plugin {
+    display: none !important;
+  }
+}

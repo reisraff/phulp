@@ -18,7 +18,9 @@
         "reisraff/phulp-scss-compiler": "^1.0",
         "reisraff/phulp-inject": "^1.0",
         "reisraff/phulp-filter": "^1.0",
-        "reisraff/phulp-dest": "^1.0"
+        "reisraff/phulp-dest": "^1.0",
+        "reisraff/phulp-angular-template-cache": "^1.0",
+        "reisraff/phulp-angular-filesort": "^1.0"
     },
     "config": {
         "bin-dir" : "bin/",

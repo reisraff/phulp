@@ -5,7 +5,6 @@ use Phulp\DistFile;
 use Phulp\Source;
 use Phulp\Minifier\JsMinifier;
 use Phulp\Minifier\CssMinifier;
-use Phulp\Filter\Filter;
 use Phulp\Dest\Dest;
 
 class Build implements \Phulp\PipeInterface
@@ -59,10 +58,7 @@ class Build implements \Phulp\PipeInterface
                     );
                 }
 
-                $src = new \Phulp\Source([__DIR__]);
-                $src->pipe(new Filter(function () {
-                    return true;
-                }));
+                $src = new \Phulp\Source([__DIR__], '/^$/');
                 $src->setDistFiles($jsDistFiles);
                 $src->pipe(new JsMinifier(['join' => true]));
                 $jsDistFile = $src->getDistFiles()->first();
@@ -99,10 +95,7 @@ class Build implements \Phulp\PipeInterface
                     );
                 }
 
-                $src = new \Phulp\Source([__DIR__]);
-                $src->pipe(new Filter(function () {
-                    return true;
-                }));
+                $src = new \Phulp\Source([__DIR__], '/^$/');
                 $src->setDistFiles($cssDistFiles);
                 $src->pipe(new CssMinifier(['join' => true]));
                 $cssDistFile = $src->getDistFiles()->first();

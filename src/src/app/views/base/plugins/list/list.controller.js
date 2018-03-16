@@ -7,6 +7,25 @@
     function PluginsListController($http, PluginsResolve) {
       var _self = this;
 
+      _self.menu = [
+        {
+          hash:'section-1',
+          label: 'Presentation'
+        },
+        {
+          hash:'section-2',
+          label: 'About'
+        },
+        {
+          state:'root.plugins',
+          label: 'Plugins'
+        },
+        {
+          url:'https://github.com/reisraff/phulp',
+          label: 'Github'
+        }
+      ];
+
       _self.query = null;
       _self.pluginsResolve = PluginsResolve;
       _self.plugins = _self.pluginsResolve.results;

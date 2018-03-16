@@ -9,6 +9,25 @@
   transition: transform 0.3s, visibility 0s 0.3s;
 }
 
+.phulp-nav {
+  background-color: #3862a7 !important;
+}
+
+.phulp-nav li a {
+  color: #FFFFFF !important;
+  font-size:18px;
+  font-weight: normal;
+}
+
+.phulp-nav li a:hover {
+  text-decoration: underline;
+}
+
+.phulp-nav img {
+  margin-top:8px;
+  height:60px;
+}
+
 .cd-secondary-nav ul.is-visible {
   background: #000;
   visibility: visible;

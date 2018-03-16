@@ -1,17 +1,22 @@
-<section class="bg-black row less fix-margin">
-  <div class="container-fluid">
-    <div class="col-md-11">
-      <input type="text" class="form-control" ng-model="controller.query" ng-change="controller.search()" placeholder="Search">
-    </div>
-    <div class="col-md-1">
-      <h4 class="white uppercase">
+<!-- <div class="cd-secondary-nav"></div> -->
+
+<nav id="menuScroll-element" class="navbar-inverse cd-secondary-nav phulp-nav is-fixed">
+  <a href="javascript://" class="cd-secondary-nav-trigger" ng-click="controller.menu()">Menu<span></span></a>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2 hidden-xs hidden-sm logo-plugin">
         <a href="javascript://" ui-sref="root.home">
-          HOME
+          <img src="https://raw.githubusercontent.com/reisraff/phulp/master/phulp.png" />
         </a>
-      </h4>
+      </div>
+      <div class="col-md-6 col-md-offset-4 search">
+        <input type="text" class="form-control search-input" ng-model="controller.query" ng-change="controller.search()" placeholder="Search">
+      </div>
     </div>
+
   </div>
-</section>
+</nav>
 
 <div class="full-height bg-php-light-color">
   <div class="container-fluid">
@@ -26,7 +31,7 @@
     </section>
     <section class="bg-white">
       <div class="item container text-center" ng-show="controller.pluginsResolve.next">
-        <b class="larger"><a href="javascript://" class="grey" ng-click="controller.more()">MAIS</a></b>
+        <b class="larger"><a href="javascript://" class="grey" ng-click="controller.more()">MORE</a></b>
       </div>
     </section>
   </div>

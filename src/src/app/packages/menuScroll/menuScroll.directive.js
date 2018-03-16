@@ -20,7 +20,7 @@
 
           function menuTrigger () {
 
-            if ($window.innerWidth >= 1170) {
+            if ($window.innerWidth >= 500) {
               if ($window.pageYOffset >= offsetLimit) {
                 $scope.menuScrollMenuFixed = true;
                 menu.addClass('is-fixed');

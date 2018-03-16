@@ -1,14 +1,101 @@
-<div class="presentation">
+<menu-scroll list='controller.menu'></menu-scroll>
+
+<div id="section-1" class="presentation">
   <div class="container text-center">
-    <img src="https://raw.githubusercontent.com/reisraff/phulp/master/phulp.png" />
-    <h2 class="uppercase">The task manager for PHP</h2>
+    <span class="phulp-title uppercase">The task manager for PHP</span>
+
+    <p class="phulp-help">
+      Find your plugins, define your tasks, and let phulp work for you.
+    </p>
+
+    <p>
+      <a class="btn btn-primary phulp-btn" href="https://github.com/reisraff/phulp#usage" target="_blank">Get Started</a>
+    </p>
   </div>
 </div>
 
-<menu-scroll list='controller.menu'></menu-scroll>
 
-<section id="section-1" class="bg-grey cd-section">
+<section id="section-2" class="stats">
+  <div class="container text-center">
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <p>
+          <span class="whats-phulp">Whats Phulp?</span>
+        </p>
+
+        <p>
+          <img src="assets/images/task.png" class="whats-phulp-img">
+        </p>
+
+        <p class="whats-phulp-description">
+          It is a framework that provide automation for build your stuff, manage your tasks easily.
+        </p>
+      </div>
+      <div class="col-md-4">
+        <p>
+          <span class="whats-phulp">Downloads</span>
+        </p>
+
+        <p class="whats-phulp-description big">
+          {{ controller.phulp.downloads.total }}
+        </p>
+
+        <p class="whats-phulp-description">
+          Average of {{ controller.phulp.downloads.monthly }} downloads monthly.
+        </p>
+      </div>
+      <div class="col-md-4">
+        <p>
+          <span class="whats-phulp">Registered Plugins</span>
+        </p>
+
+        <p class="whats-phulp-description big">
+          {{ controller.plugins.total }}
+        </p>
+
+        <p class="whats-phulp-description">
+          You can also register yours as described <a href="https://github.com/reisraff/phulp#plugins" target="_blank">here</a>.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<section id="section-3" class="contribute">
   <div class="container">
-    <article markdown-to-html="controller.readme"></article>
+<pre style="background:#000;color:#f8f8f8">&lt;?php
+
+<span style="color:#e28964">use</span> <span style="color:#9b859d">Phulp\Output</span> <span style="color:#e28964">as</span> <span style="color:#9b859d">out</span>;
+
+<span style="color:#aeaeae;font-style:italic">// Define the default task</span>
+<span style="color:#3e87e3">$phulp</span><span style="color:#e28964">-></span>task(<span style="color:#65b042">'default'</span>, <span style="color:#99cf50">function</span> (<span style="color:#3e87e3">$phulp</span>) {
+    <span style="color:#3e87e3">$phulp</span><span style="color:#e28964">-></span>start([<span style="color:#65b042">'exec_command'</span>]);
+});
+
+<span style="color:#aeaeae;font-style:italic">// Define the exec_command task</span>
+<span style="color:#3e87e3">$phulp</span><span style="color:#e28964">-></span>task(<span style="color:#65b042">'exec_command'</span>, <span style="color:#99cf50">function</span> (<span style="color:#3e87e3">$phulp</span>) {
+    <span style="color:#3e87e3">$return</span> <span style="color:#e28964">=</span> <span style="color:#3e87e3">$phulp</span><span style="color:#e28964">-></span>exec([
+        <span style="color:#65b042">'command'</span> <span style="color:#e28964">=></span> <span style="color:#65b042">'ls -lh'</span>,
+        <span style="color:#65b042">'cwd'</span> <span style="color:#e28964">=></span> <span style="color:#65b042">'/tmp'</span>
+    ]);
+
+<span style="color:#e28964">    if</span> (<span style="color:#3e87e3">$return</span>[<span style="color:#65b042">'exit_code'</span>] <span style="color:#e28964">==</span> <span style="color:#3387cc">0</span>) {
+        <span style="color:#9b859d">out</span><span style="color:#e28964">::</span>out(<span style="color:#9b859d">out</span><span style="color:#e28964">::</span>colorize(<span style="color:#65b042">'Command Output: '</span> <span style="color:#e28964">.</span> <span style="color:#3e87e3">$return</span>[<span style="color:#65b042">'output'</span>], <span style="color:#65b042">'green'</span>));
+    }<span style="color:#e28964"> else</span> {
+        <span style="color:#9b859d">out</span><span style="color:#e28964">::</span>out(<span style="color:#9b859d">out</span><span style="color:#e28964">::</span>colorize(<span style="color:#65b042">'Command Output: '</span> <span style="color:#e28964">.</span> <span style="color:#3e87e3">$return</span>[<span style="color:#65b042">'output'</span>], <span style="color:#65b042">'red'</span>));
+    }
+});
+</pre>
+  </div>
+</section>
+
+<section class="footer">
+  <div class="container text-center">
+    <img src="https://raw.githubusercontent.com/reisraff/phulp/master/phulp.png" width="330px">
   </div>
 </section>

@@ -2,39 +2,30 @@
 
 $config = require 'config.php';
 
-require 'AngularFileSort.php';
-require 'AngularTemplateCache.php';
 require 'InjectBowerVendor.php';
 require 'Build.php';
-require 'scripts.php';
-require 'styles.php';
-require 'others.php';
-require 'fonts.php';
-require 'htmls.php';
 
+use Phulp\ScssCompiler\ScssCompiler;
 use Phulp\Inject\Inject;
+use Phulp\AngularTemplateCache\AngularTemplateCache;
+use Phulp\AngularFileSort\AngularFileSort;
+use Phulp\Output as out;
+use Phulp\Server\Server;
 
 $phulp->task('inject', function ($phulp) use ($config) {
     $phulp->start(['others', 'fonts', 'scripts', 'styles', 'htmls']);
 
-    $injectStyles = $phulp->src(
-        [$config['tmp'] . '/app'],
-        '/.css$/'
-    );
+    $injectStyles = $phulp->src([$config['tmp'] . '/app'], '/.css$/');
 
-    $injectScripts = $phulp->src(
-        [$config['src'] . '/app'],
-        '/.+(?<!spec|mock)\.js$/'
-    )
+    $injectScripts = $phulp->src([$config['src'] . '/app'], '/.+(?<!spec|mock)\.js$/')
         ->pipe(new AngularFileSort)
-        ->pipe($phulp->dest($config['tmp'] . '/app'))
-        ;
+        ->pipe($phulp->dest($config['tmp'] . '/app'));
 
     $filterFilename = function ($filename) {
         return 'app/' . ltrim($filename, '/');
     };
 
-    $phulp->src([$config['src']], '/html$/', false)
+    $phulp = $phulp->src([$config['src']], '/html$/', false)
         ->pipe(new Inject($injectStyles->getDistFiles(), ['filter_filename' => $filterFilename]))
         ->pipe(new Inject($injectScripts->getDistFiles(), ['filter_filename' => $filterFilename]))
         ->pipe(new InjectBowerVendor([
@@ -66,7 +57,13 @@ $phulp->task('partials', function ($phulp) use ($config) {
                 )
             );
         }))
-        ->pipe(new AngularTemplateCache('templateCacheHtml.js', ['module' => 'app', 'root' => 'app']))
+        ->pipe(new AngularTemplateCache(
+            'templateCacheHtml.js',
+            [
+                'module' => 'app',
+                'root' => 'app'
+            ]
+        ))
         ->pipe($phulp->dest($config['tmp']));
 });
 
@@ -150,11 +147,19 @@ $phulp->task('serve:dist', function ($phulp) use ($config) {
 });
 
 $phulp->task('clean-dist', function ($phulp) use ($config) {
+    if (!file_exists($config['dist'])) {
+        mkdir($config['dist']);
+    }
+
     $phulp->src([$config['dist']])
         ->pipe($phulp->clean());
 });
 
 $phulp->task('clean-tmp', function ($phulp) use ($config) {
+    if (!file_exists($config['tmp'])) {
+        mkdir($config['tmp']);
+    }
+
     $phulp->src([$config['tmp']])
         ->pipe($phulp->clean());
 });
@@ -167,15 +172,56 @@ $phulp->task('default', function ($phulp) {
     $phulp->start(['build']);
 });
 
+$phulp->task('styles', function ($phulp) use ($config) {
+    $injectFiles = $phulp->src([$config['src'] . '/app'], '/.+(?<!app)\.scss$/');
+
+    $phulp->src([$config['src'] . '/app'], '/app\.scss/', false)
+        ->pipe(new Inject($injectFiles->getDistFiles()))
+        ->pipe(new ScssCompiler(['import_paths' => ['src/src/app/']]))
+        ->pipe($phulp->dest($config['tmp'] . '/app/'));
+});
+
+$phulp->task('scripts', function ($phulp) use ($config) {
+    $phulp->src(
+        [$config['src'] . '/app'],
+        '/.+(?<!spec|mock)\.js$/'
+    )
+        ->pipe($phulp->dest($config['tmp'] . '/app'));
+});
+
+$phulp->task('htmls', function ($phulp) use ($config) {
+    $phulp->src([$config['src'] . '/app'], '/\.html$/')
+        ->pipe($phulp->dest($config['tmp'] . '/app'));
+});
+
+$phulp->task('fonts', function ($phulp) use ($config) {
+  return $phulp->src(
+        [$config['bower_components']],
+        '/\.(eot|svg|ttf|woff|woff2)$/'
+    )
+        ->pipe($phulp->iterate(function ($distFile) {
+            $distFile->setDistpathname($distFile->getName());
+        }))
+        ->pipe($phulp->dest($config['tmp'] . '/fonts'));
+});
+
+$phulp->task('others', function ($phulp) use ($config) {
+    $phulp->src(
+        [$config['src']],
+        '/.+(?<!html|css|js|scss)$/'
+    )
+        ->pipe($phulp->dest($config['tmp']));
+});
+
 $phulp->task('serve', function ($phulp) use ($config) {
     $phulp->start(['clean-tmp', 'inject']);
 
     if (! $path = realpath($config['tmp'])) {
-        \Phulp\Output::err(\Phulp\Output::colorize('The build wasn\'t sucessfully', 'red'));
+        out::err(out::colorize('The build wasn\'t sucessfully', 'red'));
         exit(1);
     }
 
-    $server = new \Phulp\Server\Server(
+    $server = new Server(
         [
             'path' => $path,
             'port' => '8000'

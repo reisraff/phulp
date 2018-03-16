@@ -4,26 +4,28 @@
   /** @ngInject */
   angular.module('app').controller(
     'HomeController',
-    function HomeController(ReadmeResolve) {
+    function HomeController(PhulpStats, PluginsResolve) {
       var _self = this;
 
-      _self.readme = ReadmeResolve;
+      _self.phulp = PhulpStats.package;
+      _self.plugins = PluginsResolve;
 
       _self.menu = [
         {
           hash:'section-1',
-          label: 'About',
-          bold: true
+          label: 'Presentation'
         },
         {
-          state:'/plugins',
-          label: 'Plugins',
-          bold: true
+          hash:'section-2',
+          label: 'About'
+        },
+        {
+          state:'root.plugins',
+          label: 'Plugins'
         },
         {
           url:'https://github.com/reisraff/phulp',
-          label: 'Github',
-          bold: true
+          label: 'Github'
         }
       ];
     }
