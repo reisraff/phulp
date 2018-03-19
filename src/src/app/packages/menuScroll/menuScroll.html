@@ -4,7 +4,9 @@
   <a href="javascript://" class="cd-secondary-nav-trigger" ng-click="controller.menu()">Menu<span></span></a>
 
   <div class="container">
-    <img src="https://raw.githubusercontent.com/reisraff/phulp/master/phulp.png">
+    <a href="javascript://" ui-sref="root.home">
+      <img src="https://raw.githubusercontent.com/reisraff/phulp/master/phulp.png" />
+    </a>
     <ul class="nav navbar-nav navbar-right">
       <li ng-repeat="item in items">
         <a ng-if="item.hash" href="javascript://" class="cd-anchor" ng-click="controller.clicked(item.hash)">

@@ -76,6 +76,9 @@ $phulp->task('dist', function ($phulp) use ($config) {
     $phulp->src([$config['src']], '/favicon.png/')
         ->pipe($phulp->dest('./'));
 
+    $phulp->src([$config['tmp'] . '/assets'], null, true)
+        ->pipe($phulp->dest('./assets'));
+
     $partialsInjectFile = $phulp->src(
         [$config['tmp']],
         '/templateCacheHtml\.js$/',

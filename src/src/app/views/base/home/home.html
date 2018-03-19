@@ -68,29 +68,11 @@
 
 <section id="section-3" class="contribute">
   <div class="container">
-<pre style="background:#000;color:#f8f8f8">&lt;?php
+<pre style="background:#000;color:#f8f8f8" ng-bind-html="controller.code"></pre>
 
-<span style="color:#e28964">use</span> <span style="color:#9b859d">Phulp\Output</span> <span style="color:#e28964">as</span> <span style="color:#9b859d">out</span>;
-
-<span style="color:#aeaeae;font-style:italic">// Define the default task</span>
-<span style="color:#3e87e3">$phulp</span><span style="color:#e28964">-></span>task(<span style="color:#65b042">'default'</span>, <span style="color:#99cf50">function</span> (<span style="color:#3e87e3">$phulp</span>) {
-    <span style="color:#3e87e3">$phulp</span><span style="color:#e28964">-></span>start([<span style="color:#65b042">'exec_command'</span>]);
-});
-
-<span style="color:#aeaeae;font-style:italic">// Define the exec_command task</span>
-<span style="color:#3e87e3">$phulp</span><span style="color:#e28964">-></span>task(<span style="color:#65b042">'exec_command'</span>, <span style="color:#99cf50">function</span> (<span style="color:#3e87e3">$phulp</span>) {
-    <span style="color:#3e87e3">$return</span> <span style="color:#e28964">=</span> <span style="color:#3e87e3">$phulp</span><span style="color:#e28964">-></span>exec([
-        <span style="color:#65b042">'command'</span> <span style="color:#e28964">=></span> <span style="color:#65b042">'ls -lh'</span>,
-        <span style="color:#65b042">'cwd'</span> <span style="color:#e28964">=></span> <span style="color:#65b042">'/tmp'</span>
-    ]);
-
-<span style="color:#e28964">    if</span> (<span style="color:#3e87e3">$return</span>[<span style="color:#65b042">'exit_code'</span>] <span style="color:#e28964">==</span> <span style="color:#3387cc">0</span>) {
-        <span style="color:#9b859d">out</span><span style="color:#e28964">::</span>out(<span style="color:#9b859d">out</span><span style="color:#e28964">::</span>colorize(<span style="color:#65b042">'Command Output: '</span> <span style="color:#e28964">.</span> <span style="color:#3e87e3">$return</span>[<span style="color:#65b042">'output'</span>], <span style="color:#65b042">'green'</span>));
-    }<span style="color:#e28964"> else</span> {
-        <span style="color:#9b859d">out</span><span style="color:#e28964">::</span>out(<span style="color:#9b859d">out</span><span style="color:#e28964">::</span>colorize(<span style="color:#65b042">'Command Output: '</span> <span style="color:#e28964">.</span> <span style="color:#3e87e3">$return</span>[<span style="color:#65b042">'output'</span>], <span style="color:#65b042">'red'</span>));
-    }
-});
-</pre>
+  <p class="text-center">
+    <a class="btn btn-primary phulp-btn" href="https://github.com/reisraff/phulp#usage" target="_blank">Get Started</a>
+  </p>
   </div>
 </section>
 
