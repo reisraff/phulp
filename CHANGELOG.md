@@ -1,5 +1,11 @@
 # Phulp Change Log
 
+## 1.11.0
+
+- Run multiple tasks from CLI by (@reisraff) (1a7fc1dd5e73340f6a521a8f190121109a0080da)
+- Sets default working directory of Phulp::exec to getcwd() by (@Schlaefer) (#34) (86795238cb7397590b2a303a074bef9c3d9be0f1)
+- async not assync by (@glensc) (#33) (1391b07422af0049fdebd7f9eac07f5439d68d4f)
+
 ## 1.10.0
 
 - Improving watch (f6d4dfa8561b28ff0e2bf01ad3ed2f6b82f06528)
