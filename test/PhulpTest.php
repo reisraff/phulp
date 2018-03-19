@@ -54,7 +54,7 @@ class PhulpTest extends TestCase
             ->method('getLoop')
             ->willReturn($loop);
 
-        $phulp->run('task');
+        $phulp->run(['task']);
     }
 
     /**
@@ -144,7 +144,7 @@ class PhulpTest extends TestCase
                 $test++;
             }
         );
-        $phulp->run('test');
+        $phulp->run(['test']);
 
         $this->assertEquals(1, $test);
     }

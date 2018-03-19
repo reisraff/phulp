@@ -21,9 +21,9 @@ class Phulp
     /**
      * @param string $task
      */
-    public function run($task = null)
+    public function run(array $tasks = ['default'])
     {
-        $this->start([(!empty($task) ? $task : 'default')]);
+        $this->start($tasks);
         $this->getLoop()->run();
     }
 

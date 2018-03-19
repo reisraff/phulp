@@ -34,7 +34,6 @@
     "react/child-process": "^0.4.3"
   },
   "require-dev": {
-    "phing/phing": "2.*",
     "phpunit/phpunit": "~5.4",
     "squizlabs/php_codesniffer": "2.0.*@dev"
   },

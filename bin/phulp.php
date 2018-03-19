@@ -93,7 +93,12 @@ $phulp = new Phulp\Phulp();
 require $phulpFile;
 
 try {
-    $phulp->run(isset($argv[1]) ? $argv[1] : 'default');
+    $tasks = ! isset($argv[1]) ? null : array_slice($argv, 1);
+    if ($tasks) {
+        $phulp->run($tasks);
+    } else {
+        $phulp->run();
+    }
     unset($phulp);
 } catch (\Exception $e) {
     Phulp\Output::err(
