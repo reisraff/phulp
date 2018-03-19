@@ -169,7 +169,7 @@ $ composer install
 _First install the dependencies, and after you can run:_
 
 ```bash
-$ bin/phing
+$ bin/phulp test
 ```
 
 ### TODO
