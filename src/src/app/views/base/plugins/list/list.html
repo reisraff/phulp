@@ -1,6 +1,6 @@
-<div class="cd-secondary-nav"></div>
+<!-- <div class="cd-secondary-nav"></div> -->
 
-<nav id="menuScroll-element" class="navbar-inverse cd-secondary-nav phulp-nav is-fixed">
+<nav id="menuScroll-element" class="navbar-inverse cd-secondary-nav phulp-nav is-fixed plugins">
   <a href="javascript://" class="cd-secondary-nav-trigger" ng-click="controller.menu()">Menu<span></span></a>
 
   <div class="container">
@@ -13,6 +13,14 @@
       <div class="col-md-6 col-md-offset-4 search">
         <input type="text" class="form-control search-input" ng-model="controller.query" ng-change="controller.search()" placeholder="Search">
       </div>
+
+      <ul class="nav navbar-nav navbar-right menu-plugins">
+        <li>
+          <a href="javascript://" class="cd-anchor" ui-sref="root.home">
+            <span>Home</span>
+          </a>
+        </li>
+      </ul>
     </div>
 
   </div>

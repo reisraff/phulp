@@ -14,3 +14,13 @@
     display: none !important;
   }
 }
+
+.plugins {
+  position: inherit !important;
+}
+
+@media only screen and (min-width : 1170px) {
+   .menu-plugins {
+        display: none !important;
+    }
+}
