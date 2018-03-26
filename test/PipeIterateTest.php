@@ -35,7 +35,7 @@ class PipeIterateTest extends TestCase
 
         $pipeIterate->execute($src);
 
-        $this->assertEquals(count($distFiles), $i);
+        $this->assertCount($i, $distFiles);
     }
 
     /**
