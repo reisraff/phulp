@@ -201,6 +201,10 @@ class Phulp
 
         $command = array_merge($defaults, $command);
 
+        if ($command['env']['BASHRC_PATH']) {
+            $command['command'] = 'shopt -s expand_aliases;source $BASHRC_PATH;'."\n{$command['command']}";
+        }
+
         if ($async) {
             $process = new Process($command['command'], $command['cwd'], $command['env']);
             $process->start($this->getLoop());
