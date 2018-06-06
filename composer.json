@@ -2,6 +2,7 @@
   "name": "reisraff/phulp",
   "description": "The task manager for PHP",
   "type": "library",
+  "version": "1.11.0",
   "keywords": [
     "phulp",
     "php",
