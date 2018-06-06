@@ -3,8 +3,12 @@
 $version = '1.11.0';
 
 $files = ['../../../autoload.php', '../../autoload.php', '../vendor/autoload.php', 'vendor/autoload.php'];
+
+$vendor = exec('composer config vendor-dir');
+$files[] = "{$vendor}/autoload.php";
+
 foreach ($files as $autoload) {
-    $autoload = __DIR__ . '/' . $autoload;
+    $autoload = realpath($autoload);
     if (file_exists($autoload)) {
         require $autoload;
         break;
