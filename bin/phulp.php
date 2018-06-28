@@ -9,7 +9,7 @@ if (file_exists($config)) {
     $json = file_get_contents($config);
     $json = json_decode($json, true);
     if (isset($json['config']['vendor-dir'])) {
-        $vendor = exec("echo " . $json['config']['vendor-dir']);
+        $vendor = exec('echo ' . $json['config']['vendor-dir']);
         if ($vendor) $files[] = "{$vendor}/autoload.php";
     }
 }
