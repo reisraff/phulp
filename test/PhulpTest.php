@@ -30,7 +30,42 @@ class PhulpTest extends TestCase
             ->method('getLoop')
             ->willReturn($loop);
 
-        $phulp->run();
+        $phulp->run([]);
+    }
+
+    /**
+     * @covers Phulp::getArguments
+     */
+    public function testGetArguments()
+    {
+        $arguments = [];
+        $phulp = new Phulp($arguments);
+
+        $this->assertEquals($arguments, $phulp->getArguments());
+
+        $arguments = ['env' => 'test'];
+        $phulp = new Phulp($arguments);
+
+        $this->assertEquals($arguments, $phulp->getArguments());
+
+        $arguments = ['env' => 'test', 'it' => 'works'];
+        $phulp = new Phulp($arguments);
+
+        $this->assertEquals($arguments, $phulp->getArguments());
+    }
+
+    /**
+     * @covers Phulp::getArgument
+     */
+    public function testGetArgument()
+    {
+        $arguments = ['env' => 'test'];
+        $phulp = new Phulp($arguments);
+
+        $this->assertEquals(null, $phulp->getArgument('invalid'));
+        $this->assertEquals(true, $phulp->getArgument('invalid', true));
+        $this->assertEquals($arguments['env'], $phulp->getArgument('env'));
+        $this->assertEquals($arguments['env'], $phulp->getArgument('env', true));
     }
 
     /**

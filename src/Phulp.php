@@ -14,15 +14,28 @@ class Phulp
     private $tasks = [];
 
     /**
+     * @var array
+     */
+    private $arguments = [];
+
+    /**
      * @var LoopInterface
      */
     private $loop = null;
 
+    public function __construct(array $arguments = null)
+    {
+        if (is_array($arguments)) {
+            $this->arguments = $arguments;
+        }
+    }
+
     /**
      * @param string $task
      */
-    public function run(array $tasks = ['default'])
+    public function run(array $tasks)
     {
+        $tasks = count($tasks) ? $tasks : ['default'];
         $this->start($tasks);
         $this->getLoop()->run();
     }
@@ -39,20 +52,28 @@ class Phulp
                 throw new \RuntimeException('The task "' . $task . '" does not exists.');
             }
 
-            Output::out(
-                '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
-                . ' Starting task "' . Output::colorize($task, 'light_cyan') . '"'
-            );
+            Output::out(sprintf(
+                '[%s] Starting task "%s"',
+                Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray'),
+                Output::colorize($task, 'light_cyan')
+            ));
 
             $start = microtime(true);
             $callback = $this->tasks[$task];
             $callback($this);
 
-            Output::out(
-                '[' . Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray') . ']'
-                . ' Task "' . Output::colorize($task, 'light_cyan') . '" has finished in '
-                . Output::colorize(round(microtime(true) - $start, 4) . ' seconds', 'magenta')
-            );
+            Output::out(sprintf(
+                '[%s] Task "%s" has finished in %s',
+                Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray'),
+                Output::colorize($task, 'light_cyan'),
+                Output::colorize(
+                    sprintf(
+                        '%s seconds',
+                        round(microtime(true) - $start, 4)
+                    ),
+                    'magenta'
+                )
+            ));
         }
     }
 
@@ -268,5 +289,28 @@ class Phulp
         }
 
         return false;
+    }
+
+    /**
+     * Gets the value of arguments.
+     *
+     * @return array
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
+
+    /**
+     * Gets the value of arguments.
+     *
+     * @param $name the argument name
+     * @param $default the default return value if the argument does not exists
+     *
+     * @return array
+     */
+    public function getArgument($name, $default = null)
+    {
+        return isset($this->arguments[$name]) ? $this->arguments[$name] : $default;
     }
 }

@@ -43,9 +43,18 @@ $ composer require --dev reisraff/phulp
 
 // filepath: /path/for/your/phulpfile.php
 
+use Phulp\Output as out;
+
 // Define the default task
 $phulp->task('default', function ($phulp) {
+    out::out(out::colorize('Arguments:', 'green'));
+    out::out(print_r($phulp->getArguments(), true));
+
     $phulp->start(['clean', 'iterate_src_folder', 'sync_command', 'async_command']);
+    if ($phulp->getArgument('repeat-clean', false)) {
+        out::out(out::colorize('Repeating "clean":', 'green'));
+        $phulp->start(['clean']);
+    }
 });
 
 // Define the clean task
@@ -62,9 +71,9 @@ $phulp->task('iterate_src_folder', function ($phulp) {
     // Define the source folder
     $phulp->src(['src/'], '/php$/', false)
         ->pipe($phulp->iterate(function ($distFile) {
-            \Phulp\Output::out(
-                \Phulp\Output::colorize('Iterated ->', 'green')
-                . ' ' . \Phulp\Output::colorize(
+            out::out(
+                out::colorize('Iterated ->', 'green')
+                . ' ' . out::colorize(
                     $distFile->getFullPath() . DIRECTORY_SEPARATOR . $distFile->getName(),
                     'blue'
                 )
@@ -112,9 +121,9 @@ $phulp->task('watch', function ($phulp) {
     $phulp->watch(
         $phulp->src(['src/'], '/php$/', false),
         function ($phulp, $distFile) {
-            \Phulp\Output::out(
-                \Phulp\Output::colorize('File Changed ->', 'green')
-                . ' ' . \Phulp\Output::colorize(
+            out::out(
+                out::colorize('File Changed ->', 'green')
+                . ' ' . out::colorize(
                     $distFile->getFullPath() . DIRECTORY_SEPARATOR . $distFile->getName(),
                     'blue'
                 )
@@ -134,6 +143,8 @@ _If you have not configured the bin-dir:_
 ```bash
 $ vendor/bin/phulp --help
 $ vendor/bin/phulp # Will run the `default` task
+$ vendor/bin/phulp --arg=repeat-clean:true # Will run the `default` task with the argument repeat-clean with value `true`
+$ vendor/bin/phulp --autoload=/my/autoload/path/autoload.php # Will run the `default` task adding a alternative autoload php file
 $ vendor/bin/phulp watch # Will run the `watch` task
 ```
 
