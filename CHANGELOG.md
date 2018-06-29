@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.12.0
+
+- adding a way to pass arguments, and a alternative autoload php file by (@reisraff) (1310707ebe9a50f83d04ad11d03eba2183d3c9a8)
+
 ## 1.11.0
 
 - Run multiple tasks from CLI by (@reisraff) (1a7fc1dd5e73340f6a521a8f190121109a0080da)
