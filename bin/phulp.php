@@ -36,7 +36,7 @@ $version = '1.12.0';
 $files = ['../../../autoload.php', '../../autoload.php', '../vendor/autoload.php', 'vendor/autoload.php'];
 
 foreach ($files as $autoload) {
-    $autoload = realpath($autoload);
+    $autoload = realpath(__DIR__.DIRECTORY_SEPARATOR.$autoload);
     if (file_exists($autoload)) {
         require $autoload;
         break;
