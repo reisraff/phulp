@@ -31,7 +31,7 @@ $getArg = function ($arg, $isOption = true) use (&$argv) {
     return false;
 };
 
-$version = '1.12.0';
+$version = '1.12.1';
 
 $files = ['../../../autoload.php', '../../autoload.php', '../vendor/autoload.php', 'vendor/autoload.php'];
 

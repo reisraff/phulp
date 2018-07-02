@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.12.1
+
+- Fix autoload for custom vendor-dir by (@igk1972) (#43) (56e24174bbe17ccb7e5b1211924b36ad10cab3f0)
+
 ## 1.12.0
 
 - adding a way to pass arguments, and a alternative autoload php file by (@reisraff) (1310707ebe9a50f83d04ad11d03eba2183d3c9a8)
