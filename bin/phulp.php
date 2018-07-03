@@ -142,7 +142,16 @@ if (count($argv) > 1) {
     }
 }
 
-$phulpFiles = glob('[P,p]hulp[Ff]il{e,e.php}', GLOB_BRACE);
+if (defined('GLOB_BRACE')) {
+    $phulpFiles = glob('[P,p]hulp[Ff]il{e,e.php}', GLOB_BRACE);
+} else {
+    $phulpFiles = [];
+    $finder = \Symfony\Component\Finder\FindeR::create()
+        ->name('~^phulpfile(\.php)*$~i')->depth('< 1')->in(getcwd());
+    foreach ($finder->getIterator() as $file) {
+        $phulpFiles[] = $file->getFilename();
+    }
+}
 
 if (count($phulpFiles) > 1) {
     $out::err(sprintf(
