@@ -2,6 +2,8 @@
 
 ini_set('register_argc_argv', true);
 
+$version = '1.12.2';
+
 $getArg = function ($arg, $isOption = true) use (&$argv) {
     if (count($argv) > 1) {
         foreach ($argv as $key => $value) {
@@ -30,8 +32,6 @@ $getArg = function ($arg, $isOption = true) use (&$argv) {
 
     return false;
 };
-
-$version = '1.12.1';
 
 $files = ['../../../autoload.php', '../../autoload.php', '../vendor/autoload.php', 'vendor/autoload.php'];
 

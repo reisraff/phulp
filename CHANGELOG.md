@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.12.2
+
+- Fix for support on Alpine and others musl-based distros by (@igk1972) (#44) (9ebf88fb2f93320b81b00e7e05aa13b4612007b0)
+
 ## 1.12.1
 
 - Fix autoload for custom vendor-dir by (@igk1972) (#43) (56e24174bbe17ccb7e5b1211924b36ad10cab3f0)
