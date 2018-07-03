@@ -1,7 +1,5 @@
 <?php
 
-use Symfony\Component\Finder\Finder;
-
 ini_set('register_argc_argv', true);
 
 $getArg = function ($arg, $isOption = true) use (&$argv) {
@@ -144,10 +142,15 @@ if (count($argv) > 1) {
     }
 }
 
-$phulpFiles = [];
-$finder = Finder::create()->name('~^phulpfile(\.php)*$~i')->depth('< 1')->in(getcwd())->getIterator();
-foreach ($finder as $file) {
-    $phulpFiles[] = $file->getFilename();
+if (defined('GLOB_BRACE')) {
+    $phulpFiles = glob('[P,p]hulp[Ff]il{e,e.php}', GLOB_BRACE);
+} else {
+    $phulpFiles = [];
+    $finder = \Symfony\Component\Finder\FindeR::create()
+        ->name('~^phulpfile(\.php)*$~i')->depth('< 1')->in(getcwd());
+    foreach ($finder->getIterator() as $file) {
+        $phulpFiles[] = $file->getFilename();
+    }
 }
 
 if (count($phulpFiles) > 1) {
