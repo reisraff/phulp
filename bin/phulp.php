@@ -146,7 +146,7 @@ if (defined('GLOB_BRACE')) {
     $phulpFiles = glob('[P,p]hulp[Ff]il{e,e.php}', GLOB_BRACE);
 } else {
     $phulpFiles = [];
-    $finder = \Symfony\Component\Finder\FindeR::create()
+    $finder = \Symfony\Component\Finder\Finder::create()
         ->name('~^phulpfile(\.php)*$~i')->depth('< 1')->in(getcwd());
     foreach ($finder->getIterator() as $file) {
         $phulpFiles[] = $file->getFilename();
