@@ -1,5 +1,10 @@
 # Phulp Change Log
 
+## 1.12.3
+
+- doctrine/collections 1.4 work with php 5.6 (#48) by (@igk1972) (b741ec7694615057eb8cbb1c272ce223a9e64896)
+- Fix typo (#47) by (@igk1972) (2624c1643109c863636e42d163ca51fa5ecc2b0b)
+
 ## 1.12.2
 
 - Fix for support on Alpine and others musl-based distros by (@igk1972) (#44) (9ebf88fb2f93320b81b00e7e05aa13b4612007b0)

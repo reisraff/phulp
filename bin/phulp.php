@@ -2,7 +2,7 @@
 
 ini_set('register_argc_argv', true);
 
-$version = '1.12.2';
+$version = '1.12.3';
 
 $getArg = function ($arg, $isOption = true) use (&$argv) {
     if (count($argv) > 1) {
