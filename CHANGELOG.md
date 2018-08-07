@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 1.12.4
+
+- both compatibility php 5.6 and 7 by (@reisraff) (7c7bef1542f5ee199adf912e3b41d90a24e52aa2)
+
 ## 1.12.3
 
 - doctrine/collections 1.4 work with php 5.6 (#48) by (@igk1972) (b741ec7694615057eb8cbb1c272ce223a9e64896)
