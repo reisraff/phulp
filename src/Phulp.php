@@ -2,7 +2,6 @@
 
 namespace Phulp;
 
-use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Factory;
 
@@ -200,95 +199,14 @@ class Phulp
     /**
      * Execute an external command
      *
-     * @param array $command example ['command' => 'echo 1', 'env' => ['FOO' => 'BAR'], 'cwd' => '/tmp']
-     * @param bool $async default false
-     * @param callable $callback called when the async commans is terminated $callback($exitCode, $output)
+     * @param string
+     * @param array options
      *
-     * @return bool|array false when command fails, true when async is thrown,
-     * array ['exit_code' => 0, 'output' => '1'] when sync command ends
-     *
-     * @throws \RuntimeException
+     * @return Command
      */
-    public function exec(array $command, $async = false, callable $callback = null)
+    public function exec($command, array $options = [])
     {
-        if (! array_key_exists('command', $command)) {
-            throw new \RuntimeException('command[command] is required');
-        }
-
-        $defaults = [
-            'env' => null,
-            'cwd' => getcwd(),
-        ];
-
-        $command = array_merge($defaults, $command);
-
-        if ($async) {
-            $process = new Process($command['command'], $command['cwd'], $command['env']);
-            $process->start($this->getLoop());
-
-            $output = null;
-
-            $process->stdout->on('data', function ($data) use (&$output) {
-                $data = rtrim($data, PHP_EOL);
-                $output .= $data . PHP_EOL;
-                Output::out($data);
-            });
-
-            $process->stdout->on('error', function ($data) use (&$output) {
-                $data = rtrim($data, PHP_EOL);
-                $output .= $data . PHP_EOL;
-                Output::out($data);
-            });
-
-            $process->on('exit', function($exitCode, $termSignal) use ($callback, &$output) {
-                if ($callback) {
-                    $callback($exitCode, $output);
-                }
-            });
-
-            return true;
-        }
-
-        $descriptorspec = [
-           0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
-           1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
-           2 => ['pipe', 'w'], // stderr is a pipe that the child will write to
-        ];
-
-        $process = proc_open(
-            $command['command'],
-            $descriptorspec,
-            $pipes,
-            $command['cwd'],
-            $command['env']
-        );
-
-        $output = null;
-
-        if (is_resource($process)) {
-            fclose($pipes[0]);
-
-            while ($data = fgets($pipes[1])) {
-                $data = rtrim($data, PHP_EOL);
-                $output .= $data . PHP_EOL;
-                Output::out($data);
-            }
-            fclose($pipes[1]);
-
-            while ($data = fgets($pipes[2])) {
-                $data = rtrim($data, PHP_EOL);
-                $output .= $data . PHP_EOL;
-                Output::out($data);
-            }
-            fclose($pipes[2]);
-
-            return [
-                'exit_code' => proc_close($process),
-                'output' => trim($output),
-            ];
-        }
-
-        return false;
+        return new Command($command, $options, $this->getLoop());
     }
 
     /**

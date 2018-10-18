@@ -223,10 +223,8 @@ class PhulpTest extends TestCase
     public function testExecDefaultWorkdingDirectory()
     {
         $phulp = new Phulp;
-        $result = $phulp->exec([
-            'command' => 'php -r "echo getcwd();"'
-        ]);
-        $this->assertSame(getcwd(), $result['output']);
+        $command = $phulp->exec('php -r "echo getcwd();"');
+        $this->assertSame(getcwd(), $command->getStdout());
     }
 
     /**
@@ -235,10 +233,12 @@ class PhulpTest extends TestCase
     public function testExecSetWorkdingDirectory()
     {
         $phulp = new Phulp;
-        $result = $phulp->exec([
-            'command' => 'php -r "echo getcwd();"',
-            'cwd' => __DIR__
-        ]);
-        $this->assertSame(__DIR__, $result['output']);
+        $command = $phulp->exec(
+            'php -r "echo getcwd();"',
+            [
+                'cwd' => __DIR__
+            ]
+        );
+        $this->assertSame(__DIR__, $command->getStdout());
     }
 }

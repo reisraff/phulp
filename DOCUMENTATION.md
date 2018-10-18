@@ -51,35 +51,46 @@ $phulp->task('iterate_src_folder', function ($phulp) {
 
 // Define the sync_command task
 $phulp->task('sync_command', function ($phulp) {
-    $return = $phulp->exec(
+    $command = $phulp->exec(
+        'sleep 1 && echo $MSG',
         [
-            'command' => 'echo $MSG',
             'env' => [
                 'MSG' => 'Sync-command'
             ],
-            'cwd' => '/tmp'
+            'cwd' => '/tmp',
+            'sync' => true, // defines sync,
+            'quiet' => true,
+            'onStdOut' => function ($line) { out::out($line); },
+            'onStdErr' => function ($line) { },
+            'onFinish' => function ($exitCode, $stdOut, $stdErr) { },
         ]
     );
 
-    // $return['exit_code']
-    // $return['output']
+    $exitCode = $command->getExitCode();
+    $stdout = $command->getStdout();
+    $stderr = $command->getStderr();
+
+    out::out('done');
 });
 
 // Define the async_command task
 $phulp->task('async_command', function ($phulp) {
-    $phulp->exec(
+    $command = $phulp->exec(
+        'sleep 1 && echo $MSG',
         [
-            'command' => 'echo $MSG',
             'env' => [
                 'MSG' => 'Async-command'
             ],
-            'cwd' => '/tmp'
-        ],
-        true, // defines async
-        function ($exitCode, $output) {
-            // do something
-        }
+            'cwd' => '/tmp',
+            'sync' => false, // defines async,
+            'quiet' => false,
+            'onStdOut' => function ($line) { },
+            'onStdErr' => function ($line) { },
+            'onFinish' => function ($exitCode, $stdOut, $stdErr) { },
+        ]
     );
+
+    out::out('done');
 });
 
 // Define the watch task
@@ -247,40 +258,28 @@ Execute an external command:
 <?php
 
 /**
- * 1st param required: array
- * 2nd param not-required default false: boolean for async
- * 3th param not-required default null: Callback that is called when async command ends
+ * 1st param required string
+ * 2nd param not-required array
  */
 
-$return = $phulp->exec(
+$command = $phulp->exec(
+    // the command required
+    'echo $MSG',
     [
-        // the command required
-        'command' => 'echo $MSG',
-
-        // the env vars not-required
-        'env' => [
-            'MSG' => 'Sync-command'
-        ],
-
-        // the cwd not-required
-        'cwd' => '/tmp'
+        'cwd' => getcwd(), // <= default
+        'env' => [], // <= default ['HOME' => '/home/my-home']
+        'quiet' => false, // <= default
+        'sync' => true, // <= default
+        'onStdOut' => null, // <= default function ($line) {}
+        'onStdErr' => null, // <= default function ($line) {}
+        'onFinish' => null, // <= default function ($exitCode, $stdOut, $stdErr) {}
     ]
 );
 
-// $return['exit_code']
-// $return['output']
+$command->write('write to stdin');
 
-$phulp->exec(
-    [
-        'command' => 'echo $MSG',
-        'env' => [
-            'MSG' => 'Async-command'
-        ],
-        'cwd' => '/tmp'
-    ],
-    true,
-    function ($exitCode, $output) {
-        // do something
-    }
-);
+$exitCode = $command->getExitCode();
+$stdout = $command->getStdout();
+$stderr = $command->getStderr();
+
 ```
