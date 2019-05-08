@@ -84,35 +84,46 @@ $phulp->task('iterate_src_folder', function ($phulp) {
 
 // Define the sync_command task
 $phulp->task('sync_command', function ($phulp) {
-    $return = $phulp->exec(
+    $command = $phulp->exec(
+        'sleep 1 && echo $MSG',
         [
-            'command' => 'echo $MSG',
             'env' => [
                 'MSG' => 'Sync-command'
             ],
-            'cwd' => '/tmp'
+            'cwd' => '/tmp',
+            'sync' => true, // defines sync,
+            'quiet' => true,
+            'onStdOut' => function ($line) { out::out($line); },
+            'onStdErr' => function ($line) { },
+            'onFinish' => function ($exitCode, $stdOut, $stdErr) { },
         ]
     );
 
-    // $return['exit_code']
-    // $return['output']
+    $exitCode = $command->getExitCode();
+    $stdout = $command->getStdout();
+    $stderr = $command->getStderr();
+
+    out::out('done');
 });
 
 // Define the async_command task
 $phulp->task('async_command', function ($phulp) {
-    $phulp->exec(
+    $command = $phulp->exec(
+        'sleep 1 && echo $MSG',
         [
-            'command' => 'echo $MSG',
             'env' => [
                 'MSG' => 'Async-command'
             ],
-            'cwd' => '/tmp'
-        ],
-        true, // defines async
-        function ($exitCode, $output) {
-            // do something
-        }
+            'cwd' => '/tmp',
+            'sync' => false, // defines async,
+            'quiet' => false,
+            'onStdOut' => function ($line) { },
+            'onStdErr' => function ($line) { },
+            'onFinish' => function ($exitCode, $stdOut, $stdErr) { },
+        ]
     );
+
+    out::out('done');
 });
 
 // Define the watch task

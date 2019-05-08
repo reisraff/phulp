@@ -8,6 +8,7 @@ php:
   - hhvm
 
 before_install:
+  - apt-get update && apt-get install findutils
   - travis_retry composer self-update
 
 install:
