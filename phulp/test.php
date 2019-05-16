@@ -23,9 +23,7 @@ $phulp->task('lint:test', function ($phulp) {
 });
 
 $phulp->task('phpcs:test', function ($phulp) {
-    $command = $phulp->exec(
-        __DIR__ . '/../bin/phpcs --standard=PSR2 --extensions=php ' . __DIR__ . '/../src'
-    );
+    $command = $phulp->exec(__DIR__ . '/../bin/phpcs --standard=PSR2 --extensions=php ' . __DIR__ . '/../src');
 
     if ($command->getExitCode()) {
         throw new \Exception('phpcs:test failed');

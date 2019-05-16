@@ -205,6 +205,16 @@ class PhulpTest extends TestCase
     }
 
     /**
+     * @covers Phulp::exec
+     */
+    public function testExecDefaultWorkdingDirectory()
+    {
+        $phulp = new Phulp;
+        $command = $phulp->exec('php -r "echo getcwd();"');
+        $this->assertSame(getcwd(), $command->getStdout());
+    }
+
+    /**
      * @covers Phulp::start
      *
      * @expectedException \RuntimeException
@@ -215,16 +225,6 @@ class PhulpTest extends TestCase
 
         $phulp = new Phulp;
         $phulp->start(['test']);
-    }
-
-    /**
-     * @covers Phulp::exec
-     */
-    public function testExecDefaultWorkdingDirectory()
-    {
-        $phulp = new Phulp;
-        $command = $phulp->exec('php -r "echo getcwd();"');
-        $this->assertSame(getcwd(), $command->getStdout());
     }
 
     /**

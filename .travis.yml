@@ -10,6 +10,7 @@ php:
 before_install:
   - sudo apt-get update && sudo apt-get install findutils
   - travis_retry composer self-update
+  - sudo cp /home/travis/.phpenv/versions/$(phpenv version-name)/bin/php /usr/bin/php
 
 install:
   - travis_retry composer install --no-interaction --prefer-source --dev
