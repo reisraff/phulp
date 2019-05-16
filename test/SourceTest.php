@@ -8,16 +8,14 @@ use Phulp\PipeIterate;
 use Phulp\Source;
 use Symfony\Component\Finder\SplFileInfo;
 
-class DistSource extends TestCase
+class SourceTest extends TestCase
 {
     /**
      * @covers Phulp\Source::__construct
-     *
-     * @expectedException \UnexpectedValueException
      */
     public function testContructor()
     {
-        new Source([]);
+        new Source('');
     }
 
     /**
@@ -25,7 +23,7 @@ class DistSource extends TestCase
      */
     public function testPipe()
     {
-        $src = new Source([__DIR__]);
+        $src = new Source('*.php');
 
         $test = 0;
 
@@ -48,7 +46,7 @@ class DistSource extends TestCase
      */
     public function testGetDistFiles()
     {
-        $src = new Source([__DIR__]);
+        $src = new Source('');
 
         $this->assertInstanceOf(Collection::class, $src->getDistFiles());
         $this->assertEquals(DistFile::class, $src->getDistFiles()->getType());

@@ -2,9 +2,6 @@
 
 namespace Phulp;
 
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
-
 class Source
 {
     /**
@@ -13,34 +10,16 @@ class Source
     private $distFiles;
 
     /**
-     * @param array $dirs
      * @param string $pattern
-     * @param boolean $recursive
      *
      * @throws \UnexpectedValueException
      */
-    public function __construct(array $dirs, $pattern = '', $recursive = false)
+    public function __construct($pattern)
     {
-        if (! count($dirs)) {
-            throw new \UnexpectedValueException('There is no item in the array');
-        }
-
-        $finder = new Finder;
-
-        if (!$recursive) {
-            $finder->depth('== 0');
-        }
-
-        if ($pattern) {
-            $finder->name($pattern);
-        }
-
-        $finder->in($dirs);
-
         $this->distFiles = new Collection([], DistFile::class);
 
-        /** @var SplFileInfo $file */
-        foreach ($finder as $file) {
+        foreach ($this->mglob($pattern) as $f) {
+            $file = new \SplFileInfo($f);
             if ($file->isDir()) {
                 continue;
             }
@@ -50,10 +29,36 @@ class Source
             $this->distFiles->add(new DistFile(
                 file_get_contents($realPath),
                 substr($realPath, $dsPos + 1),
-                substr($realPath, 0, $dsPos),
-                trim($file->getRelativePath(), DIRECTORY_SEPARATOR)
+                substr($realPath, 0, $dsPos)
             ));
         }
+    }
+
+    private function mglob($pattern)
+    {
+        if (preg_match('/\*\*\//', $pattern)) {
+            $explode = explode('**/', $pattern);
+            $path = $explode[0];
+            $find = $explode[1];
+
+            $results = [];
+
+            foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path)) as $x) {
+                if (fnmatch($find, $x->getPathname())) {
+                    $results[] = $x->getPathname();
+                }
+            }
+        } else {
+            $results = glob($pattern);
+        }
+
+        foreach ($results as $key => $value) {
+            if (!is_file($value)) {
+                unset($results[$key]);
+            }
+        }
+
+        return array_values($results);
     }
 
     /**

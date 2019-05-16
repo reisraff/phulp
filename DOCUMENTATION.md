@@ -8,8 +8,6 @@ the ones matching the following pattern `[P,p]hulp[Ff]il{e,e.php}` nevertheless 
 ```php
 <?php
 
-// filepath: /path/for/your/phulpfile.php
-
 use Phulp\Output as out;
 
 // Define the default task
@@ -19,7 +17,7 @@ $phulp->task('default', function ($phulp) {
 
     $phulp->start(['clean', 'iterate_src_folder', 'sync_command', 'async_command']);
     if ($phulp->getArgument('repeat-clean', false)) {
-        out::out(out::colorize('Repeating "clean":', 'green'));
+        out::out(out::colorize('Repeating "clean"', 'green'));
         $phulp->start(['clean']);
     }
 });
@@ -29,22 +27,20 @@ $phulp->task('clean', function ($phulp) {
     if (! file_exists('dist')) {
         mkdir('dist');
     }
-    $phulp->src(['dist/'])
+    $phulp->src('dist/*')
         ->pipe($phulp->clean());
 });
 
 // Define the iterate_src_folder task
 $phulp->task('iterate_src_folder', function ($phulp) {
     // Define the source folder
-    $phulp->src(['src/'], '/php$/', false)
-        ->pipe($phulp->iterate(function ($distFile) {
-            out::out(
-                out::colorize('Iterated ->', 'green')
-                . ' ' . out::colorize(
-                    $distFile->getFullPath() . DIRECTORY_SEPARATOR . $distFile->getName(),
-                    'blue'
-                )
-            );
+    $phulp->src('src/*php')
+        ->pipe($phulp->iterate(function ($file) {
+            out::out(sprintf(
+                '%s %s' . PHP_EOL,
+                out::colorize('Iterated ->', 'green'),
+                out::colorize($file->getFullPath() . DIRECTORY_SEPARATOR . $file->getName(), 'blue')
+            ));
         }))
         ->pipe($phulp->dest('dist/'));
 });
@@ -60,7 +56,7 @@ $phulp->task('sync_command', function ($phulp) {
             'cwd' => '/tmp',
             'sync' => true, // defines sync,
             'quiet' => true,
-            'onStdOut' => function ($line) { out::out($line); },
+            'onStdOut' => function ($line) { out::out($line . PHP_EOL); },
             'onStdErr' => function ($line) { },
             'onFinish' => function ($exitCode, $stdOut, $stdErr) { },
         ]
@@ -70,7 +66,7 @@ $phulp->task('sync_command', function ($phulp) {
     $stdout = $command->getStdout();
     $stderr = $command->getStderr();
 
-    out::out('done');
+    out::out('done' . PHP_EOL);
 });
 
 // Define the async_command task
@@ -90,22 +86,20 @@ $phulp->task('async_command', function ($phulp) {
         ]
     );
 
-    out::out('done');
+    out::out('done' . PHP_EOL);
 });
 
 // Define the watch task
 $phulp->task('watch', function ($phulp) {
     // Phulp will watch 'src' folder
     $phulp->watch(
-        $phulp->src(['src/'], '/php$/', false),
+        $phulp->src('src/*php'),
         function ($phulp, $distFile) {
-            out::out(
-                out::colorize('File Changed ->', 'green')
-                . ' ' . out::colorize(
-                    $distFile->getFullPath() . DIRECTORY_SEPARATOR . $distFile->getName(),
-                    'blue'
-                )
-            );
+            out::out(sprintf(
+                '%s %s' . PHP_EOL,
+                out::colorize('File Changed ->', 'green'),
+                out::colorize($distFile->getFullPath() . DIRECTORY_SEPARATOR . $distFile->getName(), 'blue')
+            ));
             $phulp->start(['default']);
         }
     );
@@ -170,7 +164,7 @@ Return for you an instance of `\Phulp\PipeIterate` that will iterate all src fil
 ```php
 <?php
 
-$phulp->src(['dist/'])
+$phulp->src('dist/*')
     ->pipe($phulp->clean());
 ```
 
@@ -182,11 +176,9 @@ Find files for manage them, and you can pipe them also.
 <?php
 
 /**
- * 1st param required: array of directories
- * 2nd param not-required default null: pattern
- * 3th param not-required default true: boolean for recursion
+ * 1st param required: glob pattern
  */
-$phulp->src(['src/'], '/pattern/', false);
+$phulp->src('src/**/*txt');
 ```
 
 Piping:
@@ -194,7 +186,7 @@ Piping:
 ```php
 <?php
 
-$phulp->src(['src/'], '/pattern/', false)
+$phulp->src('src/*txt')
     // ->pipe(\Phulp\PipeInterface)
 ```
 
@@ -205,7 +197,7 @@ Provide iteration with src files using clousure:
 ```php
 <?php
 
-$phulp->src(['src/'], '/pattern/', false)
+$phulp->src('src/*txt')
     ->pipe($phulp->iterate(function ($distFile) {
         /** @var \Phulp\DistFile $distFile */
     }));
@@ -218,7 +210,7 @@ Used to pipe src files and the src files will be placed for the directory passed
 ```php
 <?php
 
-$phulp->src(['src/'], '/pattern/', false)
+$phulp->src('src/*txt')
     ->pipe($phulp->dest('dist/'))
 ```
 
@@ -230,7 +222,7 @@ Watch files and do something when a file changes.
 <?php
 
 $phulp->watch(
-    $phulp->src(['src/'], '/php$/', false),
+    $phulp->src('src/*php'),
     function ($phulp, $distFile) {
         /** @var \Phulp\Phulp $phulp */
         /** @var \Phulp\DistFile $distFile */

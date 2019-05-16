@@ -23,7 +23,7 @@ class Watch
 
                     if ($distFile->getLastChangeTime() < $timeChange) {
                         Output::out(sprintf(
-                            '[%s] The file %s was changed',
+                            '[%s] The file %s was changed' . PHP_EOL,
                             Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray'),
                             Output::colorize(
                                 sprintf(

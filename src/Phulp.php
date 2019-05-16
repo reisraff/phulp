@@ -52,7 +52,7 @@ class Phulp
             }
 
             Output::out(sprintf(
-                '[%s] Starting task "%s"',
+                '[%s] Starting task "%s' . PHP_EOL,
                 Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray'),
                 Output::colorize($task, 'light_cyan')
             ));
@@ -62,7 +62,7 @@ class Phulp
             $callback($this);
 
             Output::out(sprintf(
-                '[%s] Task "%s" has finished in %s',
+                '[%s] Task "%s" has finished in %s' . PHP_EOL,
                 Output::colorize((new \DateTime())->format('H:i:s'), 'light_gray'),
                 Output::colorize($task, 'light_cyan'),
                 Output::colorize(
@@ -88,15 +88,13 @@ class Phulp
     }
 
     /**
-     * @param array $dirs
      * @param string $pattern
-     * @param boolean $recursive
      *
      * @return Source
      */
-    public function src(array $dirs, $pattern = null, $recursive = true)
+    public function src($pattern)
     {
-        return new Source($dirs, $pattern, $recursive);
+        return new Source($pattern);
     }
 
     /**

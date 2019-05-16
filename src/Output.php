@@ -60,7 +60,7 @@ class Output
         if (! self::$quiet) {
             fwrite(
                 static::$out,
-                $string . PHP_EOL
+                $string
             );
         }
     }
@@ -77,7 +77,7 @@ class Output
         if (! self::$quiet) {
             fwrite(
                 static::$err,
-                $string . PHP_EOL
+                $string
             );
         }
     }

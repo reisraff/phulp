@@ -144,7 +144,7 @@ class Command
             //     $command->checkInteractivity();
             // });
 
-            $this->process->on('exit', function($exitCode, $termSignal) use ($command) {
+            $this->process->on('exit', function ($exitCode, $termSignal) use ($command) {
                 $onFinish = $command->options['onFinish'];
                 if (is_callable($onFinish)) {
                     $command->exitCode = $exitCode;
@@ -220,7 +220,9 @@ class Command
             }
 
             if (! $this->options['quiet']) {
-                Output::{$std}($line);
+                if (trim($line) != "") {
+                    Output::{$std}($line . PHP_EOL);
+                }
             }
         };
 

@@ -99,7 +99,7 @@ class PhulpTest extends TestCase
     {
         $this->assertInstanceOf(
             '\Phulp\Source',
-            (new Phulp)->src([__DIR__])
+            (new Phulp)->src('')
         );
     }
 

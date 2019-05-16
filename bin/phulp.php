@@ -77,7 +77,7 @@ if (count($argv) > 1) {
         $out::$quiet = false;
         $out::out(
             $out::colorize('Phulp', 'green')
-            . ' version ' . $out::colorize($version, 'yellow')
+            . ' version ' . $out::colorize($version, 'yellow') . PHP_EOL
         );
         exit(0);
     }
@@ -94,43 +94,43 @@ if (count($argv) > 1) {
                     /_/"
         );
         $out::out(sprintf(
-           "%s version %s\n",
+           "%s version %s\n\n",
            $out::colorize('Phulp', 'green'),
            $out::colorize($version, 'yellow')
         ));
         $out::out(sprintf(
-            "%s",
+            "%s\n",
             $out::colorize('Usage:', 'yellow')
         ));
         $out::out(
-            "  [task = default] [options] [arguments]\n"
+            "  [task = default] [options] [arguments]\n\n"
         );
         $out::out(sprintf(
-            "%s",
+            "%s\n",
             $out::colorize('Arguments:', 'yellow')
         ));
         $out::out(sprintf(
-            "%s              Add a alternative autoload php file",
+            "%s              Add a alternative autoload php file\n",
             $out::colorize('  --autoload=/autoload/file.php', 'green')
         ));
         $out::out(sprintf(
-            "%s                           Add a dinamic argument",
+            "%s                           Add a dinamic argument\n",
             $out::colorize('  --arg=name:value', 'green')
         ));
         $out::out(sprintf(
-            "%s",
+            "%s\n",
             $out::colorize('Options:', 'yellow')
         ));
         $out::out(sprintf(
-            "%s                                 Display this help message",
+            "%s                                 Display this help message\n",
             $out::colorize('  -h, --help', 'green')
         ));
         $out::out(sprintf(
-            "%s                                Do not output any message",
+            "%s                                Do not output any message\n",
             $out::colorize('  -q, --quiet', 'green')
         ));
         $out::out(sprintf(
-            "%s                              Display this application version",
+            "%s                              Display this application version\n",
             $out::colorize('  -V, --version', 'green')
         ));
         exit(0);
@@ -142,20 +142,18 @@ if (count($argv) > 1) {
     }
 }
 
-if (defined('GLOB_BRACE')) {
-    $phulpFiles = glob('[P,p]hulp[Ff]il{e,e.php}', GLOB_BRACE);
-} else {
-    $phulpFiles = [];
-    $finder = \Symfony\Component\Finder\Finder::create()
-        ->name('~^phulpfile(\.php)*$~i')->depth('< 1')->in(getcwd());
-    foreach ($finder->getIterator() as $file) {
-        $phulpFiles[] = $file->getFilename();
+$files = glob('*');
+$phulpFiles = [];
+
+foreach ($files as $file) {
+    if (preg_match('/phulpfile(\.php)?/i', $file)) {
+        $phulpFiles[] = $file;
     }
 }
 
 if (count($phulpFiles) > 1) {
     $out::err(sprintf(
-        '[%s] %s',
+        '[%s] %s' . PHP_EOL,
         $out::colorize((new \DateTime())->format('H:i:s'), 'light_gray'),
         $out::colorize('There are more than one Phulpfile present. ', 'red')
     ));
@@ -166,20 +164,20 @@ $phulpFile = array_pop($phulpFiles);
 
 if (!isset($phulpFile)) {
     $out::err(sprintf(
-        '[%s] %s',
+        '[%s] %s' . PHP_EOL,
         $out::colorize((new \DateTime())->format('H:i:s'), 'light_gray'),
         $out::colorize('There\'s no Phulpfile present. ', 'red')
     ));
 
     $out::out(sprintf(
-        '[%s] Please check the documentation for proper Phulpfile naming.',
+        '[%s] Please check the documentation for proper Phulpfile naming.' . PHP_EOL,
         $out::colorize((new \DateTime())->format('H:i:s'), 'light_gray')
     ));
     exit(1);
 }
 
 $out::out(sprintf(
-    '[%s] Using Phulpfile %s',
+    '[%s] Using Phulpfile %s' . PHP_EOL,
     $out::colorize((new \DateTime())->format('H:i:s'), 'light_gray'),
     $out::colorize(realpath($phulpFile), 'light_magenta')
 ));
@@ -201,7 +199,7 @@ try {
     unset($phulp);
 } catch (\Exception $e) {
     $out::err(sprintf(
-        '[%s] %s',
+        '[%s] %s' . PHP_EOL,
         $out::colorize((new \DateTime())->format('H:i:s'), 'light_gray'),
         $out::colorize($e->getMessage(), 'light_red')
     ));

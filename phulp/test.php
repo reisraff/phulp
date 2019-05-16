@@ -7,11 +7,17 @@ $phulp->task('test', function ($phulp) {
 });
 
 $phulp->task('lint:test', function ($phulp) {
-    $command = $phulp->exec(
-        'find -L ' . __DIR__ . '/../src -name "*.php" -print0 | xargs -0 -n 1 -P 4 php -l'
-    );
+    $error = false;
+    $phulp->src(sprintf('%s/../src/**/*php', __DIR__))
+        ->pipe($phulp->iterate(function ($file) use ($error, $phulp) {
+            $file = $file->getFullPath() . DIRECTORY_SEPARATOR . $file->getName();
+            $cmd = $phulp->exec(sprintf('php -l %s', $file));
+            if ($cmd->getExitCode()) {
+                $error = true;
+            }
+        }));
 
-    if ($command->getExitCode()) {
+    if ($error) {
         throw new \Exception('lint:test failed');
     }
 });
