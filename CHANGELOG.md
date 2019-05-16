@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 2.0.0
+
+- glob pattern instead of Symfony\Finder by (@reisraff) (38f530f2630e324670ed25638d15c61ab684c279)
+
 ## 1.12.4
 
 - both compatibility php 5.6 and 7 by (@reisraff) (7c7bef1542f5ee199adf912e3b41d90a24e52aa2)
