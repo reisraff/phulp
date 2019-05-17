@@ -27,14 +27,14 @@ $phulp->task('clean', function ($phulp) {
     if (! file_exists('dist')) {
         mkdir('dist');
     }
-    $phulp->src('dist/*')
+    $phulp->src(['dist/*'])
         ->pipe($phulp->clean());
 });
 
 // Define the iterate_src_folder task
 $phulp->task('iterate_src_folder', function ($phulp) {
     // Define the source folder
-    $phulp->src('src/*php')
+    $phulp->src(['src/*php'])
         ->pipe($phulp->iterate(function ($file) {
             out::out(sprintf(
                 '%s %s' . PHP_EOL,
@@ -93,7 +93,7 @@ $phulp->task('async_command', function ($phulp) {
 $phulp->task('watch', function ($phulp) {
     // Phulp will watch 'src' folder
     $phulp->watch(
-        $phulp->src('src/*php'),
+        $phulp->src(['src/*php']),
         function ($phulp, $distFile) {
             out::out(sprintf(
                 '%s %s' . PHP_EOL,
@@ -164,7 +164,7 @@ Return for you an instance of `\Phulp\PipeIterate` that will iterate all src fil
 ```php
 <?php
 
-$phulp->src('dist/*')
+$phulp->src(['dist/*'])
     ->pipe($phulp->clean());
 ```
 
@@ -176,9 +176,9 @@ Find files for manage them, and you can pipe them also.
 <?php
 
 /**
- * 1st param required: glob pattern
+ * 1st param required: array of glob patterns
  */
-$phulp->src('src/**/*txt');
+$phulp->src(['src/**/*txt']);
 ```
 
 Piping:
@@ -186,7 +186,7 @@ Piping:
 ```php
 <?php
 
-$phulp->src('src/*txt')
+$phulp->src(['src/*txt'])
     // ->pipe(\Phulp\PipeInterface)
 ```
 
@@ -197,7 +197,7 @@ Provide iteration with src files using clousure:
 ```php
 <?php
 
-$phulp->src('src/*txt')
+$phulp->src(['src/*txt'])
     ->pipe($phulp->iterate(function ($distFile) {
         /** @var \Phulp\DistFile $distFile */
     }));
@@ -210,7 +210,7 @@ Used to pipe src files and the src files will be placed for the directory passed
 ```php
 <?php
 
-$phulp->src('src/*txt')
+$phulp->src(['src/*txt'])
     ->pipe($phulp->dest('dist/'))
 ```
 
@@ -222,7 +222,7 @@ Watch files and do something when a file changes.
 <?php
 
 $phulp->watch(
-    $phulp->src('src/*php'),
+    $phulp->src(['src/*php']),
     function ($phulp, $distFile) {
         /** @var \Phulp\Phulp $phulp */
         /** @var \Phulp\DistFile $distFile */

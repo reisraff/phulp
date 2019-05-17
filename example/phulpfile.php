@@ -19,14 +19,14 @@ $phulp->task('clean', function ($phulp) {
     if (! file_exists('dist')) {
         mkdir('dist');
     }
-    $phulp->src('dist/*')
+    $phulp->src(['dist/*'])
         ->pipe($phulp->clean());
 });
 
 // Define the iterate_src_folder task
 $phulp->task('iterate_src_folder', function ($phulp) {
     // Define the source folder
-    $phulp->src('src/*php')
+    $phulp->src(['src/*php'])
         ->pipe($phulp->iterate(function ($file) {
             out::out(sprintf(
                 '%s %s' . PHP_EOL,
@@ -85,7 +85,7 @@ $phulp->task('async_command', function ($phulp) {
 $phulp->task('watch', function ($phulp) {
     // Phulp will watch 'src' folder
     $phulp->watch(
-        $phulp->src('src/*php'),
+        $phulp->src(['src/*php']),
         function ($phulp, $distFile) {
             out::out(sprintf(
                 '%s %s' . PHP_EOL,
