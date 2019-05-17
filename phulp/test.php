@@ -8,7 +8,7 @@ $phulp->task('test', function ($phulp) {
 
 $phulp->task('lint:test', function ($phulp) {
     $error = false;
-    $phulp->src(sprintf('%s/../src/**/*php', __DIR__))
+    $phulp->src([sprintf('%s/../src/**/*php', __DIR__)])
         ->pipe($phulp->iterate(function ($file) use ($error, $phulp) {
             $file = $file->getFullPath() . DIRECTORY_SEPARATOR . $file->getName();
             $cmd = $phulp->exec(sprintf('php -l %s', $file));

@@ -14,23 +14,25 @@ class Source
      *
      * @throws \UnexpectedValueException
      */
-    public function __construct($pattern)
+    public function __construct(array $patterns)
     {
         $this->distFiles = new Collection([], DistFile::class);
 
-        foreach ($this->mglob($pattern) as $f) {
-            $file = new \SplFileInfo($f);
-            if ($file->isDir()) {
-                continue;
-            }
+        foreach ($patterns as $pattern) {
+            foreach ($this->mglob($pattern) as $f) {
+                $file = new \SplFileInfo($f);
+                if ($file->isDir()) {
+                    continue;
+                }
 
-            $realPath = $file->getRealPath();
-            $dsPos = strrpos($realPath, DIRECTORY_SEPARATOR);
-            $this->distFiles->add(new DistFile(
-                file_get_contents($realPath),
-                substr($realPath, $dsPos + 1),
-                substr($realPath, 0, $dsPos)
-            ));
+                $realPath = $file->getRealPath();
+                $dsPos = strrpos($realPath, DIRECTORY_SEPARATOR);
+                $this->distFiles->add(new DistFile(
+                    file_get_contents($realPath),
+                    substr($realPath, $dsPos + 1),
+                    substr($realPath, 0, $dsPos)
+                ));
+            }
         }
     }
 

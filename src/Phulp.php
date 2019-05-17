@@ -92,7 +92,7 @@ class Phulp
      *
      * @return Source
      */
-    public function src($pattern)
+    public function src(array $pattern)
     {
         return new Source($pattern);
     }

@@ -15,7 +15,7 @@ class SourceTest extends TestCase
      */
     public function testContructor()
     {
-        new Source('');
+        new Source(['']);
     }
 
     /**
@@ -23,7 +23,7 @@ class SourceTest extends TestCase
      */
     public function testPipe()
     {
-        $src = new Source('*.php');
+        $src = new Source(['*.php']);
 
         $test = 0;
 
@@ -46,7 +46,7 @@ class SourceTest extends TestCase
      */
     public function testGetDistFiles()
     {
-        $src = new Source('');
+        $src = new Source(['']);
 
         $this->assertInstanceOf(Collection::class, $src->getDistFiles());
         $this->assertEquals(DistFile::class, $src->getDistFiles()->getType());
