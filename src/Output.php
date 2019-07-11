@@ -55,6 +55,19 @@ class Output
      *
      * @return void
      */
+    public static function outln($string)
+    {
+        self::out($string . PHP_EOL);
+    }
+
+    /**
+     * This method is used to send some text to STDOUT, maybe with some color
+     *
+     * @param string $string the text to be sent to STDOUT
+     * @param string $color the color to colorize your text
+     *
+     * @return void
+     */
     public static function out($string)
     {
         if (! self::$quiet) {
@@ -63,6 +76,18 @@ class Output
                 $string
             );
         }
+    }
+
+    /**
+     * This method is used to send some text to STDERR
+     *
+     * @param string $string the text to be sent to STDERR
+     *
+     * @return void
+     */
+    public static function errln($string)
+    {
+        self::err($string . PHP_EOL);
     }
 
     /**

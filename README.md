@@ -45,12 +45,12 @@ use Phulp\Output as out;
 
 // Define the default task
 $phulp->task('default', function ($phulp) {
-    out::out(out::colorize('Arguments:', 'green'));
-    out::out(print_r($phulp->getArguments(), true));
+    out::outln(out::colorize('Arguments:', 'green'));
+    out::outln(print_r($phulp->getArguments(), true));
 
     $phulp->start(['clean', 'iterate_src_folder', 'sync_command', 'async_command']);
     if ($phulp->getArgument('repeat-clean', false)) {
-        out::out(out::colorize('Repeating "clean"', 'green'));
+        out::outln(out::colorize('Repeating "clean"', 'green'));
         $phulp->start(['clean']);
     }
 });
@@ -69,8 +69,8 @@ $phulp->task('iterate_src_folder', function ($phulp) {
     // Define the source folder
     $phulp->src(['src/*php'])
         ->pipe($phulp->iterate(function ($file) {
-            out::out(sprintf(
-                '%s %s' . PHP_EOL,
+            out::outln(sprintf(
+                '%s %s',
                 out::colorize('Iterated ->', 'green'),
                 out::colorize($file->getFullPath() . DIRECTORY_SEPARATOR . $file->getName(), 'blue')
             ));
@@ -89,7 +89,7 @@ $phulp->task('sync_command', function ($phulp) {
             'cwd' => '/tmp',
             'sync' => true, // defines sync,
             'quiet' => true,
-            'onStdOut' => function ($line) { out::out($line . PHP_EOL); },
+            'onStdOut' => function ($line) { out::outln($line); },
             'onStdErr' => function ($line) { },
             'onFinish' => function ($exitCode, $stdOut, $stdErr) { },
         ]
@@ -99,7 +99,7 @@ $phulp->task('sync_command', function ($phulp) {
     $stdout = $command->getStdout();
     $stderr = $command->getStderr();
 
-    out::out('done' . PHP_EOL);
+    out::outln('done');
 });
 
 // Define the async_command task
@@ -119,7 +119,7 @@ $phulp->task('async_command', function ($phulp) {
         ]
     );
 
-    out::out('done' . PHP_EOL);
+    out::outln('done');
 });
 
 // Define the watch task
@@ -128,8 +128,8 @@ $phulp->task('watch', function ($phulp) {
     $phulp->watch(
         $phulp->src(['src/*php']),
         function ($phulp, $distFile) {
-            out::out(sprintf(
-                '%s %s' . PHP_EOL,
+            out::outln(sprintf(
+                '%s %s',
                 out::colorize('File Changed ->', 'green'),
                 out::colorize($distFile->getFullPath() . DIRECTORY_SEPARATOR . $distFile->getName(), 'blue')
             ));
