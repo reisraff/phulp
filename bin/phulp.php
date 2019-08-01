@@ -146,7 +146,7 @@ $files = glob('*');
 $phulpFiles = [];
 
 foreach ($files as $file) {
-    if (preg_match('/phulpfile(\.php)?/i', $file)) {
+    if (preg_match('/phulpfile(\.php)[^~]?/i', $file)) {
         $phulpFiles[] = $file;
     }
 }
