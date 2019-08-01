@@ -1,5 +1,9 @@
 # Phulp Change Log
 
+## 2.1.1
+
+- Avoiding emacs files by (@reisraff) (795a24698bbf62b4f61cd5d70a768a1c344f1591)
+
 ## 2.0.0
 
 - glob pattern instead of Symfony\Finder by (@reisraff) (38f530f2630e324670ed25638d15c61ab684c279)
