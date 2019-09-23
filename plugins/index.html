@@ -1,0 +1,552 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Phulp</title>
+    <meta name="description" content="The task manager for PHP">
+    <meta name="viewport" content="width=device-width">
+
+    <meta name="author" content="@reisraff">
+    <meta name="description" content="The task manager for PHP">
+
+    <meta property="og:title" content="Phulp" />
+    <meta property="og:description" content="The task manager for PHP" />
+
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/reisraff/phulp/gh-pages/favicon.png" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <!-- end Jquery -->
+
+    <!-- boostrap stuff -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <!-- end boostrap stuff -->
+
+    <style>
+      .browsehappy {
+        margin: 0.2em 0;
+        background: #ccc;
+        color: #000;
+        padding: 0.2em 0;
+      }
+
+      .thumbnail {
+        height: 200px;
+
+        img.pull-right {
+          width: 50px;
+        }
+      }
+
+      .fix-margin {
+        margin-right: 0px !important;
+      }
+
+      .cd-secondary-nav ul {
+        z-index: 10;
+        position: fixed;
+        right: 35px;
+        bottom: 65px;
+        visibility: hidden;
+        transform: scale(0);
+        transform-origin: 100% 100%;
+        transition: transform 0.3s, visibility 0s 0.3s;
+      }
+
+      .phulp-nav {
+        background-color: #3862a7 !important;
+      }
+
+      .phulp-nav li a {
+        color: #FFFFFF !important;
+        font-size:18px;
+        font-weight: normal;
+      }
+
+      .phulp-nav li a:hover {
+        text-decoration: underline;
+      }
+
+      .phulp-nav img {
+        margin-top:8px;
+        height:60px;
+      }
+
+      .cd-secondary-nav ul.is-visible {
+        background: #000;
+        visibility: visible;
+        transform: scale(1);
+        transition: transform 0.3s, visibility 0s 0s;
+      }
+
+      @media only screen and (min-width: 1170px) {
+        .cd-secondary-nav ul {
+          /* reset navigation values */
+          position: static;
+          width: auto;
+          max-width: 100%;
+          visibility: visible;
+          transform: scale(1);
+        }
+      }
+
+      .cd-secondary-nav {
+        border-radius: 0px !important;
+        z-index: 10;
+        height: 73px;
+      }
+
+      @media only screen and (min-width: 1170px) {
+        .cd-secondary-nav.is-fixed {
+          position: fixed;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+
+        .cd-secondary-nav li a {
+          padding: 28px 20px 0 20px;
+          transition: padding 0.2s;
+        }
+
+        .cd-secondary-nav.animate-children li a {
+          padding: 28px 40px 0 20px;
+          transition: padding 0.2s;
+        }
+      }
+
+      a.cd-active {
+        color: #FFF !important;
+        text-decoration: underline !important;
+      }
+
+      .cd-secondary-nav-trigger {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        background: rgba(3, 13, 24, 0.96);
+        border-radius: 0.25em;
+        /* image replacement */
+        overflow: hidden;
+        text-indent: 100%;
+        white-space: nowrap;
+        z-index: 10;
+      }
+
+      .cd-secondary-nav-trigger span {
+        /* the span element is used to create the menu icon */
+        position: absolute;
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #f0eee1;
+        left: 50%;
+        top: 50%;
+        bottom: auto;
+        right: auto;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -o-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        -webkit-transition: background 0.3s;
+        -moz-transition: background 0.3s;
+        transition: background 0.3s;
+      }
+
+      .cd-secondary-nav-trigger span::before, .cd-secondary-nav-trigger span::after {
+        content: '';
+        position: absolute;
+        background: inherit;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+
+      .cd-secondary-nav-trigger span::before {
+        right: -10px;
+        -webkit-transform: rotate(0);
+        -moz-transform: rotate(0);
+        -ms-transform: rotate(0);
+        -o-transform: rotate(0);
+        transform: rotate(0);
+      }
+
+      .cd-secondary-nav-trigger span::after {
+        left: -10px;
+        -webkit-transform: rotate(0);
+        -moz-transform: rotate(0);
+        -ms-transform: rotate(0);
+        -o-transform: rotate(0);
+        transform: rotate(0);
+      }
+
+      .cd-secondary-nav-trigger.menu-is-open span {
+        background: rgba(100, 100, 100, 0);
+        width: 20px;
+        height: 2px;
+      }
+
+      .cd-secondary-nav-trigger.menu-is-open span::before, .cd-secondary-nav-trigger.menu-is-open span::after {
+        background: #f0eee1;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        top: 0;
+        left: 0;
+      }
+
+      .cd-secondary-nav-trigger.menu-is-open span::before {
+        -webkit-transform: rotate(135deg);
+        -moz-transform: rotate(135deg);
+        -ms-transform: rotate(135deg);
+        -o-transform: rotate(135deg);
+        transform: rotate(135deg);
+      }
+
+      .cd-secondary-nav-trigger.menu-is-open span::after {
+        -webkit-transform: rotate(225deg);
+        -moz-transform: rotate(225deg);
+        -ms-transform: rotate(225deg);
+        -o-transform: rotate(225deg);
+        transform: rotate(225deg);
+      }
+
+      @media only screen and (min-width: 1170px) {
+        .cd-secondary-nav-trigger {
+          display: none;
+        }
+      }
+
+      .search {
+        padding-top: 12px;
+        padding-bottom: 12px;
+      }
+
+      .search-input {
+        border: none;
+        border-radius: 2px !important;
+        height: 50px;
+      }
+
+      @media only screen and (max-width: 897px) {
+        .logo-plugin {
+          display: none !important;
+        }
+      }
+
+      .plugins {
+        position: inherit !important;
+      }
+
+      @media only screen and (min-width : 1170px) {
+         .menu-plugins {
+              display: none !important;
+          }
+      }
+
+      body {
+        font-size: 14px;
+        /*text-shadow: 0px 0px 70px rgba(0, 0, 0, 1);*/
+      }
+
+      h1, h2, h3, h4, h5 {
+        font-weight: bold;
+      }
+
+      .phulp-title {
+        font-weight: 100;
+        font-size: 50px;
+        line-height: 68px;
+      }
+
+      p {
+        margin-bottom: 50px;
+      }
+
+      article {
+        font-size: 20px;
+      }
+
+      .bg-grey {
+        background: #F5F5F5;
+      }
+
+      .bg-dark-grey {
+        background: #9C9C9C;
+      }
+
+      .bg-black {
+        background: #222;
+      }
+
+      .item {
+        padding: 25px 0px;
+        border-bottom: 1px solid #e3e3e3;
+      }
+
+      .larger {
+        font-size: 28px;
+      }
+
+      .medium {
+        font-size: 20px;
+      }
+
+      .bg-white {
+        background: #FFF;
+      }
+
+      .bg-php-heavy-color {
+        background: #4F5B93;
+      }
+
+      .bg-php-light-color {
+        background-color: #3862a7;
+      }
+
+      .less {
+        padding: 10px 0;
+      }
+
+      .white a {
+        color: #FFF;
+      }
+
+      a.grey:link {
+        color: grey;
+      }
+
+      .footer {
+        min-height: 360px;
+      }
+
+      .svg:hover path {
+        fill: #ccc;
+      }
+
+      .super-title {
+        font-size: 72px;
+        text-transform: uppercase;
+      }
+
+      .uppercase {
+        text-transform: uppercase;
+      }
+
+      .presentation {
+        background-color: #3862a7;
+
+        color: #FFF;
+        text-shadow: 0px 0px 10px rgba(0, 0, 0, 1) !important;
+
+        padding-top: 150px;
+
+        height: 100%;
+        min-height: 1000px;
+      }
+
+      .presentation p {
+        margin-top: 220px;
+        margin-bottom: 220px;
+      }
+
+      .stats {
+        padding: 100px 0 100px 0;
+      }
+
+      .contribute {
+        background: #273547;
+        padding: 100px 0 100px 0;
+      }
+
+      .whats-phulp {
+        color: #000;
+        font-size: 32px;
+        font-family: 'Courgette', cursive;
+      }
+
+      .whats-phulp-description {
+        font-family: 'Courgette', cursive;
+        font-size: 20px;
+      }
+
+      .big {
+        font-size: 90px;
+      }
+
+      .whats-phulp-img {
+        width: 125px;
+      }
+
+      .full-height {
+        height: 100%;
+        min-height: 590px;
+      }
+
+      .phulp-btn {
+        color: #000 !important;
+        font-size: 25px;
+        cursor: pointer;
+        background: #FFF  !important;
+        border-radius: 30px;
+        text-shadow: none;
+        border:none;
+      }
+
+      .phulp-btn:hover {
+        color: #FFF !important;
+        font-weight: bold;
+        background: transparent !important;
+        text-decoration: underline;
+        border:none;
+      }
+
+      .phulp-btn:visited {
+        color: #FFF;
+      }
+
+      .phulp-terminal {
+        border-radius: 3px;
+        background-color: #2e3436;
+        width: 80%;
+        min-height: 260px;
+        padding: 18px 25px;
+        color: #3fD53E;
+        font-weight: 600;
+        font-size: 17px;
+        text-align: left;
+        text-shadow: 0px 0px 3px rgba(0, 0, 0, 1) !important;
+      }
+
+      .phulp-help {
+        font-family: monospace;
+        font-weight: normal;
+        font-size: 20px;
+      }
+
+      .white {
+        color: white;
+      }
+
+      .yellow {
+        color: yellow;
+      }
+
+      .footer {
+        background-color: #3862a7;
+        padding: 80px 0;
+      }
+
+    </style>
+
+  </head>
+  <body>
+    <div id="app">
+
+      <nav class="navbar phulp-nav navbar-inverse navbar-fixed-top" style="margin-bottom: 0px; border: 0px" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" style="margin-top: 17px;border-color: #002B20;" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a href="https://reisraff.github.io/phulp/" href="#">
+              <img src="https://raw.githubusercontent.com/reisraff/phulp/master/phulp.png" />
+            </a>
+          </div>
+
+          <div class="navbar-collapse collapse">
+            <div class="col-md-6 col-md-offset-4 search">
+              <input type="text" class="form-control search-input" v-model="query" @input="search" placeholder="Search">
+            </div>
+          </div>
+
+        </div>
+      </nav>
+
+      <div class="full-height bg-php-light-color" style="margin-top: 68px;">
+        <div class="container-fluid">
+          <section v-for="plugin in plugins" class="bg-white">
+            <div class="item container text-center">
+                <a v-bind:href="plugin.url" target="_blank"><b class="larger">{{ plugin.name }}</b></a>
+                <br />
+                <i class="medium">{{ plugin.description }}</i>
+                <br />
+                <strong>Stars</strong>: {{ plugin.favers }} | <strong>Downloads</strong>: {{ plugin.downloads }} | <a v-bind:href="plugin.repository">View on Github</a>
+            </div>
+          </section>
+          <section class="bg-white">
+            <div class="item container text-center" v-if="pluginsResolve.next">
+              <b class="larger"><a href="javascript://" class="grey" v-on:click="more()">MORE</a></b>
+            </div>
+          </section>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+              query: '',
+              pluginsResolve: {},
+              plugins: [],
+            },
+            created: function () {
+              var vm = this;
+
+              vm.search();
+            },
+            methods: {
+              more: function () {
+                var vm = this;
+                axios.get(vm.pluginsResolve.next).then(function (response) {
+                  vm.pluginsResolve = response.data;
+
+                  vm.pluginsResolve.results.map(function (value) {
+                    vm.plugins.push(value);
+                  });
+                });
+              },
+              search: function(event) {
+                var vm = this;
+
+                if (vm.query !== '') {
+                  axios.get('https://packagist.org/search.json?tags=phulpplugin&q=' + vm.query).then(function (response) {
+                    vm.pluginsResolve = response.data;
+                    vm.plugins = vm.pluginsResolve.results;
+                  });
+                } else {
+                  axios.get('https://packagist.org/search.json?tags=phulpplugin').then(function (response) {
+                    vm.pluginsResolve = response.data;
+                    vm.plugins = vm.pluginsResolve.results;
+                  });
+                }
+              }
+            }
+        })
+    </script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-73718792-2', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </body>
+</html>
