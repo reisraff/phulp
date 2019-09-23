@@ -120,7 +120,7 @@ $ vendor/bin/phulp watch # Will run the `watch` task
 
 ## Find for what plugin you really need:
 
-[Phulp - Plugin Page](https://reisraff.github.io/phulp/#!/plugins)
+[Phulp - Plugin Page](https://reisraff.github.io/phulp/plugins)
 
 ## Methods
 
